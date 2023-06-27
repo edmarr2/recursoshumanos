@@ -24,7 +24,6 @@ public class Empregado {
         this.nome = nome;
         this.cargo = cargo;
         this.salário = salário;
-        DB.criaConexão();
     }
     
     public Empregado() {
