@@ -4,6 +4,7 @@
  */
 package controle;
 import entidade.Empregado;
+import java.util.List;
 /**
  *
  * @author edmar
@@ -38,5 +39,9 @@ public class ControladorCadastroEmpregado {
     
     public boolean verificarCpfExistente(String cpf) {
        return empregado.verificarCpfExistente(cpf);
+    }
+    
+    public List<Empregado> listarEmpregadosPorEmpresa(int empresaId) {
+        return empregado.listarEmpregadosPorEmpresa(empresaId);
     }
 }

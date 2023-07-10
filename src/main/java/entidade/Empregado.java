@@ -172,4 +172,33 @@ public class Empregado {
 
         return false;
     }
+    
+    public List<Empregado> listarEmpregadosPorEmpresa(int empresaId) {
+        List<Empregado> empregados = new ArrayList<>();
+        String sql = "SELECT * FROM empregados WHERE empresa_id = ?";
+
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setInt(1, empresaId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int empregadoId = resultSet.getInt("id");
+                String cpf = resultSet.getString("cpf");
+                String nome = resultSet.getString("nome");
+                String cargo = resultSet.getString("cargo");
+                double salário = resultSet.getDouble("salario");
+
+                Empregado empregado = new Empregado(empregadoId, cpf, nome, cargo, salário, empresaId);
+                empregados.add(empregado);
+            }
+
+            statement.close();
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return empregados;
+    }
 }

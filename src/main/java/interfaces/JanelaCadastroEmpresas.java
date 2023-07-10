@@ -22,6 +22,7 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     public JanelaCadastroEmpresas() {
         this.controlador = new ControladorCadastroEmpresa();
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.inicializarListaEmpresa();
     }
 
@@ -129,6 +130,11 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
         });
 
         limparCamposEmpresaButton.setText("Limpar Campos");
+        limparCamposEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparCamposEmpresaButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -261,11 +267,10 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
 
     private void empresasCadastradasListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_empresasCadastradasListValueChanged
         if (!evt.getValueIsAdjusting()) {
-            DefaultListModel<String> model = (DefaultListModel<String>) empresasCadastradasList.getModel();
-            int selectedIndex = empresasCadastradasList.getSelectedIndex();
-            // Verifica se um item foi selecionado
-            if (selectedIndex != -1) {
-                String[] nomeCNPJ = model.getElementAt(selectedIndex).split(" - ");
+            DefaultListModel<String> empresaSelecionada = (DefaultListModel<String>) empresasCadastradasList.getModel();
+            int empresaSelecionadaIndex = empresasCadastradasList.getSelectedIndex();
+            if (empresaSelecionadaIndex != -1) {
+                String[] nomeCNPJ = empresaSelecionada.getElementAt(empresaSelecionadaIndex).split(" - ");
                 // pega a parte do cnpj
                 Empresa empresa = controlador.buscarEmpresaPorCNPJ(nomeCNPJ[1]);
                 this.preencherCampos(empresa);
@@ -284,6 +289,10 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Não encontrado nenhuma empresa com esse CNPJ!", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_buscarEmpresaButtonActionPerformed
+
+    private void limparCamposEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparCamposEmpresaButtonActionPerformed
+        this.limparTextos();
+    }//GEN-LAST:event_limparCamposEmpresaButtonActionPerformed
     
     private void preencherCampos(Empresa empresa) {
         cnpjEmpresaTextField.setText(String.valueOf(empresa.getCNPJ()));
@@ -301,15 +310,12 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     private void inicializarListaEmpresa() {
         DefaultListModel<String> empresasListModel = new DefaultListModel<>();
 
-        // Obter as empresas cadastradas
         List<Empresa> empresas = controlador.listarEmpresas();
-
-        // Preencher o modelo da lista com os nomes das empresas
+        
         for (Empresa empresa : empresas) {
             empresasListModel.addElement(empresa.getNomeECNPJ());
         }
 
-        // Definir o modelo da lista
         empresasCadastradasList.setModel(empresasListModel);
     }
     /**
