@@ -7,6 +7,8 @@ package interfaces;
 import javax.swing.JOptionPane;
 import controle.ControladorCadastroEmpregado;
 import interfaces.JanelaCadastroEmpregados;
+import interfaces.JanelaCadastroEmpresas;
+
 import persistência.DB;
 /**
  *
@@ -31,10 +33,10 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuBar1 = new javax.swing.JMenuBar();
+        janelaCadastroEmpresaMenuBar = new javax.swing.JMenu();
+        cadastrarEmpresaMenuItem = new javax.swing.JMenuItem();
         janelaCadastroEmpregadosMenuBar = new javax.swing.JMenu();
         cadastrarEmpregadoMenuItem = new javax.swing.JMenuItem();
-        janelaCadastroEquipamentosMenuBar = new javax.swing.JMenu();
-        cadastrarEquipamentoMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -42,6 +44,25 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
                 formWindowClosed(evt);
             }
         });
+
+        janelaCadastroEmpresaMenuBar.setText("Empresas");
+        janelaCadastroEmpresaMenuBar.setActionCommand("equipamentosMenuBar");
+        janelaCadastroEmpresaMenuBar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                janelaCadastroEmpresaMenuBarActionPerformed(evt);
+            }
+        });
+
+        cadastrarEmpresaMenuItem.setText("Cadastrar Empresa");
+        cadastrarEmpresaMenuItem.setActionCommand("cadastrarEquipamentosMenuItem");
+        cadastrarEmpresaMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarEmpresaMenuItemActionPerformed(evt);
+            }
+        });
+        janelaCadastroEmpresaMenuBar.add(cadastrarEmpresaMenuItem);
+
+        jMenuBar1.add(janelaCadastroEmpresaMenuBar);
 
         janelaCadastroEmpregadosMenuBar.setText("Empregados");
         janelaCadastroEmpregadosMenuBar.setActionCommand("");
@@ -62,25 +83,6 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
 
         jMenuBar1.add(janelaCadastroEmpregadosMenuBar);
 
-        janelaCadastroEquipamentosMenuBar.setText("Equipamentos");
-        janelaCadastroEquipamentosMenuBar.setActionCommand("equipamentosMenuBar");
-        janelaCadastroEquipamentosMenuBar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                janelaCadastroEquipamentosMenuBarActionPerformed(evt);
-            }
-        });
-
-        cadastrarEquipamentoMenuItem.setText("Cadastrar Equipamento");
-        cadastrarEquipamentoMenuItem.setActionCommand("cadastrarEquipamentosMenuItem");
-        cadastrarEquipamentoMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarEquipamentoMenuItemActionPerformed(evt);
-            }
-        });
-        janelaCadastroEquipamentosMenuBar.add(cadastrarEquipamentoMenuItem);
-
-        jMenuBar1.add(janelaCadastroEquipamentosMenuBar);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -97,12 +99,12 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void janelaCadastroEquipamentosMenuBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_janelaCadastroEquipamentosMenuBarActionPerformed
-    }//GEN-LAST:event_janelaCadastroEquipamentosMenuBarActionPerformed
+    private void janelaCadastroEmpresaMenuBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_janelaCadastroEmpresaMenuBarActionPerformed
+    }//GEN-LAST:event_janelaCadastroEmpresaMenuBarActionPerformed
 
-    private void cadastrarEquipamentoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEquipamentoMenuItemActionPerformed
-        informarServiçoIndisponível();
-    }//GEN-LAST:event_cadastrarEquipamentoMenuItemActionPerformed
+    private void cadastrarEmpresaMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpresaMenuItemActionPerformed
+        new JanelaCadastroEmpresas().setVisible(true);
+    }//GEN-LAST:event_cadastrarEmpresaMenuItemActionPerformed
 
     private void janelaCadastroEmpregadosMenuBarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_janelaCadastroEmpregadosMenuBarActionPerformed
         // TODO add your handling code here:
@@ -160,9 +162,9 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem cadastrarEmpregadoMenuItem;
-    private javax.swing.JMenuItem cadastrarEquipamentoMenuItem;
+    private javax.swing.JMenuItem cadastrarEmpresaMenuItem;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu janelaCadastroEmpregadosMenuBar;
-    private javax.swing.JMenu janelaCadastroEquipamentosMenuBar;
+    private javax.swing.JMenu janelaCadastroEmpresaMenuBar;
     // End of variables declaration//GEN-END:variables
 }

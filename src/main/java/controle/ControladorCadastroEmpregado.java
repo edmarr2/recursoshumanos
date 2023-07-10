@@ -13,13 +13,18 @@ public class ControladorCadastroEmpregado {
     public ControladorCadastroEmpregado() {
         this.empregado = new Empregado();
     }
-    public void adicionarEmpregado(String nome, String cargo, double salário) {
-        Empregado newEmpregado = new Empregado(0, nome, cargo, salário);
+    public void adicionarEmpregado(
+            String cpf, 
+            String nome, 
+            String cargo, 
+            double salário,
+            int empresaId) {
+        Empregado newEmpregado = new Empregado(0, cpf, nome, cargo, salário, empresaId);
         empregado.adicionarEmpregado(newEmpregado);
     }
     
-    public void atualizarEmpregado(int id, String nome, String cargo, double salario) {
-        Empregado newEmpregado = new Empregado(id, nome, cargo, salario);
+    public void atualizarEmpregado(int id, String cpf, String nome, String cargo, double salário, int empresaId) {
+        Empregado newEmpregado = new Empregado(id, cpf, nome, cargo, salário, empresaId);
         empregado.atualizarEmpregado(newEmpregado);
     }
     
@@ -27,7 +32,11 @@ public class ControladorCadastroEmpregado {
         empregado.removerEmpregado(id);
     }
     
-    public Empregado buscarEmpregadoPorNome(String nome) {
-        return empregado.buscarEmpregadoPorNome(nome);
+    public Empregado buscarEmpregadoPorCPF(String cpf) {
+        return empregado.buscarEmpregadoPorCPF(cpf);
+    }
+    
+    public boolean verificarCpfExistente(String cpf) {
+       return empregado.verificarCpfExistente(cpf);
     }
 }
