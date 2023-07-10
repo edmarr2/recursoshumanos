@@ -41,6 +41,10 @@ public class ControladorCadastroEmpresa {
         return empresa.buscarEmpresaPorCNPJ(cnpj);
     }
     
+    public Empresa buscarEmpresaPorID(int id) {
+        return empresa.buscarEmpresaPorID(id);
+    }
+    
     public boolean verificarCnpjExistente(String cnpj) {
        return empresa.verificarCnpjExistente(cnpj);
     }

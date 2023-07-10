@@ -311,6 +311,7 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         controlador.atualizarEmpregado(id, cpf, nome, cargo, salario, empresaId);
         
         this.inicializarListaEmpregados();
+        this.limparTextos();
     }//GEN-LAST:event_atualizarEmpregadoButtonActionPerformed
 
     private void limparCamposButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparCamposButtonActionPerformed
@@ -336,6 +337,9 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
 
         // Exibir informações do empregado encontrado (por exemplo, preencher campos de texto)
         if (empregado != null) {
+            Empresa empresa = controladorEmpresa.buscarEmpresaPorID(empregado.getEmpresaId());
+            empresaIdComboBox.setSelectedItem(empresa.getNomeECNPJ());
+            this.selecionarEmpregadoList(empregado.getNomeECPF());
             this.preencherCampos(empregado);
         } else {
             JOptionPane.showMessageDialog(null, "Não encontrado nenhum empregado com esse CPF!", "Alerta", JOptionPane.WARNING_MESSAGE);
@@ -351,11 +355,22 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
     }//GEN-LAST:event_empresaIdComboBoxPropertyChange
 
     private void empresaIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresaIdComboBoxActionPerformed
+        this.limparTextos();
         this.inicializarListaEmpregados();
     }//GEN-LAST:event_empresaIdComboBoxActionPerformed
 
     private void empregadosCadastradosListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_empregadosCadastradosListValueChanged
         // TODO add your handling code here:
+        if (!evt.getValueIsAdjusting()) {
+            DefaultListModel<String> empregadoSelecionado = (DefaultListModel<String>) empregadosCadastradosList.getModel();
+            int empregadoSelecionadoIndex = empregadosCadastradosList.getSelectedIndex();
+            if (empregadoSelecionadoIndex != -1) {
+                String[] nomeCPF = empregadoSelecionado.getElementAt(empregadoSelecionadoIndex).split(" - ");
+                // pega a parte do CPF
+                Empregado empregado = controlador.buscarEmpregadoPorCPF(nomeCPF[1]);
+                this.preencherCampos(empregado);
+            }
+        }
     }//GEN-LAST:event_empregadosCadastradosListValueChanged
     
     private int getEmpresaIdComboBox(String empresaSelecionada) {
@@ -367,7 +382,20 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         
         return 0;
     }
-    
+    private void selecionarEmpregadoList(String empregado) {
+        int index = -1;
+        for (int i = 0; i < empregadosCadastradosList.getModel().getSize(); i++) {
+            if (empregadosCadastradosList.getModel().getElementAt(i).equals(empregado)) {
+                index = i;
+                break;
+            }
+        }
+
+        // Definir o item desejado como selecionado
+        if (index != -1) {
+            empregadosCadastradosList.setSelectedIndex(index);
+        }
+    }
     private void inicializarComboBoxEmpresa() {
         DefaultComboBoxModel<String> comboBoxEmpresasModel = new DefaultComboBoxModel<>();
 
@@ -388,9 +416,8 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         int empresaId = this.getEmpresaIdComboBox((String) empresaIdComboBox.getSelectedItem());
 
         List<Empregado> empregados = controlador.listarEmpregadosPorEmpresa(empresaId);
-        
         for (Empregado empregado : empregados) {
-            empregadosListModel.addElement(empregado.getNome());
+            empregadosListModel.addElement(empregado.getNomeECPF());
         }
 
         empregadosCadastradosList.setModel(empregadosListModel);

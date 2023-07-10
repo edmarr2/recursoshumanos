@@ -134,6 +134,30 @@ public class Empresa {
         return null;
     }
     
+    public Empresa buscarEmpresaPorID(int id) {
+        String sql = "SELECT * FROM empresas WHERE id = ?";
+        
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            
+            if(resultSet.next()){
+                int empresaId = resultSet.getInt("id");
+                String cnpjEmpresa = resultSet.getString("cnpj");
+                String nomeEmpresa = resultSet.getString("nome");
+                String emderecoEmpresa = resultSet.getString("endereco");
+
+                return new Empresa(empresaId, cnpjEmpresa, nomeEmpresa, emderecoEmpresa);
+            }
+            statement.close();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
+    }
+    
     public List<Empresa> listarEmpresas() {
         List<Empresa> listaEmpresas = new ArrayList<>();
 

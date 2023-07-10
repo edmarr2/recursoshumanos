@@ -80,6 +80,10 @@ public class Empregado {
         this.empresa_id = empresaId;
     }
     
+    public String getNomeECPF() {
+        return this.getNome() + " - " + this.getCPF();
+    }
+    
     public void adicionarEmpregado(Empregado empregado) {
         String sql = "INSERT INTO empregados (cpf, nome, cargo, salario, empresa_id) VALUES (?, ?, ?, ?, ?)";
         
