@@ -6,6 +6,7 @@ package controle;
 
 import entidade.Empresa;
 import interfaces.JanelaCadastroEmpresas;
+import java.util.List;
 import javax.swing.JOptionPane;
 
 /**
@@ -42,5 +43,9 @@ public class ControladorCadastroEmpresa {
     
     public boolean verificarCnpjExistente(String cnpj) {
        return empresa.verificarCnpjExistente(cnpj);
+    }
+    
+    public List<Empresa> listarEmpresas() {
+        return empresa.listarEmpresas();
     }
 }

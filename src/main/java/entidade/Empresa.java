@@ -57,9 +57,13 @@ public class Empresa {
     public String getEndereco() {
         return endereco;
     }
-
+    
     public void setEndereco(String endereco) {
         this.endereco = endereco;
+    }
+    
+    public String getNomeECNPJ() {
+        return this.getNome() + " - " + this.getCNPJ();
     }
     
     public void adicionarEmpresa(Empresa empresa) {
@@ -133,7 +137,7 @@ public class Empresa {
     public List<Empresa> listarEmpresas() {
         List<Empresa> listaEmpresas = new ArrayList<>();
 
-        String sql = "SELECT id, cnpj, nome, endereco FROM empresa";
+        String sql = "SELECT id, cnpj, nome, endereco FROM empresas";
 
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);

@@ -3,9 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package interfaces;
-
 import controle.ControladorCadastroEmpresa;
 import entidade.Empresa;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,12 +15,14 @@ import javax.swing.JOptionPane;
  */
 public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     private ControladorCadastroEmpresa controlador;
+
     /**
-     * Creates new form JanelaCadastroEmpresa
+     * Creates new form JanelaCadastroEmpresas
      */
     public JanelaCadastroEmpresas() {
-        initComponents();
         this.controlador = new ControladorCadastroEmpresa();
+        initComponents();
+        this.inicializarListaEmpresa();
     }
 
     /**
@@ -31,57 +34,45 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        empresasCadastradasLabel = new javax.swing.JLabel();
+        cadastroEmpresasScrollPane = new javax.swing.JScrollPane();
+        empresasCadastradasList = new javax.swing.JList<>();
         idEmpresaLabel = new javax.swing.JLabel();
-        cnpjEmpresaLabel = new javax.swing.JLabel();
-        cnpjEmpresaTextField = new javax.swing.JTextField();
         idEmpresaTextField = new javax.swing.JTextField();
-        cadastrarEmpresaButton = new javax.swing.JButton();
-        removerEmpresaButton = new javax.swing.JButton();
-        atualizarEmpresaButton = new javax.swing.JButton();
         nomeEmpresaLabel = new javax.swing.JLabel();
         nomeEmpresaTextField = new javax.swing.JTextField();
+        cnpjEmpresaTextField = new javax.swing.JTextField();
+        cnpjEmpresaLabel = new javax.swing.JLabel();
         enderecoEmpresaLabel = new javax.swing.JLabel();
+        enderecoEmpresaTextField = new javax.swing.JTextField();
+        cadastrarEmpresaButton = new javax.swing.JButton();
+        atualizarEmpresaButton = new javax.swing.JButton();
+        removerEmpresaButton = new javax.swing.JButton();
         buscarEmpresaButton = new javax.swing.JButton();
         limparCamposEmpresaButton = new javax.swing.JButton();
-        enderecoEmpresaTextField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        idEmpresaLabel.setText("ID");
+        empresasCadastradasLabel.setText("Empresas Cadastradas");
 
-        cnpjEmpresaLabel.setText("CNPJ");
-
-        cnpjEmpresaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cnpjEmpresaTextFieldActionPerformed(evt);
+        empresasCadastradasList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        empresasCadastradasList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                empresasCadastradasListValueChanged(evt);
             }
         });
+        cadastroEmpresasScrollPane.setViewportView(empresasCadastradasList);
+
+        idEmpresaLabel.setText("ID");
 
         idEmpresaTextField.setEditable(false);
         idEmpresaTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idEmpresaTextFieldActionPerformed(evt);
-            }
-        });
-
-        cadastrarEmpresaButton.setText("Cadastrar");
-        cadastrarEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarEmpresaButtonActionPerformed(evt);
-            }
-        });
-
-        removerEmpresaButton.setText("Remover");
-        removerEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removerEmpresaButtonActionPerformed(evt);
-            }
-        });
-
-        atualizarEmpresaButton.setText("Atualizar");
-        atualizarEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                atualizarEmpresaButtonActionPerformed(evt);
             }
         });
 
@@ -93,7 +84,42 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             }
         });
 
+        cnpjEmpresaTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cnpjEmpresaTextFieldActionPerformed(evt);
+            }
+        });
+
+        cnpjEmpresaLabel.setText("CNPJ");
+
         enderecoEmpresaLabel.setText("Endereço");
+
+        enderecoEmpresaTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enderecoEmpresaTextFieldActionPerformed(evt);
+            }
+        });
+
+        cadastrarEmpresaButton.setText("Cadastrar");
+        cadastrarEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarEmpresaButtonActionPerformed(evt);
+            }
+        });
+
+        atualizarEmpresaButton.setText("Alterar");
+        atualizarEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                atualizarEmpresaButtonActionPerformed(evt);
+            }
+        });
+
+        removerEmpresaButton.setText("Remover");
+        removerEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerEmpresaButtonActionPerformed(evt);
+            }
+        });
 
         buscarEmpresaButton.setText("Buscar");
         buscarEmpresaButton.addActionListener(new java.awt.event.ActionListener() {
@@ -104,12 +130,6 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
 
         limparCamposEmpresaButton.setText("Limpar Campos");
 
-        enderecoEmpresaTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enderecoEmpresaTextFieldActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,64 +137,75 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(nomeEmpresaLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(nomeEmpresaTextField))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(cadastrarEmpresaButton)
-                            .addGap(44, 44, 44)
-                            .addComponent(atualizarEmpresaButton)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(removerEmpresaButton)
-                            .addGap(41, 41, 41)
-                            .addComponent(buscarEmpresaButton))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(323, 323, 323)
-                            .addComponent(limparCamposEmpresaButton))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cnpjEmpresaLabel)
-                                .addComponent(idEmpresaLabel))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(idEmpresaTextField)
-                                .addComponent(cnpjEmpresaTextField))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(empresasCadastradasLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cadastroEmpresasScrollPane))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idEmpresaLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(idEmpresaTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(nomeEmpresaLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(nomeEmpresaTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cnpjEmpresaLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(cnpjEmpresaTextField))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(enderecoEmpresaLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(enderecoEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(enderecoEmpresaTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(cadastrarEmpresaButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(atualizarEmpresaButton)
+                        .addGap(43, 43, 43)
+                        .addComponent(removerEmpresaButton)
+                        .addGap(30, 30, 30)
+                        .addComponent(buscarEmpresaButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(limparCamposEmpresaButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(empresasCadastradasLabel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(cadastroEmpresasScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idEmpresaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idEmpresaLabel)
                     .addComponent(idEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cnpjEmpresaLabel)
-                    .addComponent(cnpjEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(nomeEmpresaLabel)
                     .addComponent(nomeEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cnpjEmpresaLabel)
+                    .addComponent(cnpjEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(enderecoEmpresaLabel)
                     .addComponent(enderecoEmpresaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cadastrarEmpresaButton)
                     .addComponent(atualizarEmpresaButton)
                     .addComponent(removerEmpresaButton)
                     .addComponent(buscarEmpresaButton))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addComponent(limparCamposEmpresaButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -184,13 +215,17 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_idEmpresaTextFieldActionPerformed
 
+    private void nomeEmpresaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeEmpresaTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nomeEmpresaTextFieldActionPerformed
+
     private void cnpjEmpresaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnpjEmpresaTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cnpjEmpresaTextFieldActionPerformed
 
-    private void nomeEmpresaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nomeEmpresaTextFieldActionPerformed
+    private void enderecoEmpresaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enderecoEmpresaTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nomeEmpresaTextFieldActionPerformed
+    }//GEN-LAST:event_enderecoEmpresaTextFieldActionPerformed
 
     private void cadastrarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpresaButtonActionPerformed
         String cnpj = cnpjEmpresaTextField.getText();
@@ -201,25 +236,9 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             return;
         }
         controlador.adicionarEmpresa(cnpj, nome, endereco);
-        JOptionPane.showMessageDialog(this, "Empresa cadastrada com sucesso!");
-
+        this.inicializarListaEmpresa();
         this.limparTextos();
     }//GEN-LAST:event_cadastrarEmpresaButtonActionPerformed
-
-    private void removerEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerEmpresaButtonActionPerformed
-        String idText = idEmpresaTextField.getText();
-        int id = Integer.parseInt(idText);
-
-        controlador.removerEmpresa(id);
-
-        JOptionPane.showMessageDialog(this, "Empresa removida com sucesso!");
-
-        this.limparTextos();
-    }//GEN-LAST:event_removerEmpresaButtonActionPerformed
-
-    private void enderecoEmpresaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enderecoEmpresaTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_enderecoEmpresaTextFieldActionPerformed
 
     private void atualizarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarEmpresaButtonActionPerformed
         int id = Integer.parseInt(idEmpresaTextField.getText());
@@ -228,9 +247,31 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
         String endereço = enderecoEmpresaTextField.getText();
 
         controlador.atualizarEmpresa(id, cnpj, nome, endereço);
-        
-        JOptionPane.showMessageDialog(this, "Empresa atualizada com sucesso!");
+        this.inicializarListaEmpresa();
     }//GEN-LAST:event_atualizarEmpresaButtonActionPerformed
+
+    private void removerEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerEmpresaButtonActionPerformed
+        String idText = idEmpresaTextField.getText();
+        int id = Integer.parseInt(idText);
+
+        controlador.removerEmpresa(id);
+        this.inicializarListaEmpresa();
+        this.limparTextos();
+    }//GEN-LAST:event_removerEmpresaButtonActionPerformed
+
+    private void empresasCadastradasListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_empresasCadastradasListValueChanged
+        if (!evt.getValueIsAdjusting()) {
+            DefaultListModel<String> model = (DefaultListModel<String>) empresasCadastradasList.getModel();
+            int selectedIndex = empresasCadastradasList.getSelectedIndex();
+            // Verifica se um item foi selecionado
+            if (selectedIndex != -1) {
+                String[] nomeCNPJ = model.getElementAt(selectedIndex).split(" - ");
+                // pega a parte do cnpj
+                Empresa empresa = controlador.buscarEmpresaPorCNPJ(nomeCNPJ[1]);
+                this.preencherCampos(empresa);
+            }
+        }
+    }//GEN-LAST:event_empresasCadastradasListValueChanged
 
     private void buscarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEmpresaButtonActionPerformed
         String cnpj = cnpjEmpresaTextField.getText();
@@ -238,20 +279,38 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
 
         // Exibir informações do empregado encontrado (por exemplo, preencher campos de texto)
         if (empresa != null) {
-            cnpjEmpresaTextField.setText(String.valueOf(empresa.getCNPJ()));
-            idEmpresaTextField.setText(String.valueOf(empresa.getId()));
-            nomeEmpresaTextField.setText(empresa.getNome());
-            enderecoEmpresaTextField.setText(empresa.getEndereco());
+            this.preencherCampos(empresa);
         } else {
-            JOptionPane.showMessageDialog(null, "Não encontrado nenhuma empresa com esse nome!", "Alerta", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Não encontrado nenhuma empresa com esse CNPJ!", "Alerta", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_buscarEmpresaButtonActionPerformed
     
-    private void limparTextos(){
+    private void preencherCampos(Empresa empresa) {
+        cnpjEmpresaTextField.setText(String.valueOf(empresa.getCNPJ()));
+        idEmpresaTextField.setText(String.valueOf(empresa.getId()));
+        nomeEmpresaTextField.setText(empresa.getNome());
+        enderecoEmpresaTextField.setText(empresa.getEndereco());
+    }
+    private void limparTextos (){
         idEmpresaTextField.setText("");
         cnpjEmpresaTextField.setText("");
         nomeEmpresaTextField.setText("");
         enderecoEmpresaTextField.setText("");
+    }
+    
+    private void inicializarListaEmpresa() {
+        DefaultListModel<String> empresasListModel = new DefaultListModel<>();
+
+        // Obter as empresas cadastradas
+        List<Empresa> empresas = controlador.listarEmpresas();
+
+        // Preencher o modelo da lista com os nomes das empresas
+        for (Empresa empresa : empresas) {
+            empresasListModel.addElement(empresa.getNomeECNPJ());
+        }
+
+        // Definir o modelo da lista
+        empresasCadastradasList.setModel(empresasListModel);
     }
     /**
      * @param args the command line arguments
@@ -279,7 +338,6 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(JanelaCadastroEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -293,8 +351,11 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     private javax.swing.JButton atualizarEmpresaButton;
     private javax.swing.JButton buscarEmpresaButton;
     private javax.swing.JButton cadastrarEmpresaButton;
+    private javax.swing.JScrollPane cadastroEmpresasScrollPane;
     private javax.swing.JLabel cnpjEmpresaLabel;
     private javax.swing.JTextField cnpjEmpresaTextField;
+    private javax.swing.JLabel empresasCadastradasLabel;
+    private javax.swing.JList<String> empresasCadastradasList;
     private javax.swing.JLabel enderecoEmpresaLabel;
     private javax.swing.JTextField enderecoEmpresaTextField;
     private javax.swing.JLabel idEmpresaLabel;
