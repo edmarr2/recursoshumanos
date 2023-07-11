@@ -15,31 +15,22 @@ import java.util.List;
  * @author edmar
  */
 public class Empregado {
-    private int id;
     private String cpf;
     private String nome;
     private String cargo;
     private double salário;
-    private int empresa_id;
-    // Construtor
-    public Empregado(int id, String cpf, String nome, String cargo, double salário, int empresaId ) {
-        this.id = id;
+
+    public Empregado(String cpf, String nome, String cargo, double salário ) {
         this.cpf = cpf;
         this.nome = nome;
         this.cargo = cargo;
         this.salário = salário;
-        this.empresa_id = empresaId;
     }
     
     public Empregado() {
         DB.criaConexão();
     }
 
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-    
     public String getCPF() {
         return cpf;
     }
@@ -72,20 +63,12 @@ public class Empregado {
         this.salário = salário;
     }
     
-    public int getEmpresaId() {
-        return empresa_id;
-    }
-
-    public void setEmpresaId(int empresaId) {
-        this.empresa_id = empresaId;
-    }
-    
     public String getNomeECPF() {
         return this.getNome() + " - " + this.getCPF();
     }
     
     public void adicionarEmpregado(Empregado empregado) {
-        String sql = "INSERT INTO empregados (cpf, nome, cargo, salario, empresa_id) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO empregados (cpf, nome, cargo, salario) VALUES (?, ?, ?, ?)";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
@@ -93,7 +76,6 @@ public class Empregado {
             statement.setString(2, empregado.getNome());
             statement.setString(3, empregado.getCargo());
             statement.setDouble(4, empregado.getSalário());
-            statement.setInt(5, empregado.getEmpresaId());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -102,16 +84,14 @@ public class Empregado {
     }
     
     public void atualizarEmpregado(Empregado empregado) {
-        String sql = "UPDATE empregados SET cpf = ?, nome = ?, cargo = ?, salario = ?, empresa_id = ? WHERE id = ?";
+        String sql = "UPDATE empregados SET nome = ?, cargo = ?, salario = ? WHERE cpf = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, empregado.getCPF());
-            statement.setString(2, empregado.getNome());
-            statement.setString(3, empregado.getCargo());
-            statement.setDouble(4, empregado.getSalário());
-            statement.setInt(5, empregado.getEmpresaId());
-            statement.setInt(6, empregado.getId());
+            statement.setString(1, empregado.getNome());
+            statement.setString(2, empregado.getCargo());
+            statement.setDouble(3, empregado.getSalário());
+            statement.setString(4, empregado.getCPF());
 
             statement.executeUpdate();
             statement.close();
@@ -120,12 +100,12 @@ public class Empregado {
         }
     }
     
-    public void removerEmpregado(int id) {
-        String sql = "DELETE FROM empregados WHERE id = ?";
+    public void removerEmpregado(String cpf) {
+        String sql = "DELETE FROM empregados WHERE cpf = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setString(1, cpf);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -142,13 +122,11 @@ public class Empregado {
             ResultSet resultSet = statement.executeQuery();
             
             if(resultSet.next()){
-                int empregadoId = resultSet.getInt("id");
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
                 double salário = resultSet.getDouble("salario");
-                int empresaId = resultSet.getInt("empresa_id");
 
-                return new Empregado(empregadoId, cpf, nome, cargo, salário, empresaId);
+                return new Empregado(cpf, nome, cargo, salário);
             }
             statement.close();
         }catch(SQLException e) {
@@ -177,23 +155,21 @@ public class Empregado {
         return false;
     }
     
-    public List<Empregado> listarEmpregadosPorEmpresa(int empresaId) {
+    public List<Empregado> listarEmpregados() {
         List<Empregado> empregados = new ArrayList<>();
-        String sql = "SELECT * FROM empregados WHERE empresa_id = ?";
+        String sql = "SELECT * FROM empregados";
 
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, empresaId);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                int empregadoId = resultSet.getInt("id");
                 String cpf = resultSet.getString("cpf");
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
                 double salário = resultSet.getDouble("salario");
 
-                Empregado empregado = new Empregado(empregadoId, cpf, nome, cargo, salário, empresaId);
+                Empregado empregado = new Empregado(cpf, nome, cargo, salário);
                 empregados.add(empregado);
             }
 

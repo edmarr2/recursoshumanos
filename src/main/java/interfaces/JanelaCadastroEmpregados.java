@@ -26,7 +26,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         controlador = new ControladorCadastroEmpregado();
         controladorEmpresa = new ControladorCadastroEmpresa();
         initComponents();
-        inicializarComboBoxEmpresa();
         inicializarListaEmpregados();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
@@ -53,20 +52,16 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         cadastrarEmpregadoButton = new javax.swing.JButton();
         atualizarEmpregadoButton = new javax.swing.JButton();
         limparCamposButton = new javax.swing.JButton();
-        idEmpregadoLabel = new javax.swing.JLabel();
-        idEmpregadoTextField = new javax.swing.JTextField();
         removerEmpregadoButton = new javax.swing.JButton();
         buscarEmpregadoButton = new javax.swing.JButton();
         cpfEmpregadoLabel = new javax.swing.JLabel();
         cpfEmpregadoTextField = new javax.swing.JTextField();
-        empresaIdComboBox = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         empregadosCadastradosList = new javax.swing.JList<>();
         listagemEmpregadoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Recursos Humanos");
+        setTitle("Cadastro Empregados");
 
         nomeEmpregadoLabel.setText("Nome:");
 
@@ -113,15 +108,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
             }
         });
 
-        idEmpregadoLabel.setText("ID:");
-
-        idEmpregadoTextField.setEditable(false);
-        idEmpregadoTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                idEmpregadoTextFieldActionPerformed(evt);
-            }
-        });
-
         removerEmpregadoButton.setText("Remover");
         removerEmpregadoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,20 +129,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
                 cpfEmpregadoTextFieldActionPerformed(evt);
             }
         });
-
-        empresaIdComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        empresaIdComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                empresaIdComboBoxActionPerformed(evt);
-            }
-        });
-        empresaIdComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                empresaIdComboBoxPropertyChange(evt);
-            }
-        });
-
-        jLabel1.setText("Empresa");
 
         empregadosCadastradosList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -180,30 +152,15 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(idEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
-                        .addComponent(idEmpregadoTextField))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(salarioEmpregadoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cargoEmpregadoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(nomeEmpregadoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cpfEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)))
+                            .addComponent(nomeEmpregadoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(55, 55, 55)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(nomeEmpregadoTextField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(cargoEmpregadoTextField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(salarioEmpregadoTextField))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(cpfEmpregadoTextField))))
+                            .addComponent(cargoEmpregadoTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(nomeEmpregadoTextField)
+                            .addComponent(salarioEmpregadoTextField)))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cadastrarEmpregadoButton)
                         .addGap(18, 31, Short.MAX_VALUE)
@@ -215,32 +172,24 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
                                 .addComponent(atualizarEmpregadoButton)
                                 .addGap(28, 28, 28)
                                 .addComponent(removerEmpregadoButton))))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(listagemEmpregadoLabel))
+                            .addComponent(listagemEmpregadoLabel)
+                            .addComponent(cpfEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(empresaIdComboBox, 0, 289, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1))))
+                            .addComponent(cpfEmpregadoTextField)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(empresaIdComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
-                    .addComponent(listagemEmpregadoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(idEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(idEmpregadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(listagemEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cpfEmpregadoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cpfEmpregadoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -265,7 +214,7 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
                         .addComponent(buscarEmpregadoButton)))
                 .addGap(18, 18, 18)
                 .addComponent(limparCamposButton)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -285,30 +234,27 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
 
     private void cadastrarEmpregadoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpregadoButtonActionPerformed
         String cpf = cpfEmpregadoTextField.getText();
-        String nome = nomeEmpregadoTextField.getText();
+        String nome = nomeEmpregadoTextField.getText().replace("-", "");
         String cargo = cargoEmpregadoTextField.getText();
         double salario = Double.parseDouble(salarioEmpregadoTextField.getText());
-        int empresaId = this.getEmpresaIdComboBox((String) empresaIdComboBox.getSelectedItem());
 
         if(controlador.verificarCpfExistente(cpf)){
             JOptionPane.showMessageDialog(null, "CPF já cadastrado!", "Alerta", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        controlador.adicionarEmpregado(cpf, nome, cargo, salario, empresaId);
+        controlador.adicionarEmpregado(cpf, nome, cargo, salario);
         this.inicializarListaEmpregados();
 
         this.limparTextos();
     }//GEN-LAST:event_cadastrarEmpregadoButtonActionPerformed
  
     private void atualizarEmpregadoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarEmpregadoButtonActionPerformed
-        int id = Integer.parseInt(idEmpregadoTextField.getText());
-        String nome = nomeEmpregadoTextField.getText();
+        String nome = nomeEmpregadoTextField.getText().replace("-", "");
         String cargo = cargoEmpregadoTextField.getText();
         double salario = Double.parseDouble(salarioEmpregadoTextField.getText());
         String cpf = cpfEmpregadoTextField.getText();
-        int empresaId = this.getEmpresaIdComboBox((String) empresaIdComboBox.getSelectedItem());
         
-        controlador.atualizarEmpregado(id, cpf, nome, cargo, salario, empresaId);
+        controlador.atualizarEmpregado(cpf, nome, cargo, salario);
         
         this.inicializarListaEmpregados();
         this.limparTextos();
@@ -318,15 +264,10 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         this.limparTextos();
     }//GEN-LAST:event_limparCamposButtonActionPerformed
 
-    private void idEmpregadoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idEmpregadoTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_idEmpregadoTextFieldActionPerformed
-
     private void removerEmpregadoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerEmpregadoButtonActionPerformed
-        String idText = idEmpregadoTextField.getText();
-        int id = Integer.parseInt(idText);
+        String cpfText = cpfEmpregadoTextField.getText();
 
-        controlador.removerEmpregado(id);
+        controlador.removerEmpregado(cpfText);
         this.limparTextos();
         this.inicializarListaEmpregados();
     }//GEN-LAST:event_removerEmpregadoButtonActionPerformed
@@ -337,8 +278,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
 
         // Exibir informações do empregado encontrado (por exemplo, preencher campos de texto)
         if (empregado != null) {
-            Empresa empresa = controladorEmpresa.buscarEmpresaPorID(empregado.getEmpresaId());
-            empresaIdComboBox.setSelectedItem(empresa.getNomeECNPJ());
             this.selecionarEmpregadoList(empregado.getNomeECPF());
             this.preencherCampos(empregado);
         } else {
@@ -349,15 +288,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
     private void cpfEmpregadoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cpfEmpregadoTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cpfEmpregadoTextFieldActionPerformed
-
-    private void empresaIdComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_empresaIdComboBoxPropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_empresaIdComboBoxPropertyChange
-
-    private void empresaIdComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresaIdComboBoxActionPerformed
-        this.limparTextos();
-        this.inicializarListaEmpregados();
-    }//GEN-LAST:event_empresaIdComboBoxActionPerformed
 
     private void empregadosCadastradosListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_empregadosCadastradosListValueChanged
         // TODO add your handling code here:
@@ -373,15 +303,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_empregadosCadastradosListValueChanged
     
-    private int getEmpresaIdComboBox(String empresaSelecionada) {
-        if (empresaSelecionada != null) {
-            String cnpj = empresaSelecionada.split(" - ")[1];
-            Empresa empresa = controladorEmpresa.buscarEmpresaPorCNPJ(cnpj);
-            return empresa.getId();
-        }
-        
-        return 0;
-    }
     private void selecionarEmpregadoList(String empregado) {
         int index = -1;
         for (int i = 0; i < empregadosCadastradosList.getModel().getSize(); i++) {
@@ -396,26 +317,11 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
             empregadosCadastradosList.setSelectedIndex(index);
         }
     }
-    private void inicializarComboBoxEmpresa() {
-        DefaultComboBoxModel<String> comboBoxEmpresasModel = new DefaultComboBoxModel<>();
-
-        // Obter as empresas cadastradas
-        List<Empresa> empresas = controladorEmpresa.listarEmpresas();
-
-        // Preencher o modelo da lista com os nomes das empresas
-        for (Empresa empresa : empresas) {
-            comboBoxEmpresasModel.addElement(empresa.getNomeECNPJ());
-        }
-
-        // Definir o modelo da lista
-        empresaIdComboBox.setModel(comboBoxEmpresasModel);
-    }
     
     private void inicializarListaEmpregados() {
         DefaultListModel<String> empregadosListModel = new DefaultListModel<>();
-        int empresaId = this.getEmpresaIdComboBox((String) empresaIdComboBox.getSelectedItem());
 
-        List<Empregado> empregados = controlador.listarEmpregadosPorEmpresa(empresaId);
+        List<Empregado> empregados = controlador.listarEmpregados();
         for (Empregado empregado : empregados) {
             empregadosListModel.addElement(empregado.getNomeECPF());
         }
@@ -425,14 +331,12 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
     
     private void preencherCampos(Empregado empregado) {
         cpfEmpregadoTextField.setText(String.valueOf(empregado.getCPF()));
-        idEmpregadoTextField.setText(String.valueOf(empregado.getId()));
         nomeEmpregadoTextField.setText(empregado.getNome());
         cargoEmpregadoTextField.setText(empregado.getCargo());
         salarioEmpregadoTextField.setText(String.valueOf(empregado.getSalário()));
     }
     
     private void limparTextos(){
-        idEmpregadoTextField.setText("");
         nomeEmpregadoTextField.setText("");
         cargoEmpregadoTextField.setText("");
         salarioEmpregadoTextField.setText("");
@@ -483,10 +387,6 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
     private javax.swing.JLabel cpfEmpregadoLabel;
     private javax.swing.JTextField cpfEmpregadoTextField;
     private javax.swing.JList<String> empregadosCadastradosList;
-    private javax.swing.JComboBox<String> empresaIdComboBox;
-    private javax.swing.JLabel idEmpregadoLabel;
-    private javax.swing.JTextField idEmpregadoTextField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton limparCamposButton;
     private javax.swing.JLabel listagemEmpregadoLabel;

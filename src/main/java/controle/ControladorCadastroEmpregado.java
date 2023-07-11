@@ -18,19 +18,18 @@ public class ControladorCadastroEmpregado {
             String cpf, 
             String nome, 
             String cargo, 
-            double salário,
-            int empresaId) {
-        Empregado newEmpregado = new Empregado(0, cpf, nome, cargo, salário, empresaId);
+            double salário) {
+        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário);
         empregado.adicionarEmpregado(newEmpregado);
     }
     
-    public void atualizarEmpregado(int id, String cpf, String nome, String cargo, double salário, int empresaId) {
-        Empregado newEmpregado = new Empregado(id, cpf, nome, cargo, salário, empresaId);
+    public void atualizarEmpregado(String cpf, String nome, String cargo, double salário) {
+        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário);
         empregado.atualizarEmpregado(newEmpregado);
     }
     
-    public void removerEmpregado(int id) {
-        empregado.removerEmpregado(id);
+    public void removerEmpregado(String cpf) {
+        empregado.removerEmpregado(cpf);
     }
     
     public Empregado buscarEmpregadoPorCPF(String cpf) {
@@ -41,7 +40,7 @@ public class ControladorCadastroEmpregado {
        return empregado.verificarCpfExistente(cpf);
     }
     
-    public List<Empregado> listarEmpregadosPorEmpresa(int empresaId) {
-        return empregado.listarEmpregadosPorEmpresa(empresaId);
+    public List<Empregado> listarEmpregados() {
+        return empregado.listarEmpregados();
     }
 }

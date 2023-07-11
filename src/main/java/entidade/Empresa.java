@@ -63,7 +63,7 @@ public class Empresa {
     }
     
     public String getNomeECNPJ() {
-        return this.getNome() + " - " + this.getCNPJ();
+        return  "["+ this.getId() + "] " + this.getNome() + " - " + this.getCNPJ();
     }
     
     public void adicionarEmpresa(Empresa empresa) {
@@ -135,7 +135,7 @@ public class Empresa {
     }
     
     public Empresa buscarEmpresaPorID(int id) {
-        String sql = "SELECT * FROM empresas WHERE id = ?";
+        String sql = "SELECT * FROM empresas WHERE cnpj = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
@@ -161,7 +161,7 @@ public class Empresa {
     public List<Empresa> listarEmpresas() {
         List<Empresa> listaEmpresas = new ArrayList<>();
 
-        String sql = "SELECT id, cnpj, nome, endereco FROM empresas";
+        String sql = "SELECT * FROM empresas";
 
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);

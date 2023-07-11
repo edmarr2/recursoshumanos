@@ -5,9 +5,7 @@
 package controle;
 
 import entidade.Empresa;
-import interfaces.JanelaCadastroEmpresas;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 /**
  *
