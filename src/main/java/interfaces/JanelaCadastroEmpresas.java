@@ -295,7 +295,9 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
         idEmpresaTextField.setText(String.valueOf(empresa.getId()));
         nomeEmpresaTextField.setText(empresa.getNome());
         enderecoEmpresaTextField.setText(empresa.getEndereco());
+        empresasCadastradasComboBox.setSelectedItem(empresa.getNomeECNPJ());
     }
+
     private void limparTextos (){
         idEmpresaTextField.setText("");
         cnpjEmpresaTextField.setText("");
