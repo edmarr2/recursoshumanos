@@ -15,16 +15,19 @@ import java.util.List;
  * @author edmar
  */
 public class Empregado {
+    public enum EstadoCivil {solteiro, casado, divorciado, viúvo};
     private String cpf;
     private String nome;
     private String cargo;
     private double salário;
-
-    public Empregado(String cpf, String nome, String cargo, double salário ) {
+    EstadoCivil estadoCivil;
+    
+    public Empregado(String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil ) {
         this.cpf = cpf;
         this.nome = nome;
         this.cargo = cargo;
         this.salário = salário;
+        this.estadoCivil = estadoCivil;
     }
     
     public Empregado() {
@@ -67,8 +70,16 @@ public class Empregado {
         return this.getNome() + " - " + this.getCPF();
     }
     
+    public EstadoCivil getEstadoCivil() {
+        return estadoCivil;
+    }
+    
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+    
     public void adicionarEmpregado(Empregado empregado) {
-        String sql = "INSERT INTO empregados (cpf, nome, cargo, salario) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO empregados (cpf, nome, cargo, salario, estadoCivil) VALUES (?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
@@ -76,6 +87,7 @@ public class Empregado {
             statement.setString(2, empregado.getNome());
             statement.setString(3, empregado.getCargo());
             statement.setDouble(4, empregado.getSalário());
+            statement.setString(5, empregado.getEstadoCivil().toString());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -84,14 +96,15 @@ public class Empregado {
     }
     
     public void atualizarEmpregado(Empregado empregado) {
-        String sql = "UPDATE empregados SET nome = ?, cargo = ?, salario = ? WHERE cpf = ?";
+        String sql = "UPDATE empregados SET nome = ?, cargo = ?, salario = ?, estadoCivil = ? WHERE cpf = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
             statement.setString(1, empregado.getNome());
             statement.setString(2, empregado.getCargo());
             statement.setDouble(3, empregado.getSalário());
-            statement.setString(4, empregado.getCPF());
+            statement.setString(4, empregado.getEstadoCivil().toString());
+            statement.setString(5, empregado.getCPF());
 
             statement.executeUpdate();
             statement.close();
@@ -125,8 +138,9 @@ public class Empregado {
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
                 double salário = resultSet.getDouble("salario");
-
-                return new Empregado(cpf, nome, cargo, salário);
+                String estadoCivilString = resultSet.getString("estadoCivil");
+                EstadoCivil estadoCivil = this.stringToEstadoCivil(estadoCivilString);
+                return new Empregado(cpf, nome, cargo, salário, estadoCivil);
             }
             statement.close();
         }catch(SQLException e) {
@@ -168,8 +182,10 @@ public class Empregado {
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
                 double salário = resultSet.getDouble("salario");
+                String estadoCivilString = resultSet.getString("estadoCivil");
+                EstadoCivil estadoCivil = this.stringToEstadoCivil(estadoCivilString);
 
-                Empregado empregado = new Empregado(cpf, nome, cargo, salário);
+                Empregado empregado = new Empregado(cpf, nome, cargo, salário, estadoCivil);
                 empregados.add(empregado);
             }
 
@@ -180,5 +196,14 @@ public class Empregado {
         }
 
         return empregados;
+    }
+    
+      private EstadoCivil stringToEstadoCivil(String estadoCivilString) {
+        try {
+            return EstadoCivil.valueOf(estadoCivilString);
+        } catch (IllegalArgumentException e) {
+            // Trate o caso em que o banco de dados contém um valor inválido para o estado civil
+            return EstadoCivil.solteiro; // ou qualquer valor padrão que você preferir
+        }
     }
 }

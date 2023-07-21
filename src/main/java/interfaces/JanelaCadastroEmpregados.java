@@ -6,6 +6,7 @@ package interfaces;
 import controle.ControladorCadastroEmpregado;
 import controle.ControladorCadastroEmpresa;
 import entidade.Empregado;
+import entidade.Empregado.EstadoCivil;
 import entidade.Empresa;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -242,7 +243,7 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "CPF já cadastrado!", "Alerta", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        controlador.adicionarEmpregado(cpf, nome, cargo, salario);
+        controlador.adicionarEmpregado(cpf, nome, cargo, salario, EstadoCivil.solteiro);
         this.inicializarListaEmpregados();
 
         this.limparTextos();
@@ -254,7 +255,7 @@ public class JanelaCadastroEmpregados extends javax.swing.JFrame {
         double salario = Double.parseDouble(salarioEmpregadoTextField.getText());
         String cpf = cpfEmpregadoTextField.getText();
         
-        controlador.atualizarEmpregado(cpf, nome, cargo, salario);
+        controlador.atualizarEmpregado(cpf, nome, cargo, salario, EstadoCivil.solteiro);
         
         this.inicializarListaEmpregados();
         this.limparTextos();
