@@ -78,7 +78,7 @@
                   <Component id="jScrollPane1" max="32767" attributes="0"/>
                   <Component id="listagemEmpregadoLabel" min="-2" pref="130" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cpfEmpregadoLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="cpfEmpregadoTextField" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -109,7 +109,7 @@
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="limparCamposButton" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

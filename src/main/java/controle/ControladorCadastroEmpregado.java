@@ -5,6 +5,7 @@
 package controle;
 import entidade.Empregado;
 import entidade.Empregado.EstadoCivil;
+import entidade.Empregado.Gênero;
 import java.util.List;
 /**
  *
@@ -20,13 +21,14 @@ public class ControladorCadastroEmpregado {
             String nome, 
             String cargo, 
             double salário,
-            EstadoCivil estadoCivil) {
-        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário, estadoCivil);
+            EstadoCivil estadoCivil,
+            Gênero gênero) {
+        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário, estadoCivil, gênero);
         empregado.adicionarEmpregado(newEmpregado);
     }
     
-    public void atualizarEmpregado(String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil) {
-        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário, estadoCivil);
+    public void atualizarEmpregado(String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero) {
+        Empregado newEmpregado = new Empregado(cpf, nome, cargo, salário, estadoCivil, gênero);
         empregado.atualizarEmpregado(newEmpregado);
     }
     
