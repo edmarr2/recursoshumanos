@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package interfaces;
-import controle.ControladorCadastroEmpregado;
-import controle.ControladorCadastroEmpresa;
+import controle.ControladorEmpregado;
+import controle.ControladorEmpresa;
 import entidade.Empregado;
 import entidade.Empregado.EstadoCivil;
 import entidade.Empresa;
@@ -18,20 +18,20 @@ import javax.swing.JOptionPane;
  * @author edmar
  */
 public class JanelaCadastroEmpregados extends javax.swing.JFrame {
-    private ControladorCadastroEmpregado controlador;
-    private ControladorCadastroEmpresa controladorEmpresa;
+    private ControladorEmpregado controlador;
+    private ControladorEmpresa controladorEmpresa;
     /**
      * Creates new form JanelaRecursosHumanos
      */
     public JanelaCadastroEmpregados() {
-        controlador = new ControladorCadastroEmpregado();
-        controladorEmpresa = new ControladorCadastroEmpresa();
+        controlador = new ControladorEmpregado();
+        controladorEmpresa = new ControladorEmpresa();
         initComponents();
         inicializarListaEmpregados();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
     }
 
-    public JanelaCadastroEmpregados(ControladorCadastroEmpregado aThis) {
+    public JanelaCadastroEmpregados(ControladorEmpregado aThis) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 

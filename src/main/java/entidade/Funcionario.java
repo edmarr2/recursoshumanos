@@ -59,7 +59,7 @@ public class Funcionario {
             return mnemonic;
         }
     }
-    
+    private int id;
     private String cpf;
     private String nome;
     private String cargo;
@@ -67,7 +67,8 @@ public class Funcionario {
     EstadoCivil estadoCivil;
     Gênero gênero;
 
-    public Funcionario(String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero) {
+    public Funcionario(int id, String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero) {
+        this.id = id;
         this.cpf = cpf;
         this.nome = nome;
         this.cargo = cargo;
@@ -75,7 +76,17 @@ public class Funcionario {
         this.estadoCivil = estadoCivil;
         this.gênero = gênero;
     }
+    public Funcionario() {
+        DB.criaConexão();
+    }
     
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getCPF() {
         return cpf;
     }
@@ -127,10 +138,28 @@ public class Funcionario {
     public void setGenero(Gênero gênero) {
         this.gênero = gênero;
     }
-    
+
     public void adicionarFuncionario(Funcionario funcionario) {
-        String sql = "INSERT INTO funcionarios (cpf, nome, cargo, salario, estadoCivil, genero) VALUES (?, ?, ?, ?, ?, ?)";
-        
+        String sql = "INSERT INTO funcionarios (id, cpf, nome, cargo, salario, estadoCivil, genero) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setInt(1, funcionario.getId());
+            statement.setString(2, funcionario.getCPF());
+            statement.setString(3, funcionario.getNome());
+            statement.setString(4, funcionario.getCargo());
+            statement.setDouble(5, funcionario.getSalário());
+            statement.setString(6, funcionario.getEstadoCivil().toString());
+            statement.setString(7, funcionario.getGênero().toString());
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void atualizarFuncionario(Funcionario funcionario) {
+        String sql = "UPDATE funcionarios SET cpf = ?, nome = ?, cargo = ?, salario = ?, estadoCivil = ?, genero = ? WHERE id = ?";
+
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
             statement.setString(1, funcionario.getCPF());
@@ -139,24 +168,7 @@ public class Funcionario {
             statement.setDouble(4, funcionario.getSalário());
             statement.setString(5, funcionario.getEstadoCivil().toString());
             statement.setString(6, funcionario.getGênero().toString());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public void atualizarFuncionario(Funcionario funcionario) {
-        String sql = "UPDATE funcionarios SET nome = ?, cargo = ?, salario = ?, estadoCivil = ?, genero = ? WHERE cpf = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, funcionario.getNome());
-            statement.setString(2, funcionario.getCargo());
-            statement.setDouble(3, funcionario.getSalário());
-            statement.setString(4, funcionario.getEstadoCivil().toString());
-            statement.setString(5, funcionario.getGênero().toString());
-            statement.setString(6, funcionario.getCPF());
+            statement.setInt(7, funcionario.getId());
 
             statement.executeUpdate();
             statement.close();
@@ -164,13 +176,12 @@ public class Funcionario {
             e.printStackTrace();
         }
     }
-    
-    public void removerFuncionario(String cpf) {
-        String sql = "DELETE FROM funcionarios WHERE cpf = ?";
+    public void removerFuncionario(int id) {
+        String sql = "DELETE FROM funcionarios WHERE id = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, cpf);
+            statement.setInt(1, id);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -178,31 +189,30 @@ public class Funcionario {
         }
     }
     
-    public Funcionario buscarFuncionarioPorCPF(String cpf) {
-        String sql = "SELECT * FROM funcionarios WHERE cpf = ?";
-    
+    public Funcionario buscarFuncionarioPorId(int id) {
+        String sql = "SELECT * FROM funcionarios WHERE id = ?";
+
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, cpf);
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
 
-            if(resultSet.next()){
+            if (resultSet.next()) {
+                String cpf = resultSet.getString("cpf");
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
                 double salário = resultSet.getDouble("salario");
-                String estadoCivilString = resultSet.getString("estadoCivil");
                 EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
                 Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
-                return new Funcionario(cpf, nome, cargo, salário, estadoCivil, gênero);
+                return new Funcionario(id, cpf, nome, cargo, salário, estadoCivil, gênero);
             }
             statement.close();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
     }
-    
     public boolean verificarCpfExistente(String cpf) {
         String sql = "SELECT COUNT(*) FROM Funcionarios WHERE cpf = ?";
 
@@ -225,12 +235,13 @@ public class Funcionario {
     
     public List<Funcionario> listarFuncionarios() {
         List<Funcionario> funcionarios = new ArrayList<>();
-        String sql = "SELECT cpf, nome, cargo, salario, estadoCivil, genero FROM funcionarios"; // Selecionar apenas as colunas necessárias
+        String sql = "SELECT id, cpf, nome, cargo, salario, estadoCivil, genero FROM funcionarios";
 
         try (PreparedStatement statement = DB.conexão.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
+                int id = resultSet.getInt("id");
                 String cpf = resultSet.getString("cpf");
                 String nome = resultSet.getString("nome");
                 String cargo = resultSet.getString("cargo");
@@ -238,7 +249,7 @@ public class Funcionario {
                 EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
                 Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
 
-                Funcionario funcionario = new Funcionario(cpf, nome, cargo, salario, estadoCivil, gênero);
+                Funcionario funcionario = new Funcionario(id, cpf, nome, cargo, salario, estadoCivil, gênero);
                 funcionarios.add(funcionario);
             }
 

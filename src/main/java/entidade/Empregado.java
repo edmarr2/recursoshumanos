@@ -7,51 +7,101 @@ package entidade;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import persistência.DB;
+import java.sql.ResultSet;
 
 /**
  *
  * @author edmar
  */
 public class Empregado extends Funcionario{
-    private String departamento;
-    private int avaliaçãoDeDesempenho;
+     private String departamento;
+    private int avaliacaoDeDesempenho;
 
-    public Empregado(String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero, String departamento, int avaliaçãoDeDesempenho) {
-        super(cpf, nome, cargo, salário, estadoCivil, gênero);
+    public Empregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String departamento, int avaliacaoDeDesempenho) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, gênero);
         this.departamento = departamento;
-        this.avaliaçãoDeDesempenho = avaliaçãoDeDesempenho;
+        this.avaliacaoDeDesempenho = avaliacaoDeDesempenho;
     }
-    
+    public Empregado() {
+        DB.criaConexão();
+    }
     public String getDepartamento() {
         return departamento;
     }
-    
+
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
     }
-    
-    public int getAvaliaçãoDeDesempenho() {
-        return avaliaçãoDeDesempenho;
+
+    public int getAvaliacaoDeDesempenho() {
+        return avaliacaoDeDesempenho;
     }
-    
-    public void setAvaliaçãoDeDesempenho(int avaliaçãoDeDesempenho){
-        this.avaliaçãoDeDesempenho = avaliaçãoDeDesempenho;
+
+    public void setAvaliacaoDeDesempenho(int avaliacaoDeDesempenho) {
+        this.avaliacaoDeDesempenho = avaliacaoDeDesempenho;
     }
-    
+
     public void adicionarEmpregado(Empregado empregado) {
-        String sql = "INSERT INTO empregados (cpf, departamento, avaliacaoDeDesempenho) VALUES (?, ?, ?)";
-        
+        String sql = "INSERT INTO empregados (funcionarioId, departamento, avaliacaoDeDesempenho) VALUES (?, ?, ?)";
+
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, empregado.getCPF());
+            statement.setInt(1, empregado.getId());
             statement.setString(2, empregado.getDepartamento());
-            statement.setInt(3, empregado.getAvaliaçãoDeDesempenho());
+            statement.setInt(3, empregado.getAvaliacaoDeDesempenho());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
-    
+ public void removerEmpregado(int funcionarioId) {
+        String sql = "DELETE FROM empregados WHERE funcionarioId = ?";
+
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setInt(1, funcionarioId);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void atualizarEmpregado(Empregado empregado) {
+        String sql = "UPDATE empregados SET departamento = ?, avaliacaoDeDesempenho = ? WHERE funcionarioId = ?";
+
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setString(1, empregado.getDepartamento());
+            statement.setInt(2, empregado.getAvaliacaoDeDesempenho());
+            statement.setInt(3, empregado.getId());
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Empregado buscarEmpregadoPorId(int funcionarioId) {
+        String sql = "SELECT * FROM empregados WHERE funcionarioId = ?";
+
+        try {
+            PreparedStatement statement = DB.conexão.prepareStatement(sql);
+            statement.setInt(1, funcionarioId);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String departamento = resultSet.getString("departamento");
+                int avaliacaoDeDesempenho = resultSet.getInt("avaliacaoDeDesempenho");
+
+                return new Empregado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), departamento, avaliacaoDeDesempenho);
+            }
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

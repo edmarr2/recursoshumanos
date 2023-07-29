@@ -16,14 +16,12 @@ import persistência.DB;
  * @author edmar
  */
 public class Empresa {
-    private int id;
     private String cnpj;
     private String nome;
     private String endereco;
     
     // Construtor
-    public Empresa(int id, String cnpj, String nome, String endereço) {
-        this.id = id;
+    public Empresa(String cnpj, String nome, String endereço) {
         this.cnpj = cnpj;
         this.nome = nome;
         this.endereco = endereço;
@@ -33,11 +31,6 @@ public class Empresa {
         DB.criaConexão();
     }
 
-    // Getters e Setters
-    public int getId() {
-        return id;
-    }
-    
     public String getCNPJ() {
         return cnpj;
     }
@@ -63,7 +56,7 @@ public class Empresa {
     }
     
     public String getNomeECNPJ() {
-        return  "["+ this.getId() + "] " + this.getNome() + " - " + this.getCNPJ();
+        return this.getNome() + " - " + this.getCNPJ();
     }
     
     public void adicionarEmpresa(Empresa empresa) {
@@ -82,14 +75,13 @@ public class Empresa {
     }
     
     public void atualizarEmpresa(Empresa empresa) {
-        String sql = "UPDATE empresas SET cnpj = ?, nome = ?, endereco = ? WHERE id = ?";
+        String sql = "UPDATE empresas SET nome = ?, endereco = ? WHERE cnpj = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, empresa.getCNPJ());
-            statement.setString(2, empresa.getNome());
-            statement.setString(3, empresa.getEndereco());
-            statement.setInt(4, empresa.getId());
+            statement.setString(1, empresa.getNome());
+            statement.setString(2, empresa.getEndereco());
+            statement.setString(3, empresa.getCNPJ());
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -97,12 +89,12 @@ public class Empresa {
         }
     }
     
-    public void removerEmpresa(int id) {
-        String sql = "DELETE FROM empresas WHERE id = ?";
+    public void removerEmpresa(String cnpj) {
+        String sql = "DELETE FROM empresas WHERE cnpj = ?";
         
         try {
             PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, id);
+            statement.setString(1, cnpj);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -119,36 +111,11 @@ public class Empresa {
             ResultSet resultSet = statement.executeQuery();
             
             if(resultSet.next()){
-                int empresaId = resultSet.getInt("id");
                 String cnpjEmpresa = resultSet.getString("cnpj");
                 String nomeEmpresa = resultSet.getString("nome");
                 String emderecoEmpresa = resultSet.getString("endereco");
 
-                return new Empresa(empresaId, cnpjEmpresa, nomeEmpresa, emderecoEmpresa);
-            }
-            statement.close();
-        }catch(SQLException e) {
-            e.printStackTrace();
-        }
-        
-        return null;
-    }
-    
-    public Empresa buscarEmpresaPorID(int id) {
-        String sql = "SELECT * FROM empresas WHERE cnpj = ?";
-        
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            
-            if(resultSet.next()){
-                int empresaId = resultSet.getInt("id");
-                String cnpjEmpresa = resultSet.getString("cnpj");
-                String nomeEmpresa = resultSet.getString("nome");
-                String emderecoEmpresa = resultSet.getString("endereco");
-
-                return new Empresa(empresaId, cnpjEmpresa, nomeEmpresa, emderecoEmpresa);
+                return new Empresa(cnpjEmpresa, nomeEmpresa, emderecoEmpresa);
             }
             statement.close();
         }catch(SQLException e) {
@@ -168,12 +135,11 @@ public class Empresa {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("id");
                 String cnpj = resultSet.getString("cnpj");
                 String nome = resultSet.getString("nome");
                 String endereco = resultSet.getString("endereco");
 
-                Empresa empresa = new Empresa(id, cnpj, nome, endereco);
+                Empresa empresa = new Empresa(cnpj, nome, endereco);
                 listaEmpresas.add(empresa);
             }
 

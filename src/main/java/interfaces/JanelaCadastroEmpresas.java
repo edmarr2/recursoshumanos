@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package interfaces;
-import controle.ControladorCadastroEmpresa;
+import controle.ControladorEmpresa;
 import entidade.Empresa;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -15,13 +15,13 @@ import javax.swing.JOptionPane;
  * @author edmar
  */
 public class JanelaCadastroEmpresas extends javax.swing.JFrame {
-    private ControladorCadastroEmpresa controlador;
+    private ControladorEmpresa controlador;
 
     /**
      * Creates new form JanelaCadastroEmpresas
      */
     public JanelaCadastroEmpresas() {
-        this.controlador = new ControladorCadastroEmpresa();
+        this.controlador = new ControladorEmpresa();
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.inicializarComboBoxEmpresa();

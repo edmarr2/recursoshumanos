@@ -5,7 +5,7 @@
 package interfaces;
 
 import javax.swing.JOptionPane;
-import controle.ControladorCadastroEmpregado;
+import controle.ControladorEmpregado;
 import interfaces.JanelaCadastroEmpregados;
 import interfaces.JanelaCadastroEmpresas;
 
