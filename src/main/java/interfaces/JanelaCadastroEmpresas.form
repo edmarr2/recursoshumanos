@@ -43,22 +43,6 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="nomeEmpresaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="idEmpresaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="idEmpresaTextField" max="32767" attributes="0"/>
-                          <Component id="nomeEmpresaTextField" max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="315" pref="315" max="-2" attributes="0"/>
-                      <Component id="limparCamposEmpresaButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="cnpjEmpresaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="enderecoEmpresaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -66,6 +50,18 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="enderecoEmpresaTextField" max="32767" attributes="0"/>
                           <Component id="cnpjEmpresaTextField" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="nomeEmpresaLabel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="nomeEmpresaTextField" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="315" pref="315" max="-2" attributes="0"/>
+                          <Component id="limparCamposEmpresaButton" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -83,25 +79,20 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="idEmpresaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="idEmpresaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cnpjEmpresaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cnpjEmpresaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="nomeEmpresaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="nomeEmpresaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cnpjEmpresaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="cnpjEmpresaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="enderecoEmpresaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="enderecoEmpresaTextField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cadastrarEmpresaButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="atualizarEmpresaButton" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -120,19 +111,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Empresas Cadastradas"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="idEmpresaLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="ID"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="idEmpresaTextField">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idEmpresaTextFieldActionPerformed"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="nomeEmpresaLabel">
       <Properties>
