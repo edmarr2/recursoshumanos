@@ -4,8 +4,8 @@
  */
 package controle;
 import entidade.Terceirizado;
-import entidade.Funcionario.EstadoCivil;
-import entidade.Funcionario.Gênero;
+import entidade.Funcionário.EstadoCivil;
+import entidade.Funcionário.Gênero;
 /**
  *
  * @author edmar

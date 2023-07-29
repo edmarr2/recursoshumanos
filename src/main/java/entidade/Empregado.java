@@ -13,7 +13,7 @@ import java.sql.ResultSet;
  *
  * @author edmar
  */
-public class Empregado extends Funcionario{
+public class Empregado extends Funcionário{
      private String departamento;
     private int avaliacaoDeDesempenho;
 

@@ -12,7 +12,7 @@ import persistência.DB;
  *
  * @author edmar
  */
-public class Terceirizado extends Funcionario {
+public class Terceirizado extends Funcionário {
     private String empresaContratada;
     private String duracaoContrato;
 

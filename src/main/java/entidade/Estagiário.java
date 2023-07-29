@@ -15,16 +15,16 @@ import persistência.DB;
  *
  * @author edmar
  */
-public class Estagiario extends Funcionario {
+public class Estagiário extends Funcionário {
     private String curso;
     private int cargaHoraria;
 
-    public Estagiario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String curso, int cargaHoraria) {
+    public Estagiário(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String curso, int cargaHoraria) {
         super(id, cpf, nome, cargo, salario, estadoCivil, gênero);
         this.curso = curso;
         this.cargaHoraria = cargaHoraria;
     }
-    public Estagiario() {
+    public Estagiário() {
         DB.criaConexão();
     }
     public String getCurso() {
@@ -43,7 +43,7 @@ public class Estagiario extends Funcionario {
         this.cargaHoraria = cargaHoraria;
     }
 
-    public void adicionarEstagiario(Estagiario estagiario) {
+    public void adicionarEstagiario(Estagiário estagiario) {
         String sql = "INSERT INTO estagiarios (funcionarioId, curso, cargaHoraria) VALUES (?, ?, ?)";
 
         try {
@@ -71,7 +71,7 @@ public class Estagiario extends Funcionario {
         }
     }
 
-    public void atualizarEstagiario(Estagiario estagiario) {
+    public void atualizarEstagiario(Estagiário estagiario) {
         String sql = "UPDATE estagiarios SET curso = ?, cargaHoraria = ? WHERE funcionarioId = ?";
 
         try {
@@ -86,7 +86,7 @@ public class Estagiario extends Funcionario {
         }
     }
 
-    public Estagiario buscarEstagiarioPorId(int funcionarioId) {
+    public Estagiário buscarEstagiarioPorId(int funcionarioId) {
         String sql = "SELECT * FROM estagiarios WHERE funcionarioId = ?";
 
         try {
@@ -98,7 +98,7 @@ public class Estagiario extends Funcionario {
                 String curso = resultSet.getString("curso");
                 int cargaHoraria = resultSet.getInt("cargaHoraria");
 
-                return new Estagiario(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), curso, cargaHoraria);
+                return new Estagiário(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), curso, cargaHoraria);
             }
             statement.close();
         } catch (SQLException e) {

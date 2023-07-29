@@ -3,28 +3,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package controle;
-import entidade.Funcionario;
-import entidade.Funcionario.EstadoCivil;
-import entidade.Funcionario.Gênero;
+import entidade.Funcionário;
+import entidade.Funcionário.EstadoCivil;
+import entidade.Funcionário.Gênero;
 import java.util.List;
 /**
  *
  * @author edmar
  */
-public class ControladorFuncionario {
-    private Funcionario funcionario;
+public class ControladorFuncionário {
+    private Funcionário funcionario;
 
-    public ControladorFuncionario() {
-        this.funcionario = new Funcionario();
+    public ControladorFuncionário() {
+        this.funcionario = new Funcionário();
     }
 
     public void adicionarFuncionario(String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero) {
-        Funcionario newFuncionario = new Funcionario(0, cpf, nome, cargo, salario, estadoCivil, genero);
+        Funcionário newFuncionario = new Funcionário(0, cpf, nome, cargo, salario, estadoCivil, genero);
         funcionario.adicionarFuncionario(newFuncionario);
     }
 
     public void atualizarFuncionario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero) {
-        Funcionario updatedFuncionario = new Funcionario(id, cpf, nome, cargo, salario, estadoCivil, genero);
+        Funcionário updatedFuncionario = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, genero);
         funcionario.atualizarFuncionario(updatedFuncionario);
     }
 
@@ -32,7 +32,7 @@ public class ControladorFuncionario {
         funcionario.removerFuncionario(id);
     }
 
-    public Funcionario buscarFuncionarioPorId(int id) {
+    public Funcionário buscarFuncionarioPorId(int id) {
         return funcionario.buscarFuncionarioPorId(id);
     }
 
@@ -40,7 +40,7 @@ public class ControladorFuncionario {
         return funcionario.verificarCpfExistente(cpf);
     }
 
-    public List<Funcionario> listarFuncionarios() {
+    public List<Funcionário> listarFuncionarios() {
         return funcionario.listarFuncionarios();
     }
 }

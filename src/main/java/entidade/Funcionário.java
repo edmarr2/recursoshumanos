@@ -15,7 +15,7 @@ import persistência.DB;
  *
  * @author edmar
  */
-public class Funcionario {
+public class Funcionário {
         public enum EstadoCivil {
         SOLTEIRO(0, "Solteiro"),
         CASADO(1, "Casado"),
@@ -67,7 +67,7 @@ public class Funcionario {
     EstadoCivil estadoCivil;
     Gênero gênero;
 
-    public Funcionario(int id, String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero) {
+    public Funcionário(int id, String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -76,7 +76,7 @@ public class Funcionario {
         this.estadoCivil = estadoCivil;
         this.gênero = gênero;
     }
-    public Funcionario() {
+    public Funcionário() {
         DB.criaConexão();
     }
     
@@ -139,7 +139,7 @@ public class Funcionario {
         this.gênero = gênero;
     }
 
-    public void adicionarFuncionario(Funcionario funcionario) {
+    public void adicionarFuncionario(Funcionário funcionario) {
         String sql = "INSERT INTO funcionarios (id, cpf, nome, cargo, salario, estadoCivil, genero) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try {
@@ -157,7 +157,7 @@ public class Funcionario {
             e.printStackTrace();
         }
     }
-    public void atualizarFuncionario(Funcionario funcionario) {
+    public void atualizarFuncionario(Funcionário funcionario) {
         String sql = "UPDATE funcionarios SET cpf = ?, nome = ?, cargo = ?, salario = ?, estadoCivil = ?, genero = ? WHERE id = ?";
 
         try {
@@ -189,7 +189,7 @@ public class Funcionario {
         }
     }
     
-    public Funcionario buscarFuncionarioPorId(int id) {
+    public Funcionário buscarFuncionarioPorId(int id) {
         String sql = "SELECT * FROM funcionarios WHERE id = ?";
 
         try {
@@ -204,7 +204,7 @@ public class Funcionario {
                 double salário = resultSet.getDouble("salario");
                 EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
                 Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
-                return new Funcionario(id, cpf, nome, cargo, salário, estadoCivil, gênero);
+                return new Funcionário(id, cpf, nome, cargo, salário, estadoCivil, gênero);
             }
             statement.close();
         } catch (SQLException e) {
@@ -233,8 +233,8 @@ public class Funcionario {
         return false;
     }
     
-    public List<Funcionario> listarFuncionarios() {
-        List<Funcionario> funcionarios = new ArrayList<>();
+    public List<Funcionário> listarFuncionarios() {
+        List<Funcionário> funcionarios = new ArrayList<>();
         String sql = "SELECT id, cpf, nome, cargo, salario, estadoCivil, genero FROM funcionarios";
 
         try (PreparedStatement statement = DB.conexão.prepareStatement(sql);
@@ -249,7 +249,7 @@ public class Funcionario {
                 EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
                 Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
 
-                Funcionario funcionario = new Funcionario(id, cpf, nome, cargo, salario, estadoCivil, gênero);
+                Funcionário funcionario = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, gênero);
                 funcionarios.add(funcionario);
             }
 
