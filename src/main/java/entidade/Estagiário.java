@@ -19,8 +19,8 @@ public class Estagiário extends Funcionário {
     private String curso;
     private int cargaHoraria;
 
-    public Estagiário(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String curso, int cargaHoraria) {
-        super(id, cpf, nome, cargo, salario, estadoCivil, gênero);
+    public Estagiário(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, boolean ativo, String curso, int cargaHoraria) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
         this.curso = curso;
         this.cargaHoraria = cargaHoraria;
     }
@@ -98,7 +98,7 @@ public class Estagiário extends Funcionário {
                 String curso = resultSet.getString("curso");
                 int cargaHoraria = resultSet.getInt("cargaHoraria");
 
-                return new Estagiário(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), curso, cargaHoraria);
+                return new Estagiário(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), getAtivo(), curso, cargaHoraria);
             }
             statement.close();
         } catch (SQLException e) {

@@ -17,8 +17,8 @@ public class Empregado extends Funcionário{
      private String departamento;
     private int avaliacaoDeDesempenho;
 
-    public Empregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String departamento, int avaliacaoDeDesempenho) {
-        super(id, cpf, nome, cargo, salario, estadoCivil, gênero);
+    public Empregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, boolean ativo, String departamento, int avaliacaoDeDesempenho) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
         this.departamento = departamento;
         this.avaliacaoDeDesempenho = avaliacaoDeDesempenho;
     }
@@ -95,7 +95,7 @@ public class Empregado extends Funcionário{
                 String departamento = resultSet.getString("departamento");
                 int avaliacaoDeDesempenho = resultSet.getInt("avaliacaoDeDesempenho");
 
-                return new Empregado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), departamento, avaliacaoDeDesempenho);
+                return new Empregado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), getAtivo(),departamento, avaliacaoDeDesempenho);
             }
             statement.close();
         } catch (SQLException e) {

@@ -16,13 +16,17 @@ public class Terceirizado extends Funcionário {
     private String empresaContratada;
     private String duracaoContrato;
 
-    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, String empresaContratada, String duracaoContrato) {
-        super(id, cpf, nome, cargo, salario, estadoCivil, gênero);
+    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, boolean ativo, String empresaContratada, String duracaoContrato) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
         this.empresaContratada = empresaContratada;
         this.duracaoContrato = duracaoContrato;
     }
     public Terceirizado() {
         DB.criaConexão();
+    }
+
+    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String empresaContratada, String duracaoContrato) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     public String getEmpresaContratada() {
         return empresaContratada;
@@ -95,7 +99,7 @@ public class Terceirizado extends Funcionário {
                 String empresaContratada = resultSet.getString("empresaContratada");
                 String duracaoContrato = resultSet.getString("duracaoContrato");
 
-                return new Terceirizado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), empresaContratada, duracaoContrato);
+                return new Terceirizado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), getAtivo(),empresaContratada, duracaoContrato);
             }
             statement.close();
         } catch (SQLException e) {

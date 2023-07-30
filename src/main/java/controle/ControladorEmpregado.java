@@ -17,14 +17,14 @@ public class ControladorEmpregado {
         this.empregado = new Empregado();
     }
 
-    public void adicionarEmpregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String departamento, int avaliacaoDeDesempenho) {
-        Empregado newEmpregado = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, genero, departamento, avaliacaoDeDesempenho);
+    public void adicionarEmpregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo, String departamento, int avaliacaoDeDesempenho) {
+        Empregado newEmpregado = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo, departamento, avaliacaoDeDesempenho);
         empregado.adicionarEmpregado(newEmpregado);
     }
 
-    public void atualizarEmpregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String departamento, int avaliacaoDeDesempenho) {
-        Empregado updatedEmpregado = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, genero, departamento, avaliacaoDeDesempenho);
-        empregado.atualizarEmpregado(updatedEmpregado);
+    public void atualizarEmpregado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo, String departamento, int avaliacaoDeDesempenho) {
+        Empregado newEmpregado = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo, departamento, avaliacaoDeDesempenho);
+        empregado.atualizarEmpregado(newEmpregado);
     }
 
     public void removerEmpregado(int id) {

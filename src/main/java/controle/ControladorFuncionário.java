@@ -12,35 +12,39 @@ import java.util.List;
  * @author edmar
  */
 public class ControladorFuncionário {
-    private Funcionário funcionario;
+    private Funcionário funcionário;
 
     public ControladorFuncionário() {
-        this.funcionario = new Funcionário();
+        this.funcionário = new Funcionário();
     }
 
-    public void adicionarFuncionario(String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero) {
-        Funcionário newFuncionario = new Funcionário(0, cpf, nome, cargo, salario, estadoCivil, genero);
-        funcionario.adicionarFuncionario(newFuncionario);
+    public void adicionarFuncionário(String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo) {
+        Funcionário newFuncionário = new Funcionário(0, cpf, nome, cargo, salario, estadoCivil, genero, ativo);
+        funcionário.adicionarFuncionário(newFuncionário);
     }
 
-    public void atualizarFuncionario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero) {
-        Funcionário updatedFuncionario = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, genero);
-        funcionario.atualizarFuncionario(updatedFuncionario);
+    public void atualizarFuncionario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo) {
+        Funcionário newFuncionário = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo);
+        funcionário.atualizarFuncionário(newFuncionário);
     }
 
-    public void removerFuncionario(int id) {
-        funcionario.removerFuncionario(id);
+    public void removerFuncionário(int id) {
+        funcionário.removerFuncionário(id);
     }
 
-    public Funcionário buscarFuncionarioPorId(int id) {
-        return funcionario.buscarFuncionarioPorId(id);
+    public Funcionário buscarFuncionárioPorId(int id) {
+        return funcionário.buscarFuncionárioPorId(id);
+    }
+    
+    public Funcionário buscarFuncionárioPorCpf(String cpf) {
+        return funcionário.buscarFuncionárioPorCpf(cpf);
     }
 
     public boolean verificarCpfExistente(String cpf) {
-        return funcionario.verificarCpfExistente(cpf);
+        return funcionário.verificarCpfExistente(cpf);
     }
 
-    public List<Funcionário> listarFuncionarios() {
-        return funcionario.listarFuncionarios();
+    public List<Funcionário> listarFuncionários() {
+        return funcionário.listarFuncionários();
     }
 }

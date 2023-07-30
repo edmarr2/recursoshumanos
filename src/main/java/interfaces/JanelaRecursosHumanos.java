@@ -6,7 +6,7 @@ package interfaces;
 
 import javax.swing.JOptionPane;
 import controle.ControladorEmpregado;
-import interfaces.JanelaCadastroEmpregados;
+import interfaces.JanelaCadastroFuncionários;
 import interfaces.JanelaCadastroEmpresas;
 
 import persistência.DB;
@@ -113,7 +113,7 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
 
     private void cadastrarEmpregadoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpregadoMenuItemActionPerformed
         // TODO add your handling code here:
-        new JanelaCadastroEmpregados().setVisible(true);
+        new JanelaCadastroFuncionários().setVisible(true);
     }//GEN-LAST:event_cadastrarEmpregadoMenuItemActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed

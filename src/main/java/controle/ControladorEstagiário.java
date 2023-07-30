@@ -17,14 +17,14 @@ public class ControladorEstagiário {
         this.estagiario = new Estagiário();
     }
 
-    public void adicionarEstagiario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String curso, int cargaHoraria) {
-        Estagiário newEstagiario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, genero, curso, cargaHoraria);
+    public void adicionarEstagiario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo, String curso, int cargaHoraria) {
+        Estagiário newEstagiario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo, curso, cargaHoraria);
         estagiario.adicionarEstagiario(newEstagiario);
     }
 
-    public void atualizarEstagiario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String curso, int cargaHoraria) {
-        Estagiário updatedEstagiario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, genero, curso, cargaHoraria);
-        estagiario.atualizarEstagiario(updatedEstagiario);
+    public void atualizarEstagiario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo, String curso, int cargaHoraria) {
+        Estagiário newEstagiario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo, curso, cargaHoraria);
+        estagiario.atualizarEstagiario(newEstagiario);
     }
 
     public void removerEstagiario(int id) {
