@@ -4,13 +4,6 @@
  */
 package entidade;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import persistência.DB;
-
 /**
  *
  * @author edmar
@@ -18,15 +11,19 @@ import persistência.DB;
 public class Estagiário extends Funcionário {
     private String curso;
     private int cargaHoraria;
-
-    public Estagiário(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, boolean ativo, String curso, int cargaHoraria) {
-        super(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
+    
+    public Estagiário(int id, String cpf, String nome, String cargo, double salario, 
+            EstadoCivil estadoCivil, char sexo, boolean ativo) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo);
+    }
+    
+    public Estagiário(int id, String cpf, String nome, String cargo, double salario, 
+            EstadoCivil estadoCivil, char sexo, boolean ativo, String curso, int cargaHoraria) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo);
         this.curso = curso;
         this.cargaHoraria = cargaHoraria;
     }
-    public Estagiário() {
-        DB.criaConexão();
-    }
+
     public String getCurso() {
         return curso;
     }
@@ -42,69 +39,94 @@ public class Estagiário extends Funcionário {
     public void setCargaHoraria(int cargaHoraria) {
         this.cargaHoraria = cargaHoraria;
     }
-
-    public void adicionarEstagiario(Estagiário estagiario) {
-        String sql = "INSERT INTO estagiarios (funcionarioId, curso, cargaHoraria) VALUES (?, ?, ?)";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, estagiario.getId());
-            statement.setString(2, estagiario.getCurso());
-            statement.setInt(3, estagiario.getCargaHoraria());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+    
+    @Override
+    public String getCPF() {
+        return super.getCPF();
+    }
+   
+    @Override
+    public String getNome() {
+        return super.getNome();
+    }
+    @Override
+    public String getCargo() {
+        return super.getCargo();
+    }
+    
+    @Override
+    public double getSalário() {
+        return super.getSalário();
+    }
+    
+    @Override
+    public EstadoCivil getEstadoCivil() {
+        return super.getEstadoCivil();
+    }
+    
+    @Override
+    public boolean getAtivo() {
+        return super.getAtivo();
     }
 
-    public void removerEstagiario(int funcionarioId) {
-        String sql = "DELETE FROM estagiarios WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, funcionarioId);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public char getSexo() {
+        return super.getSexo();
     }
 
-    public void atualizarEstagiario(Estagiário estagiario) {
-        String sql = "UPDATE estagiarios SET curso = ?, cargaHoraria = ? WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, estagiario.getCurso());
-            statement.setInt(2, estagiario.getCargaHoraria());
-            statement.setInt(3, estagiario.getId());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public Empregado getVisao() {
+        return new Empregado(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
+                super.getSalário(), super.getEstadoCivil(), super.getSexo(), super.getAtivo());
+    }
+    
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+    }
+    
+    @Override
+    public void setCPF(String cpf) {
+        super.setCPF(cpf);
+    }
+    
+    @Override
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+    
+    @Override
+    public void setCargo(String cargo) {
+        super.setCargo(cargo);
     }
 
-    public Estagiário buscarEstagiarioPorId(int funcionarioId) {
-        String sql = "SELECT * FROM estagiarios WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, funcionarioId);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String curso = resultSet.getString("curso");
-                int cargaHoraria = resultSet.getInt("cargaHoraria");
-
-                return new Estagiário(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), getAtivo(), curso, cargaHoraria);
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    @Override
+    public void setSalario(double salario) {
+        super.setSalario(salario);
+    }    
+    
+    @Override
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        super.setEstadoCivil(estadoCivil);
+    } 
+    
+    @Override
+    public void setSexo(char sexo) {
+        super.setSexo(sexo);
+    } 
+    
+    @Override
+    public void setAtivo(boolean ativo) {
+        super.setAtivo(ativo);
+    }     
+    
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + super.toString();
     }
 }

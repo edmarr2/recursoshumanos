@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import persistência.DB;
 
 /**
@@ -16,57 +15,26 @@ import persistência.DB;
  * @author edmar
  */
 public class Funcionário {
-    public enum EstadoCivil {
-        SOLTEIRO(0), CASADO(1), DIVORCIADO(2), VIUVO(3);
+    public enum EstadoCivil { solteiro, casado, divorciado, viuvo };
+    private char sexo;
 
-        private int mnemonic;
-
-        private EstadoCivil(int mnemonic) {
-            this.mnemonic = mnemonic;
-        }
-
-        public int getMnemonic() {
-            return this.mnemonic;
-        }
-    }
-    
-    public enum Gênero {
-        MASCULINO("Masculino", 'M'),
-        FEMININO("Feminino", 'F');
-
-        private final String texto;
-        private final char mnemonic;
-
-        Gênero(String texto, char mnemonic) {
-            this.texto = texto;
-            this.mnemonic = mnemonic;
-        }
-
-        public String getTexto() {
-            return texto;
-        }
-
-        public char getMnemonic() {
-            return mnemonic;
-        }
-    }
     private int id;
     private String cpf;
     private String nome;
     private String cargo;
     private double salário;
     EstadoCivil estadoCivil;
-    Gênero gênero;
     private boolean ativo;
 
-    public Funcionário(int id, String cpf, String nome, String cargo, double salário, EstadoCivil estadoCivil, Gênero gênero, boolean ativo) {
+    public Funcionário(int id, String cpf, String nome, String cargo,
+            double salário, EstadoCivil estadoCivil, char sexo, boolean ativo) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
         this.cargo = cargo;
         this.salário = salário;
         this.estadoCivil = estadoCivil;
-        this.gênero = gênero;
+        this.sexo = sexo;
         this.ativo = ativo;
     }
     public Funcionário() {
@@ -91,7 +59,7 @@ public class Funcionário {
     public String getNome() {
         return nome;
     }
-
+    
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -112,10 +80,6 @@ public class Funcionário {
         this.salário = salário;
     }
     
-    public String getNomeECPF() {
-        return "[" + this.getId() +  "] " + this.getNome() + " - " + this.getCPF();
-    }
-    
     public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
@@ -124,12 +88,12 @@ public class Funcionário {
         this.estadoCivil = estadoCivil;
     }
     
-    public Gênero getGênero() {
-        return gênero;
+    public char getSexo() {
+        return sexo;
     }
 
-    public void setGenero(Gênero gênero) {
-        this.gênero = gênero;
+    public void setSexo(char sexo) {
+        this.sexo = sexo;
     }
     
     public boolean getAtivo() {
@@ -139,154 +103,411 @@ public class Funcionário {
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    public void adicionarFuncionário(Funcionário funcionario) {
-        String sql = "INSERT INTO funcionarios (id, cpf, nome, cargo, salario, estadoCivil, genero, ativo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, funcionario.getId());
-            statement.setString(2, funcionario.getCPF());
-            statement.setString(3, funcionario.getNome());
-            statement.setString(4, funcionario.getCargo());
-            statement.setDouble(5, funcionario.getSalário());
-            statement.setString(6, funcionario.getEstadoCivil().toString());
-            statement.setString(7, funcionario.getGênero().toString());
-            statement.setBoolean(8, funcionario.getAtivo());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    
+    public String toStringFull() {
+        return "[" + this.id + "] - " + this.nome + "[" + this.cpf + "]" + " - " + "salario: " + this.salário +
+                estadoCivil + " - " + sexo + " - " + this.ativo;
     }
-    public void atualizarFuncionário(Funcionário funcionario) {
-        String sql = "UPDATE funcionarios SET cpf = ?, nome = ?, cargo = ?, salario = ?, estadoCivil = ?, genero = ?, ativo = ? WHERE id = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, funcionario.getCPF());
-            statement.setString(2, funcionario.getNome());
-            statement.setString(3, funcionario.getCargo());
-            statement.setDouble(4, funcionario.getSalário());
-            statement.setString(5, funcionario.getEstadoCivil().toString());
-            statement.setString(6, funcionario.getGênero().toString());
-            statement.setBoolean(7, funcionario.getAtivo());
-            statement.setInt(8, funcionario.getId());
-
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    
+    @Override
+    public String toString() {
+        return "[" + this.id + "] " + this.nome + " - CPF: " + this.cpf + "";
     }
-    public void removerFuncionário(int id) {
-        String sql = "DELETE FROM funcionarios WHERE id = ?";
+
+    public static int ultimoID() {
+        String sql = "SELECT MAX(id) FROM funcionarios";
+        ResultSet resultados = null;
+        int id = 0;
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                id = resultados.getInt(1);
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) { e.printStackTrace(); }
+        
+        return id;
+    }
+    private static boolean existeFuncionarioIdJaCadastrado(int id, String tabela) {
+        String sql = "SELECT COUNT(funcionarioId) FROM " + tabela + " WHERE funcionarioId = ?";
+        ResultSet resultados;
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, id);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                if(resultados.getInt(1) != 0) {
+                    return true;
+                }
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) { e.printStackTrace(); }
+        
+        return false;
+    }
+    public static String inserirFuncionario(Funcionário funcionario) {
+        String sql = "INSERT INTO funcionarios (id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo)" +
+                " VALUES (?,?,?,?,?,?,?,?)";
+        
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, funcionario.getId());
+            comando.setString(2, funcionario.getCPF());
+            comando.setString(3, funcionario.getNome());
+            comando.setString(4, funcionario.getCargo());
+            comando.setDouble(5, funcionario.getSalário());
+            comando.setInt(6, funcionario.getEstadoCivil().ordinal());
+            comando.setString(7, funcionario.getSexo() + "");
+            comando.setBoolean(8, funcionario.getAtivo());
+            comando.executeUpdate();
+            comando.close();
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+            return "Erro na inserção do Funcionario";
+        }
+        
+        int id = Funcionário.ultimoID();
+
+        if(funcionario instanceof Empregado) {
+            Empregado empregado = (Empregado) funcionario;
+            sql = "INSERT INTO empregados (departamento, avaliacaoDeDesempenho, funcionarioId) VALUES " +
+                    "(?,?,?)";
+            try{
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, empregado.getDepartamento());
+                comando.setInt(2, empregado.getAvaliacaoDeDesempenho());
+                comando.setInt(3, id);
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+                return "Erro na inserção do Empregado";
+            }
+        }
+        
+        else if(funcionario instanceof Estagiário) {
+            Estagiário estagiario = (Estagiário) funcionario;
+            sql = "INSERT INTO estagiarios (curso, cargaHoraria, funcionarioId) " +
+                    "VALUES (?,?,?)";
+            try{
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, estagiario.getCurso());
+                comando.setInt(2, estagiario.getCargaHoraria());
+                comando.setInt(3, id);
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+                return "Erro na inserção de Estagiário";
+            }
+        }
+        
+        else if(funcionario instanceof Terceirizado) {
+            Terceirizado terceirizado = (Terceirizado) funcionario;
+            sql = "INSERT INTO terceirizados (empresaContratada, duracaoContrato, funcionarioId) " +
+                    "VALUES (?,?,?)";
+            try{
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, terceirizado.getEmpresaContratada());
+                comando.setString(2, terceirizado.getDuracaoContrato());
+                comando.setInt(3, id);
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch (SQLException e){
+                e.printStackTrace();
+                return "Erro na inserção do Terceirizado";
+            }
+        }
+        
+        return null;
+    }
+    public static String alterarFuncionario(Funcionário funcionario) {
+        String sql = "UPDATE funcionarios SET cpf = ?, nome = ?, cargo = ?, salario = ?, estadoCivil = ?,"
+                + "sexo = ?, ativo = ? WHERE id = ?";
         
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setString(1, funcionario.getCPF());
+            comando.setString(2, funcionario.getNome());
+            comando.setString(3, funcionario.getCargo());
+            comando.setDouble(4, funcionario.getSalário());
+            comando.setInt(5, funcionario.getEstadoCivil().ordinal());
+            comando.setString(6, funcionario.getSexo() + "");
+            comando.setBoolean(7, funcionario.getAtivo());
+            comando.setInt(8, funcionario.getId());
+
+            comando.executeUpdate();
+            comando.close();
         }
-    }
-    
-    public Funcionário buscarFuncionárioPorId(int id) {
-        String sql = "SELECT * FROM funcionarios WHERE id = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, id);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String cpf = resultSet.getString("cpf");
-                String nome = resultSet.getString("nome");
-                String cargo = resultSet.getString("cargo");
-                double salário = resultSet.getDouble("salario");
-                EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
-                Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
-                boolean ativo = resultSet.getBoolean("ativo");
-                return new Funcionário(id, cpf, nome, cargo, salário, estadoCivil, gênero, ativo);
+        catch(SQLException e) {
+            e.printStackTrace();
+            return "Erro na alteração do Funcionario";
+        }
+        
+        if(funcionario instanceof Empregado) {
+            Empregado empregado = (Empregado) funcionario;
+            sql = "UPDATE empregados SET departamento = ?, avaliacaoDeDesempenho = ? WHERE " +
+                    "funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, empregado.getDepartamento());
+                comando.setInt(2, empregado.getAvaliacaoDeDesempenho());
+                comando.setInt(3, funcionario.getId());
+                comando.executeUpdate();
+                comando.close();
             }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na alteração do Empregado";
+            }
         }
-
+        
+        else if(funcionario instanceof Estagiário) {
+            Estagiário estagiario = (Estagiário) funcionario;
+            sql = "UPDATE estagiarios SET curso = ?, cargaHoraria = ? WHERE " +
+                    "funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, estagiario.getCurso());
+                comando.setInt(2, estagiario.getCargaHoraria());
+                comando.setInt(3, funcionario.getId());
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na alteração de Estagiario";
+            }
+        }
+        
+        else if(funcionario instanceof Terceirizado) {
+            Terceirizado terceirizado = (Terceirizado) funcionario;
+            sql = "UPDATE terceirizados SET empresaContratada = ?, duracaoContrato = ? WHERE " +
+                    "funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setString(1, terceirizado.getEmpresaContratada());
+                comando.setString(2, terceirizado.getDuracaoContrato());
+                comando.setInt(3, funcionario.getId());
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na alteração do estagiário";
+            }
+        }
+        
         return null;
     }
-    
-    public Funcionário buscarFuncionárioPorCpf(String cpf) {
-        String sql = "SELECT * FROM funcionarios WHERE cpf = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, cpf);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String nome = resultSet.getString("nome");
-                String cargo = resultSet.getString("cargo");
-                double salário = resultSet.getDouble("salario");
-                EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
-                Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
-                boolean ativo = resultSet.getBoolean("ativo");
-                return new Funcionário(id, cpf, nome, cargo, salário, estadoCivil, gênero, ativo);
+    public static String removerFuncionario(Funcionário funcionario) {
+        int id = funcionario.getId();
+        
+        if(funcionario instanceof Empregado) {
+            String sql = "DELETE FROM empregados WHERE funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setInt(1, id);
+                comando.executeUpdate();
+                comando.close();
             }
-            statement.close();
-        } catch (SQLException e) {
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na remoção do empregado";
+            }
+        }
+        
+        else if(funcionario instanceof Estagiário) {
+            String sql = "DELETE FROM estagiarios WHERE funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setInt(1, id);
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na remoção de estagiário";
+            }
+        }
+        
+        else if(funcionario instanceof Terceirizado) {
+            String sql = "DELETE FROM terceirizados WHERE funcionarioId = ?";
+            try {
+                PreparedStatement comando = DB.conexão.prepareStatement(sql);
+                comando.setInt(1, id);
+                comando.executeUpdate();
+                comando.close();
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+                return "Erro na remoção do terceirizado";
+            }
+        }
+        
+        String sql = "DELETE FROM funcionarios WHERE id = ?";
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, funcionario.getId());
+            comando.executeUpdate();
+            comando.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+            return "Erro na remoção do funcionário";
+        }
+        
+        return null;
+    }    
+    public static Funcionário[] getVisoes() {
+        String sql = "SELECT id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo FROM funcionarios";
+        ResultSet resultados = null;
+        ArrayList<Funcionário> visoes = new ArrayList<>();
+        
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                int id = resultados.getInt("id");
+                String cpf = resultados.getString("cpf");
+                String nome = resultados.getString("nome");
+                String cargo = resultados.getString("cargo");
+                double salario = resultados.getDouble("salario");
+                int estadoCivilOrdinal = resultados.getInt("estadoCivil");
+                EstadoCivil estadoCivil = Funcionário.EstadoCivil.values()[estadoCivilOrdinal];
+                char sexo = resultados.getString("sexo").charAt(0);
+                boolean ativo = resultados.getBoolean("ativo");
+                
+                if(existeFuncionarioIdJaCadastrado(id, "empregados")) {
+                    visoes.add(new Empregado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo));
+                }
+                else if(existeFuncionarioIdJaCadastrado(id, "estagiarios")) {
+                    visoes.add(new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo));
+                }
+                else {
+                    visoes.add(new Terceirizado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo));
+                }
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) {
             e.printStackTrace();
         }
-
-        return null;
+        
+        return visoes.toArray(new Funcionário[visoes.size()]);
     }
-
-    public boolean verificarCpfExistente(String cpf) {
+    public static boolean verificarCpfExistente(String cpf) {
         String sql = "SELECT COUNT(*) FROM funcionarios WHERE cpf = ?";
+        ResultSet result = null;
+        try (PreparedStatement comando = DB.conexão.prepareStatement(sql)) {
+            comando.setString(1, cpf);
+            result = comando.executeQuery();
 
-        try (PreparedStatement statement = DB.conexão.prepareStatement(sql)) {
-            statement.setString(1, cpf);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                int count = resultSet.getInt(1);
+            if (result.next()) {
+                int count = result.getInt(1);
                 return count > 0;
             }
 
-            resultSet.close();
+            result.close();
+            comando.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return false;
     }
-    
-    public List<Funcionário> listarFuncionários() {
-        List<Funcionário> funcionarios = new ArrayList<>();
-        String sql = "SELECT id, cpf, nome, cargo, salario, estadoCivil, genero, ativo FROM funcionarios";
-
-        try (PreparedStatement statement = DB.conexão.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String cpf = resultSet.getString("cpf");
-                String nome = resultSet.getString("nome");
-                String cargo = resultSet.getString("cargo");
-                double salario = resultSet.getDouble("salario");
-                EstadoCivil estadoCivil = EstadoCivil.valueOf(resultSet.getString("estadoCivil"));
-                Gênero gênero = Gênero.valueOf(resultSet.getString("genero"));
-                boolean ativo = resultSet.getBoolean("ativo");
-                Funcionário funcionario = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
-                funcionarios.add(funcionario);
+    public Funcionário getVisao() {
+        return new Funcionário(this.id, this.cpf, this.nome, this.cargo,
+                this.salário, this.estadoCivil, this.sexo, this.ativo);
+    }
+    public static Funcionário buscarFuncionario(int id) {
+        String sql = "SELECT (*) FROM funcionarios WHERE id = ?";
+        ResultSet resultados = null;
+        String cpf = null;
+        String nome = null;
+        String cargo = null;
+        double salario = 0.0;
+        EstadoCivil estadoCivil = Funcionário.EstadoCivil.values()[0];
+        char sexo = 'M';
+        boolean ativo = false;
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, id);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                cpf = resultados.getString("cpf");
+                nome = resultados.getString("nome");
+                cargo = resultados.getString("cargo");
+                salario = resultados.getDouble("salario");
+                int estadoCivilOrdinal = resultados.getInt("estadoCivil");
+                estadoCivil = Funcionário.EstadoCivil.values()[estadoCivilOrdinal];
+                sexo = resultados.getString("sexo").charAt(0);
+                ativo = resultados.getBoolean("ativo");
             }
-
-        } catch (SQLException e) {
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) {
             e.printStackTrace();
         }
-
-        return funcionarios;
+        sql = "SELECT departamento, avaliacaoDeDesempenho FROM empregados WHERE funcionarioId = ?";
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, id);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                return new Empregado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
+                resultados.getString("departamento"), resultados.getInt("avaliacaoDeDesempenho"));
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        sql = "SELECT curso, cargaHoraria FROM estagiarios WHERE funcionarioId = ?";
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, id);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                return new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo, 
+                resultados.getString("curso"), resultados.getInt("cargaHoraria"));
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        sql = "SELECT empresaContratada, duracaoContrato FROM terceirizados WHERE BemId = ?";
+        try{
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, id);
+            resultados = comando.executeQuery();
+            while(resultados.next()) {
+                return new Terceirizado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo, 
+                resultados.getString("empresaContratada"), resultados.getString("duracaoContrato"));
+            }
+            resultados.close();
+            comando.close();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }

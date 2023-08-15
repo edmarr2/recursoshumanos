@@ -4,10 +4,6 @@
  */
 package entidade;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import persistência.DB;
 /**
  *
  * @author edmar
@@ -15,19 +11,17 @@ import persistência.DB;
 public class Terceirizado extends Funcionário {
     private String empresaContratada;
     private String duracaoContrato;
-
-    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero gênero, boolean ativo, String empresaContratada, String duracaoContrato) {
-        super(id, cpf, nome, cargo, salario, estadoCivil, gênero, ativo);
+    
+    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, char sexo, boolean ativo) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo);
+    }
+    
+    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, char sexo, boolean ativo, String empresaContratada, String duracaoContrato) {
+        super(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo);
         this.empresaContratada = empresaContratada;
         this.duracaoContrato = duracaoContrato;
     }
-    public Terceirizado() {
-        DB.criaConexão();
-    }
 
-    public Terceirizado(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, String empresaContratada, String duracaoContrato) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
     public String getEmpresaContratada() {
         return empresaContratada;
     }
@@ -44,68 +38,93 @@ public class Terceirizado extends Funcionário {
         this.duracaoContrato = duracaoContrato;
     }
 
-    public void adicionarTerceirizado(Terceirizado terceirizado) {
-        String sql = "INSERT INTO terceirizados (funcionarioId, empresaContratada, duracaoContrato) VALUES (?, ?, ?)";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, terceirizado.getId());
-            statement.setString(2, terceirizado.getEmpresaContratada());
-            statement.setString(3, terceirizado.getDuracaoContrato());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public int getId() {
+        return super.getId();
+    }
+    
+    @Override
+    public String getCPF() {
+        return super.getCPF();
+    }
+   
+    @Override
+    public String getNome() {
+        return super.getNome();
+    }
+    @Override
+    public String getCargo() {
+        return super.getCargo();
+    }
+    
+    @Override
+    public double getSalário() {
+        return super.getSalário();
+    }
+    
+    @Override
+    public EstadoCivil getEstadoCivil() {
+        return super.getEstadoCivil();
+    }
+    
+    @Override
+    public boolean getAtivo() {
+        return super.getAtivo();
     }
 
-    public void removerTerceirizado(int funcionarioId) {
-        String sql = "DELETE FROM terceirizados WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, funcionarioId);
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public char getSexo() {
+        return super.getSexo();
     }
 
-    public void atualizarTerceirizado(Terceirizado terceirizado) {
-        String sql = "UPDATE terceirizados SET empresaContratada = ?, duracaoContrato = ? WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, terceirizado.getEmpresaContratada());
-            statement.setString(2, terceirizado.getDuracaoContrato());
-            statement.setInt(3, terceirizado.getId());
-            statement.executeUpdate();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public Empregado getVisao() {
+        return new Empregado(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
+                super.getSalário(), super.getEstadoCivil(), super.getSexo(), super.getAtivo());
+    }
+    
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+    }
+    
+    @Override
+    public void setCPF(String cpf) {
+        super.setCPF(cpf);
+    }
+    
+    @Override
+    public void setNome(String nome) {
+        super.setNome(nome);
+    }
+    
+    @Override
+    public void setCargo(String cargo) {
+        super.setCargo(cargo);
     }
 
-    public Terceirizado buscarTerceirizadoPorId(int funcionarioId) {
-        String sql = "SELECT * FROM terceirizados WHERE funcionarioId = ?";
-
-        try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setInt(1, funcionarioId);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                String empresaContratada = resultSet.getString("empresaContratada");
-                String duracaoContrato = resultSet.getString("duracaoContrato");
-
-                return new Terceirizado(funcionarioId, getCPF(), getNome(), getCargo(), getSalário(), getEstadoCivil(), getGênero(), getAtivo(),empresaContratada, duracaoContrato);
-            }
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    @Override
+    public void setSalario(double salario) {
+        super.setSalario(salario);
+    }    
+    
+    @Override
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
+        super.setEstadoCivil(estadoCivil);
+    } 
+    
+    @Override
+    public void setSexo(char sexo) {
+        super.setSexo(sexo);
+    } 
+    
+    @Override
+    public void setAtivo(boolean ativo) {
+        super.setAtivo(ativo);
+    }     
+    
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + super.toString();
     }
 }

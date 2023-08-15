@@ -4,47 +4,42 @@
  */
 package controle;
 import entidade.Funcionário;
-import entidade.Funcionário.EstadoCivil;
-import entidade.Funcionário.Gênero;
-import java.util.List;
+import interfaces.JanelaCadastroFuncionários;
+
 /**
  *
  * @author edmar
  */
 public class ControladorFuncionário {
-    private Funcionário funcionário;
-
     public ControladorFuncionário() {
-        this.funcionário = new Funcionário();
+        new JanelaCadastroFuncionários(this).setVisible(true);
     }
 
-    public void adicionarFuncionário(String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo) {
-        Funcionário newFuncionário = new Funcionário(0, cpf, nome, cargo, salario, estadoCivil, genero, ativo);
-        funcionário.adicionarFuncionário(newFuncionário);
+    public String inserirFuncionário(Funcionário funcionario) {
+        if(!Funcionário.verificarCpfExistente(funcionario.getCPF())) {
+            return Funcionário.inserirFuncionario(funcionario);
+        } else {
+            return "Já existe um funcionário cadastrado com esse cpf";
+        }
     }
 
-    public void atualizarFuncionario(int id, String cpf, String nome, String cargo, double salario, EstadoCivil estadoCivil, Gênero genero, boolean ativo) {
-        Funcionário newFuncionário = new Funcionário(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo);
-        funcionário.atualizarFuncionário(newFuncionário);
+    public String alterarFuncionario(Funcionário funcionario) {
+        Funcionário updateFuncionário = Funcionário.buscarFuncionario(funcionario.getId());
+        if(updateFuncionário != null) {
+            return Funcionário.alterarFuncionario(funcionario);
+        }
+        else {
+            return "Funcionário não cadastrado";
+        }
     }
 
-    public void removerFuncionário(int id) {
-        funcionário.removerFuncionário(id);
-    }
-
-    public Funcionário buscarFuncionárioPorId(int id) {
-        return funcionário.buscarFuncionárioPorId(id);
-    }
-    
-    public Funcionário buscarFuncionárioPorCpf(String cpf) {
-        return funcionário.buscarFuncionárioPorCpf(cpf);
-    }
-
-    public boolean verificarCpfExistente(String cpf) {
-        return funcionário.verificarCpfExistente(cpf);
-    }
-
-    public List<Funcionário> listarFuncionários() {
-        return funcionário.listarFuncionários();
+    public String removerFuncionário(Funcionário funcionario) {
+        Funcionário removedFuncionário = Funcionário.buscarFuncionario(funcionario.getId());
+        if(removedFuncionário != null) {
+            return Funcionário.removerFuncionario(funcionario);
+        }
+        else {
+            return "Funcionário não cadastrado";
+        }
     }
 }

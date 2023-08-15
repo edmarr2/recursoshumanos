@@ -20,7 +20,6 @@ public class Empresa {
     private String nome;
     private String endereco;
     
-    // Construtor
     public Empresa(String cnpj, String nome, String endereço) {
         this.cnpj = cnpj;
         this.nome = nome;
@@ -59,99 +58,113 @@ public class Empresa {
         return this.getNome() + " - " + this.getCNPJ();
     }
     
-    public void adicionarEmpresa(Empresa empresa) {
+    public String toStringFull() {
+        return this.nome + "[" + this.cnpj + "] - endereco: " + this.endereco;
+    }
+    
+    public static String inserirEmpresa(Empresa empresa) {
         String sql = "INSERT INTO empresas (cnpj, nome, endereco) VALUES (?, ?, ?)";
         
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, empresa.getCNPJ());
-            statement.setString(2, empresa.getNome());
-            statement.setString(3, empresa.getEndereco());
-            statement.executeUpdate();
-            statement.close();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setString(1, empresa.getCNPJ());
+            comando.setString(2, empresa.getNome());
+            comando.setString(3, empresa.getEndereco());
+            comando.executeUpdate();
+            comando.close();
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Erro na inserção de Empresa";
         }
     }
     
-    public void atualizarEmpresa(Empresa empresa) {
+    public static String alterarEmpresa(Empresa empresa) {
         String sql = "UPDATE empresas SET nome = ?, endereco = ? WHERE cnpj = ?";
         
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, empresa.getNome());
-            statement.setString(2, empresa.getEndereco());
-            statement.setString(3, empresa.getCNPJ());
-            statement.executeUpdate();
-            statement.close();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setString(1, empresa.getNome());
+            comando.setString(2, empresa.getEndereco());
+            comando.setString(3, empresa.getCNPJ());
+            comando.executeUpdate();
+            comando.close();
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Erro na Alteração de Empresa";
         }
     }
     
-    public void removerEmpresa(String cnpj) {
+    public static String removerEmpresa(String cnpj) {
         String sql = "DELETE FROM empresas WHERE cnpj = ?";
         
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, cnpj);
-            statement.executeUpdate();
-            statement.close();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setString(1, cnpj);
+            comando.executeUpdate();
+            comando.close();
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
+            return "Erro na Remoção da Empresa";
         }
     }
     
-    public Empresa buscarEmpresaPorCNPJ(String cnpj) {
+    public static Empresa buscarEmpresa(String cnpj) {
         String sql = "SELECT * FROM empresas WHERE cnpj = ?";
+        ResultSet resultados = null;
+        Empresa empresa = null;
         
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            statement.setString(1, cnpj);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setString(1, cnpj);
+            resultados = comando.executeQuery();
             
-            if(resultSet.next()){
-                String cnpjEmpresa = resultSet.getString("cnpj");
-                String nomeEmpresa = resultSet.getString("nome");
-                String emderecoEmpresa = resultSet.getString("endereco");
+            if(resultados.next()){
+                String cnpjEmpresa = resultados.getString("cnpj");
+                String nomeEmpresa = resultados.getString("nome");
+                String enderecoEmpresa = resultados.getString("endereco");
 
-                return new Empresa(cnpjEmpresa, nomeEmpresa, emderecoEmpresa);
+                empresa =  new Empresa(cnpjEmpresa, nomeEmpresa, enderecoEmpresa);
             }
-            statement.close();
+            comando.close();
         }catch(SQLException e) {
             e.printStackTrace();
+            empresa = null;
         }
         
-        return null;
+        return empresa;
     }
     
-    public List<Empresa> listarEmpresas() {
-        List<Empresa> listaEmpresas = new ArrayList<>();
-
+    public static Empresa[] getVisoes() {
+        ArrayList<Empresa> visoes = new ArrayList<>();
+        ResultSet resultados = null;
         String sql = "SELECT * FROM empresas";
 
         try {
-            PreparedStatement statement = DB.conexão.prepareStatement(sql);
-            ResultSet resultSet = statement.executeQuery();
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            resultados = comando.executeQuery();
 
-            while (resultSet.next()) {
-                String cnpj = resultSet.getString("cnpj");
-                String nome = resultSet.getString("nome");
-                String endereco = resultSet.getString("endereco");
-
-                Empresa empresa = new Empresa(cnpj, nome, endereco);
-                listaEmpresas.add(empresa);
+            while (resultados.next()) {
+                String cnpj = resultados.getString("cnpj");
+                String nome = resultados.getString("nome");
+                String endereco = resultados.getString("endereco");
+                visoes.add(new Empresa(cnpj, nome, endereco));
             }
 
-            resultSet.close();
-            statement.close();
+            resultados.close();
+            comando.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return listaEmpresas;
+        return visoes.toArray(new Empresa[visoes.size()]);
     }
     
+    public Empresa getVisao() {
+        return new Empresa(this.cnpj, this.nome, this.endereco);
+    }
     public boolean verificarCnpjExistente(String cnpj) {
         String sql = "SELECT COUNT(*) FROM empresas WHERE cnpj = ?";
 

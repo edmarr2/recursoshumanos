@@ -14,13 +14,13 @@ import javax.swing.JOptionPane;
  * @author edmar
  */
 public class JanelaCadastroEmpresas extends javax.swing.JFrame {
-    private ControladorEmpresa controlador;
+    ControladorEmpresa controlador;
 
     /**
      * Creates new form JanelaCadastroEmpresas
      */
-    public JanelaCadastroEmpresas() {
-        this.controlador = new ControladorEmpresa();
+    public JanelaCadastroEmpresas(ControladorEmpresa controlador) {
+        this.controlador = controlador;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.inicializarComboBoxEmpresa();

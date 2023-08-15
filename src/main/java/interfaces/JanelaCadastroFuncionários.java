@@ -3,9 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package interfaces;
-import controle.ControladorEmpregado;
-import controle.ControladorEstagiário;
-import controle.ControladorTerceirizado;
 import controle.ControladorFuncionário;
 import entidade.Funcionário;
 import java.util.List;
@@ -18,26 +15,14 @@ import javax.swing.JOptionPane;
  * @author edmar
  */
 public class JanelaCadastroFuncionários extends javax.swing.JFrame {
-    private ControladorEmpregado controladorEmpregado;
-    private ControladorEstagiário controladorEstagiário;
-    private ControladorTerceirizado controladorTerceirizado;
-    private ControladorFuncionário controladorFuncionário;
-    /**
-     * Creates new form JanelaRecursosHumanos
-     */
-    public JanelaCadastroFuncionários() {
-        controladorEmpregado = new ControladorEmpregado();
-        controladorEstagiário = new ControladorEstagiário();
-        controladorTerceirizado = new ControladorTerceirizado();
-        controladorFuncionário = new ControladorFuncionário();
+    ControladorFuncionário controladorFuncionário;
+ 
+    public JanelaCadastroFuncionários(ControladorFuncionário controlador) {
+        this.controladorFuncionário = controlador;
         
         initComponents();
         inicializarListaFuncionários();
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-    }
-
-    public JanelaCadastroFuncionários(ControladorFuncionário aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        limparTextos();
     }
 
     /**
@@ -594,7 +579,6 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
 
         Funcionário.EstadoCivil estadoCivil = null;
         ButtonModel selectedEstadoCivilButton = estadoCivilButtonGroup.getSelection();
-        System.out.println(selectedEstadoCivilButton);
         if (selectedEstadoCivilButton != null) {
             String selectedEstadoCivilStr = selectedEstadoCivilButton.getActionCommand();
             try {
