@@ -2,11 +2,9 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="generoButtonGroup">
+    <Component class="javax.swing.ButtonGroup" name="sexoButtonGroup">
     </Component>
     <Component class="javax.swing.ButtonGroup" name="estadoCivilButtonGroup">
-    </Component>
-    <Component class="javax.swing.ButtonGroup" name="pontua&#xe7;&#xe3;oButtonGroup">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -33,97 +31,76 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="listagemFuncionáriosLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="64" pref="64" max="-2" attributes="0"/>
+              <Component id="funcionáriosScrollPane" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="idFuncionárioLabel" min="-2" pref="69" max="-2" attributes="0"/>
+              <EmptySpace min="55" pref="55" max="-2" attributes="0"/>
+              <Component id="idFuncionárioTextField" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="cpfFuncionárioLabel" min="-2" pref="69" max="-2" attributes="0"/>
+              <EmptySpace min="55" pref="55" max="-2" attributes="0"/>
+              <Component id="cpfFuncionárioTextField" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="nomeFuncionárioLabel" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
+              <Component id="nomeFuncionárioTextField" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="cargoFuncionárioLabel" min="-2" pref="36" max="-2" attributes="0"/>
+              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
+              <Component id="cargoFuncionárioTextField" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="salárioFuncionárioLabel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
+              <Component id="salárioFuncionárioTextField" min="-2" pref="383" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="subclassesTabbedPane" min="-2" pref="507" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
+              <Component id="cadastrarFuncionárioButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="31" pref="31" max="-2" attributes="0"/>
+              <Component id="buscarFuncionárioButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
+              <Component id="atualizarFuncionárioButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
+              <Component id="removerFuncionárioButton" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
+              <Component id="limparCamposButton" min="-2" pref="103" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="listagemFuncionáriosLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="64" pref="64" max="-2" attributes="0"/>
-                              <Component id="funcionáriosScrollPane" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="nomeFuncionárioLabel" min="-2" pref="36" max="-2" attributes="0"/>
-                              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
-                              <Component id="nomeFuncionárioTextField" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="cargoFuncionárioLabel" min="-2" pref="36" max="-2" attributes="0"/>
-                              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
-                              <Component id="cargoFuncionárioTextField" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="salárioFuncionárioLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="88" pref="88" max="-2" attributes="0"/>
-                              <Component id="salárioFuncionárioTextField" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="generoFuncionárioLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="253" pref="253" max="-2" attributes="0"/>
-                              <Component id="ativoFuncionárioLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="masculinoRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                              <Component id="femininoRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="156" pref="156" max="-2" attributes="0"/>
-                              <Component id="ativoCheckBox" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="estadoCivilFuncionárioLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="solteiroRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                              <Component id="casadoRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                              <Component id="divorciadoRadioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="viúvoRadioButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="subclassesTabbedPane" min="-2" pref="509" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                              <Component id="cadastrarFuncionárioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="31" pref="31" max="-2" attributes="0"/>
-                              <Component id="buscarFuncionárioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
-                              <Component id="atualizarFuncionárioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="28" pref="28" max="-2" attributes="0"/>
-                              <Component id="removerFuncionárioButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="24" pref="24" max="-2" attributes="0"/>
-                              <Component id="limparCamposButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="sexoFuncionárioLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <Component id="sexoPanel" min="-2" pref="203" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace min="10" pref="10" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="cpfFuncionárioLabel" min="-2" pref="69" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="cpfFuncionárioTextField" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="idFuncionárioLabel" min="-2" pref="69" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
-                              <Component id="idFuncionárioTextField" min="-2" pref="385" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="estadoCivilLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                      <Component id="estado_civilPanel" min="-2" pref="323" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="ativoFuncionárioLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="ativoCheckBox" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -133,25 +110,22 @@
               <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="listagemFuncionáriosLabel" min="-2" pref="95" max="-2" attributes="0"/>
-                  <Component id="funcionáriosScrollPane" min="-2" pref="109" max="-2" attributes="0"/>
+                  <Component id="funcionáriosScrollPane" min="-2" pref="95" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="idFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                  <Component id="idFuncionárioTextField" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="cpfFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="idFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="idFuncionárioTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="cpfFuncionárioTextField" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="cpfFuncionárioLabel" alignment="3" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="cpfFuncionárioTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="11" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="nomeFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="nomeFuncionárioTextField" min="-2" max="-2" attributes="0"/>
@@ -166,29 +140,37 @@
                   <Component id="salárioFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
                   <Component id="salárioFuncionárioTextField" min="-2" max="-2" attributes="0"/>
               </Group>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
+                      <Component id="ativoFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
+                      <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
+                      <Component id="ativoCheckBox" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="sexoPanel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                              <Component id="sexoFuncionárioLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="9" pref="9" max="-2" attributes="0"/>
+                              <Component id="estadoCivilLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="estado_civilPanel" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+              <Component id="subclassesTabbedPane" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="generoFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
-                  <Component id="ativoFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="masculinoRadioButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="femininoRadioButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="ativoCheckBox" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-              <Component id="estadoCivilFuncionárioLabel" min="-2" pref="25" max="-2" attributes="0"/>
-              <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="solteiroRadioButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="casadoRadioButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="divorciadoRadioButton" min="-2" max="-2" attributes="0"/>
-                  <Component id="viúvoRadioButton" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
-              <Component id="subclassesTabbedPane" min="-2" pref="133" max="-2" attributes="0"/>
-              <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="cadastrarFuncionárioButton" min="-2" max="-2" attributes="0"/>
                   <Component id="buscarFuncionárioButton" min="-2" max="-2" attributes="0"/>
@@ -292,21 +274,15 @@
       <SubComponents>
         <Component class="javax.swing.JList" name="funcion&#xe1;riosCadastradosList">
           <Properties>
-            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-                <StringItem index="4" value="Item 5"/>
-              </StringArray>
+            <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new DefaultListModel()" type="code"/>
             </Property>
           </Properties>
           <Events>
             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="funcion&#xe1;riosCadastradosListValueChanged"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value=""/>
           </AuxValues>
         </Component>
       </SubComponents>
@@ -316,88 +292,6 @@
         <Property name="text" type="java.lang.String" value="Funcion&#xe1;rios"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="masculinoRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="generoButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="77"/>
-        <Property name="text" type="java.lang.String" value="Masculino"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="masculinoRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="generoFuncion&#xe1;rioLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="G&#xea;nero:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="femininoRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="generoButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="70"/>
-        <Property name="text" type="java.lang.String" value="Feminino"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="femininoRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="estadoCivilFuncion&#xe1;rioLabel">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Estado Civil:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="solteiroRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="estadoCivilButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="48"/>
-        <Property name="text" type="java.lang.String" value="Solteiro"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="solteiroRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="casadoRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="estadoCivilButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="49"/>
-        <Property name="text" type="java.lang.String" value="Casado"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="casadoRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="divorciadoRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="estadoCivilButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="50"/>
-        <Property name="text" type="java.lang.String" value="Divorciado"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="divorciadoRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JRadioButton" name="vi&#xfa;voRadioButton">
-      <Properties>
-        <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-          <ComponentRef name="estadoCivilButtonGroup"/>
-        </Property>
-        <Property name="mnemonic" type="int" value="51"/>
-        <Property name="text" type="java.lang.String" value="Vi&#xfa;vo"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="vi&#xfa;voRadioButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JLabel" name="ativoFuncion&#xe1;rioLabel">
       <Properties>
         <Property name="text" type="java.lang.String" value="Situa&#xe7;&#xe3;o:"/>
@@ -405,7 +299,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="ativoCheckBox">
       <Properties>
-        <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Ativo"/>
       </Properties>
       <Events>
@@ -413,251 +306,13 @@
       </Events>
     </Component>
     <Container class="javax.swing.JTabbedPane" name="subclassesTabbedPane">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[600, 200]"/>
+        </Property>
+      </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
-      <SubComponents>
-        <Container class="javax.swing.JPanel" name="empregadoPanel">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Empregado">
-                <Property name="tabTitle" type="java.lang.String" value="Empregado"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="avaliaçãoDesempenhoLabel" min="-2" max="-2" attributes="0"/>
-                          <Component id="departamentoTextField" alignment="0" min="-2" pref="190" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace min="0" pref="314" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="umPontoRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="doisPontoRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tresPontosRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="quatroPontoRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cincoPontosRadioButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="departamentoTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-                      <Component id="avaliaçãoDesempenhoLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="umPontoRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="doisPontoRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="tresPontosRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="quatroPontoRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="cincoPontosRadioButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JLabel" name="jLabel1">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Departamento:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="avalia&#xe7;&#xe3;oDesempenhoLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Avalia&#xe7;&#xe3;o de desempenho:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="departamentoTextField">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="departamentoTextFieldActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="umPontoRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="pontua&#xe7;&#xe3;oButtonGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="1"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="umPontoRadioButtonActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="doisPontoRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="pontua&#xe7;&#xe3;oButtonGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="2"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="tresPontosRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="pontua&#xe7;&#xe3;oButtonGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="3"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tresPontosRadioButtonActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="quatroPontoRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="pontua&#xe7;&#xe3;oButtonGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="4"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JRadioButton" name="cincoPontosRadioButton">
-              <Properties>
-                <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
-                  <ComponentRef name="pontua&#xe7;&#xe3;oButtonGroup"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="5"/>
-              </Properties>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="estagi&#xe1;rioPanel">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Estagi&#xe1;rio">
-                <Property name="tabTitle" type="java.lang.String" value="Estagi&#xe1;rio"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cursoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cargaHorariaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="cursoTextField" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                          <Component id="cargaHorariaTextField" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cursoLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                      <Component id="cursoTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="cargaHorariaLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cargaHorariaTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JLabel" name="cursoLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Curso:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="cargaHorariaLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Carga Horaria:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="cursoTextField">
-            </Component>
-            <Component class="javax.swing.JTextField" name="cargaHorariaTextField">
-              <Events>
-                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cargaHorariaTextFieldKeyTyped"/>
-              </Events>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="terceirizadoPanel">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Terceirizado">
-                <Property name="tabTitle" type="java.lang.String" value="Terceirizado"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="empresaContratadaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="duraçãoContratoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="empresaContratadaTextField" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                          <Component id="duracaoContratoTextField" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="empresaContratadaLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                      <Component id="empresaContratadaTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="duraçãoContratoLabel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="duracaoContratoTextField" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
-          </Layout>
-          <SubComponents>
-            <Component class="javax.swing.JTextField" name="empresaContratadaTextField">
-            </Component>
-            <Component class="javax.swing.JLabel" name="empresaContratadaLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Empresa Contratada:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="dura&#xe7;&#xe3;oContratoLabel">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Dura&#xe7;&#xe3;o do Contrato:"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JTextField" name="duracaoContratoTextField">
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="duracaoContratoTextFieldActionPerformed"/>
-              </Events>
-            </Component>
-          </SubComponents>
-        </Container>
-      </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="cpfFuncion&#xe1;rioLabel">
       <Properties>
@@ -672,5 +327,93 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="idFuncion&#xe1;rioTextFieldActionPerformed"/>
       </Events>
     </Component>
+    <Container class="javax.swing.JPanel" name="sexoPanel">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[151, 33]"/>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JRadioButton" name="masculinoRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="sexoButtonGroup"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="77"/>
+            <Property name="text" type="java.lang.String" value="Masculino"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="femininoRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="sexoButtonGroup"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="70"/>
+            <Property name="text" type="java.lang.String" value="Feminino"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="sexoFuncion&#xe1;rioLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sexo"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="estadoCivilLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Estado Civil"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JPanel" name="estado_civilPanel">
+      <Properties>
+        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+          <Dimension value="[271, 33]"/>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JRadioButton" name="solteiroRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="estadoCivilButtonGroup"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Solteiro"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="casadoRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="estadoCivilButtonGroup"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="1"/>
+            <Property name="text" type="java.lang.String" value="Casado"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="casadoRadioButtonActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="divorciadoRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="estadoCivilButtonGroup"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="Divorciado"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JRadioButton" name="viuvoRadioButton">
+          <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="estadoCivilButtonGroup"/>
+            </Property>
+            <Property name="mnemonic" type="int" value="3"/>
+            <Property name="text" type="java.lang.String" value="Viuvo"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
   </SubComponents>
 </Form>

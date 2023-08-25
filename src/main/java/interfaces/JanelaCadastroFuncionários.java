@@ -4,9 +4,11 @@
  */
 package interfaces;
 import controle.ControladorFuncionário;
+import entidade.Empregado;
+import entidade.Estagiário;
 import entidade.Funcionário;
-import java.util.List;
-import javax.swing.ButtonModel;
+import entidade.Funcionário.EstadoCivil;
+import entidade.Terceirizado;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -15,16 +17,128 @@ import javax.swing.JOptionPane;
  * @author edmar
  */
 public class JanelaCadastroFuncionários extends javax.swing.JFrame {
-    ControladorFuncionário controladorFuncionário;
- 
+    ControladorFuncionário controlador;
+    private DefaultListModel<Funcionário> listaFuncionarios;
+    PainelEmpregado painelEmpregado;
+    PainelEstagiário painelEstagiario;
+    PainelTerceirizado painelTerceirizado;
     public JanelaCadastroFuncionários(ControladorFuncionário controlador) {
-        this.controladorFuncionário = controlador;
-        
+        this.controlador = controlador;
         initComponents();
         inicializarListaFuncionários();
+        painelEmpregado = new PainelEmpregado();
+        painelEstagiario = new PainelEstagiário();
+        painelTerceirizado = new PainelTerceirizado();
+        subclassesTabbedPane.addTab("Empregado", painelEmpregado);
+        subclassesTabbedPane.addTab("Estagiário", painelEstagiario);
+        subclassesTabbedPane.addTab("Terceirizado", painelTerceirizado);
         limparTextos();
     }
+    private void inicializarListaFuncionários() {
+        listaFuncionarios = new DefaultListModel<>();
+        Funcionário[] visoes = Funcionário.getVisoes();
+        for (Funcionário visao : visoes) {
+            listaFuncionarios.addElement(visao);
+        }
 
+        funcionáriosCadastradosList.setModel(listaFuncionarios);
+    }
+    private Funcionário obterFuncionario() {
+        Funcionário funcionario = null;
+        
+        String idStr = idFuncionárioTextField.getText();
+        int id = 0;
+        String cpf = cpfFuncionárioTextField.getText();
+        String nome = nomeFuncionárioTextField.getText();
+        String cargo = cargoFuncionárioTextField.getText();
+        String salarioStr = salárioFuncionárioTextField.getText();
+        char sexo;
+        double salario = 0.0;
+        boolean ativo = false;
+        EstadoCivil estadoCivil;
+        if(cpf.isEmpty() || nome.isEmpty() || cargo.isEmpty() || salarioStr.isEmpty()) {
+            return null;
+        }
+        salario = Double.parseDouble(salarioStr);
+        if(!idStr.isEmpty()) {
+            id = Integer.parseInt(idStr);
+        }
+        if(sexoButtonGroup.getSelection() != null) {
+            sexo = (char) sexoButtonGroup.getSelection().getMnemonic();
+        }
+        else {return null;}
+        if(estadoCivilButtonGroup.getSelection() != null) {
+            estadoCivil = EstadoCivil.values()[estadoCivilButtonGroup.getSelection().getMnemonic()];
+        } else {return null;}
+        ativo = ativoCheckBox.isSelected();
+        int indice_aba_selecionada = subclassesTabbedPane.getSelectedIndex();
+        switch(indice_aba_selecionada) {
+            case 0:
+                String departamento = painelEmpregado.getDepartamento();
+                int avaliacao = painelEmpregado.getAvaliacao();
+                funcionario = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
+                departamento, avaliacao);
+                break;
+            case 1:
+                String curso = painelEstagiario.getCurso();
+                int cargaHoraria = painelEstagiario.getCargaHoraria();
+                funcionario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
+                curso, cargaHoraria);
+                break;
+            case 2:
+                String empresaContratada = painelTerceirizado.getEmpresaContratada();
+                String duracaoContrato = painelTerceirizado.getDuracaoContrato();
+                funcionario = new Terceirizado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
+                empresaContratada, duracaoContrato);
+                break;
+        }
+        
+        return funcionario;
+    }
+    private void limparTextos(){
+        idFuncionárioTextField.setText("");
+        nomeFuncionárioTextField.setText("");
+        cargoFuncionárioTextField.setText("");
+        salárioFuncionárioTextField.setText("");
+        cpfFuncionárioTextField.setText("");
+
+        sexoButtonGroup.clearSelection();
+        estadoCivilButtonGroup.clearSelection();
+        ativoCheckBox.setSelected(false);
+        painelEmpregado.limparTexto();
+        painelEstagiario.limparTexto();
+        painelTerceirizado.limparTexto();
+    }
+
+    private void informarErro(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
+    private void selecionarSexoRadioButton(char sexo) {
+        switch(sexo) {
+            case 'M': 
+                masculinoRadioButton.setSelected(true);
+                break;
+            case 'F':
+                femininoRadioButton.setSelected(true);
+                break;
+        }
+    }
+    private void selecionarEstadoCivilRadioButton(int estadoCivil) {
+        switch(estadoCivil) {
+            case 0:
+                solteiroRadioButton.setSelected(true);
+                break;
+            case 1:
+                casadoRadioButton.setSelected(true);
+                break;
+            case 2:
+                divorciadoRadioButton.setSelected(true);
+                break;
+            case 3:
+                viuvoRadioButton.setSelected(true);
+                break;
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,9 +148,8 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        generoButtonGroup = new javax.swing.ButtonGroup();
+        sexoButtonGroup = new javax.swing.ButtonGroup();
         estadoCivilButtonGroup = new javax.swing.ButtonGroup();
-        pontuaçãoButtonGroup = new javax.swing.ButtonGroup();
         nomeFuncionárioLabel = new javax.swing.JLabel();
         cargoFuncionárioLabel = new javax.swing.JLabel();
         salárioFuncionárioLabel = new javax.swing.JLabel();
@@ -51,40 +164,23 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         idFuncionárioLabel = new javax.swing.JLabel();
         cpfFuncionárioTextField = new javax.swing.JTextField();
         funcionáriosScrollPane = new javax.swing.JScrollPane();
-        funcionáriosCadastradosList = new javax.swing.JList<>();
+        funcionáriosCadastradosList = new javax.swing.JList();
         listagemFuncionáriosLabel = new javax.swing.JLabel();
-        masculinoRadioButton = new javax.swing.JRadioButton();
-        generoFuncionárioLabel = new javax.swing.JLabel();
-        femininoRadioButton = new javax.swing.JRadioButton();
-        estadoCivilFuncionárioLabel = new javax.swing.JLabel();
-        solteiroRadioButton = new javax.swing.JRadioButton();
-        casadoRadioButton = new javax.swing.JRadioButton();
-        divorciadoRadioButton = new javax.swing.JRadioButton();
-        viúvoRadioButton = new javax.swing.JRadioButton();
         ativoFuncionárioLabel = new javax.swing.JLabel();
         ativoCheckBox = new javax.swing.JCheckBox();
         subclassesTabbedPane = new javax.swing.JTabbedPane();
-        empregadoPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        avaliaçãoDesempenhoLabel = new javax.swing.JLabel();
-        departamentoTextField = new javax.swing.JTextField();
-        umPontoRadioButton = new javax.swing.JRadioButton();
-        doisPontoRadioButton = new javax.swing.JRadioButton();
-        tresPontosRadioButton = new javax.swing.JRadioButton();
-        quatroPontoRadioButton = new javax.swing.JRadioButton();
-        cincoPontosRadioButton = new javax.swing.JRadioButton();
-        estagiárioPanel = new javax.swing.JPanel();
-        cursoLabel = new javax.swing.JLabel();
-        cargaHorariaLabel = new javax.swing.JLabel();
-        cursoTextField = new javax.swing.JTextField();
-        cargaHorariaTextField = new javax.swing.JTextField();
-        terceirizadoPanel = new javax.swing.JPanel();
-        empresaContratadaTextField = new javax.swing.JTextField();
-        empresaContratadaLabel = new javax.swing.JLabel();
-        duraçãoContratoLabel = new javax.swing.JLabel();
-        duracaoContratoTextField = new javax.swing.JTextField();
         cpfFuncionárioLabel = new javax.swing.JLabel();
         idFuncionárioTextField = new javax.swing.JTextField();
+        sexoPanel = new javax.swing.JPanel();
+        masculinoRadioButton = new javax.swing.JRadioButton();
+        femininoRadioButton = new javax.swing.JRadioButton();
+        sexoFuncionárioLabel = new javax.swing.JLabel();
+        estadoCivilLabel = new javax.swing.JLabel();
+        estado_civilPanel = new javax.swing.JPanel();
+        solteiroRadioButton = new javax.swing.JRadioButton();
+        casadoRadioButton = new javax.swing.JRadioButton();
+        divorciadoRadioButton = new javax.swing.JRadioButton();
+        viuvoRadioButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Cadastro Funcionários");
@@ -162,11 +258,7 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
             }
         });
 
-        funcionáriosCadastradosList.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        funcionáriosCadastradosList.setModel(new DefaultListModel());
         funcionáriosCadastradosList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 funcionáriosCadastradosListValueChanged(evt);
@@ -176,67 +268,8 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
 
         listagemFuncionáriosLabel.setText("Funcionários");
 
-        generoButtonGroup.add(masculinoRadioButton);
-        masculinoRadioButton.setMnemonic('M');
-        masculinoRadioButton.setText("Masculino");
-        masculinoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                masculinoRadioButtonActionPerformed(evt);
-            }
-        });
-
-        generoFuncionárioLabel.setText("Gênero:");
-
-        generoButtonGroup.add(femininoRadioButton);
-        femininoRadioButton.setMnemonic('F');
-        femininoRadioButton.setText("Feminino");
-        femininoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                femininoRadioButtonActionPerformed(evt);
-            }
-        });
-
-        estadoCivilFuncionárioLabel.setText("Estado Civil:");
-
-        estadoCivilButtonGroup.add(solteiroRadioButton);
-        solteiroRadioButton.setMnemonic('0');
-        solteiroRadioButton.setText("Solteiro");
-        solteiroRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                solteiroRadioButtonActionPerformed(evt);
-            }
-        });
-
-        estadoCivilButtonGroup.add(casadoRadioButton);
-        casadoRadioButton.setMnemonic('1');
-        casadoRadioButton.setText("Casado");
-        casadoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                casadoRadioButtonActionPerformed(evt);
-            }
-        });
-
-        estadoCivilButtonGroup.add(divorciadoRadioButton);
-        divorciadoRadioButton.setMnemonic('2');
-        divorciadoRadioButton.setText("Divorciado");
-        divorciadoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                divorciadoRadioButtonActionPerformed(evt);
-            }
-        });
-
-        estadoCivilButtonGroup.add(viúvoRadioButton);
-        viúvoRadioButton.setMnemonic('3');
-        viúvoRadioButton.setText("Viúvo");
-        viúvoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                viúvoRadioButtonActionPerformed(evt);
-            }
-        });
-
         ativoFuncionárioLabel.setText("Situação:");
 
-        ativoCheckBox.setSelected(true);
         ativoCheckBox.setText("Ativo");
         ativoCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -244,162 +277,7 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Departamento:");
-
-        avaliaçãoDesempenhoLabel.setText("Avaliação de desempenho:");
-
-        departamentoTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                departamentoTextFieldActionPerformed(evt);
-            }
-        });
-
-        pontuaçãoButtonGroup.add(umPontoRadioButton);
-        umPontoRadioButton.setText("1");
-        umPontoRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                umPontoRadioButtonActionPerformed(evt);
-            }
-        });
-
-        pontuaçãoButtonGroup.add(doisPontoRadioButton);
-        doisPontoRadioButton.setText("2");
-
-        pontuaçãoButtonGroup.add(tresPontosRadioButton);
-        tresPontosRadioButton.setText("3");
-        tresPontosRadioButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tresPontosRadioButtonActionPerformed(evt);
-            }
-        });
-
-        pontuaçãoButtonGroup.add(quatroPontoRadioButton);
-        quatroPontoRadioButton.setText("4");
-
-        pontuaçãoButtonGroup.add(cincoPontosRadioButton);
-        cincoPontosRadioButton.setText("5");
-
-        javax.swing.GroupLayout empregadoPanelLayout = new javax.swing.GroupLayout(empregadoPanel);
-        empregadoPanel.setLayout(empregadoPanelLayout);
-        empregadoPanelLayout.setHorizontalGroup(
-            empregadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(empregadoPanelLayout.createSequentialGroup()
-                .addGroup(empregadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(avaliaçãoDesempenhoLabel)
-                    .addComponent(departamentoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 314, Short.MAX_VALUE))
-            .addGroup(empregadoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(umPontoRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(doisPontoRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tresPontosRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(quatroPontoRadioButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cincoPontosRadioButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        empregadoPanelLayout.setVerticalGroup(
-            empregadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(empregadoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(departamentoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(avaliaçãoDesempenhoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(empregadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(umPontoRadioButton)
-                    .addComponent(doisPontoRadioButton)
-                    .addComponent(tresPontosRadioButton)
-                    .addComponent(quatroPontoRadioButton)
-                    .addComponent(cincoPontosRadioButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        subclassesTabbedPane.addTab("Empregado", empregadoPanel);
-
-        cursoLabel.setText("Curso:");
-
-        cargaHorariaLabel.setText("Carga Horaria:");
-
-        cargaHorariaTextField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                cargaHorariaTextFieldKeyTyped(evt);
-            }
-        });
-
-        javax.swing.GroupLayout estagiárioPanelLayout = new javax.swing.GroupLayout(estagiárioPanel);
-        estagiárioPanel.setLayout(estagiárioPanelLayout);
-        estagiárioPanelLayout.setHorizontalGroup(
-            estagiárioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(estagiárioPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(estagiárioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cursoLabel)
-                    .addComponent(cargaHorariaLabel)
-                    .addComponent(cursoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cargaHorariaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        estagiárioPanelLayout.setVerticalGroup(
-            estagiárioPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(estagiárioPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cursoLabel)
-                .addGap(7, 7, 7)
-                .addComponent(cursoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cargaHorariaLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cargaHorariaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        subclassesTabbedPane.addTab("Estagiário", estagiárioPanel);
-
-        empresaContratadaLabel.setText("Empresa Contratada:");
-
-        duraçãoContratoLabel.setText("Duração do Contrato:");
-
-        duracaoContratoTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                duracaoContratoTextFieldActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout terceirizadoPanelLayout = new javax.swing.GroupLayout(terceirizadoPanel);
-        terceirizadoPanel.setLayout(terceirizadoPanelLayout);
-        terceirizadoPanelLayout.setHorizontalGroup(
-            terceirizadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(terceirizadoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(terceirizadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(empresaContratadaLabel)
-                    .addComponent(duraçãoContratoLabel)
-                    .addComponent(empresaContratadaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(duracaoContratoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        terceirizadoPanelLayout.setVerticalGroup(
-            terceirizadoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(terceirizadoPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(empresaContratadaLabel)
-                .addGap(7, 7, 7)
-                .addComponent(empresaContratadaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(duraçãoContratoLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(duracaoContratoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        subclassesTabbedPane.addTab("Terceirizado", terceirizadoPanel);
+        subclassesTabbedPane.setPreferredSize(new java.awt.Dimension(600, 200));
 
         cpfFuncionárioLabel.setText("CPF:");
 
@@ -410,85 +288,111 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
             }
         });
 
+        sexoPanel.setPreferredSize(new java.awt.Dimension(151, 33));
+
+        sexoButtonGroup.add(masculinoRadioButton);
+        masculinoRadioButton.setMnemonic('M');
+        masculinoRadioButton.setText("Masculino");
+        sexoPanel.add(masculinoRadioButton);
+
+        sexoButtonGroup.add(femininoRadioButton);
+        femininoRadioButton.setMnemonic('F');
+        femininoRadioButton.setText("Feminino");
+        sexoPanel.add(femininoRadioButton);
+
+        sexoFuncionárioLabel.setText("Sexo");
+
+        estadoCivilLabel.setText("Estado Civil");
+
+        estado_civilPanel.setPreferredSize(new java.awt.Dimension(271, 33));
+
+        estadoCivilButtonGroup.add(solteiroRadioButton);
+        solteiroRadioButton.setText("Solteiro");
+        estado_civilPanel.add(solteiroRadioButton);
+
+        estadoCivilButtonGroup.add(casadoRadioButton);
+        casadoRadioButton.setMnemonic('\u0001');
+        casadoRadioButton.setText("Casado");
+        casadoRadioButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                casadoRadioButtonActionPerformed(evt);
+            }
+        });
+        estado_civilPanel.add(casadoRadioButton);
+
+        estadoCivilButtonGroup.add(divorciadoRadioButton);
+        divorciadoRadioButton.setMnemonic('\u0002');
+        divorciadoRadioButton.setText("Divorciado");
+        estado_civilPanel.add(divorciadoRadioButton);
+
+        estadoCivilButtonGroup.add(viuvoRadioButton);
+        viuvoRadioButton.setMnemonic('\u0003');
+        viuvoRadioButton.setText("Viuvo");
+        estado_civilPanel.add(viuvoRadioButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(listagemFuncionáriosLabel)
+                .addGap(64, 64, 64)
+                .addComponent(funcionáriosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(idFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(idFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(cpfFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(55, 55, 55)
+                .addComponent(cpfFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(nomeFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88)
+                .addComponent(nomeFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(cargoFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88)
+                .addComponent(cargoFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(salárioFuncionárioLabel)
+                .addGap(88, 88, 88)
+                .addComponent(salárioFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 383, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(subclassesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(cadastrarFuncionárioButton)
+                .addGap(31, 31, 31)
+                .addComponent(buscarFuncionárioButton)
+                .addGap(29, 29, 29)
+                .addComponent(atualizarFuncionárioButton)
+                .addGap(28, 28, 28)
+                .addComponent(removerFuncionárioButton)
+                .addGap(24, 24, 24)
+                .addComponent(limparCamposButton, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(listagemFuncionáriosLabel)
-                                .addGap(64, 64, 64)
-                                .addComponent(funcionáriosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(nomeFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(88, 88, 88)
-                                .addComponent(nomeFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(cargoFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(88, 88, 88)
-                                .addComponent(cargoFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(salárioFuncionárioLabel)
-                                .addGap(88, 88, 88)
-                                .addComponent(salárioFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(generoFuncionárioLabel)
-                                .addGap(253, 253, 253)
-                                .addComponent(ativoFuncionárioLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(masculinoRadioButton)
-                                .addGap(2, 2, 2)
-                                .addComponent(femininoRadioButton)
-                                .addGap(156, 156, 156)
-                                .addComponent(ativoCheckBox))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(estadoCivilFuncionárioLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(solteiroRadioButton)
-                                .addGap(0, 0, 0)
-                                .addComponent(casadoRadioButton)
-                                .addGap(0, 0, 0)
-                                .addComponent(divorciadoRadioButton)
-                                .addGap(6, 6, 6)
-                                .addComponent(viúvoRadioButton))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(subclassesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(cadastrarFuncionárioButton)
-                                .addGap(31, 31, 31)
-                                .addComponent(buscarFuncionárioButton)
-                                .addGap(29, 29, 29)
-                                .addComponent(atualizarFuncionárioButton)
-                                .addGap(28, 28, 28)
-                                .addComponent(removerFuncionárioButton)
-                                .addGap(24, 24, 24)
-                                .addComponent(limparCamposButton)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(sexoFuncionárioLabel)
+                        .addGap(43, 43, 43)
+                        .addComponent(sexoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cpfFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(cpfFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(idFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(idFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 385, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
+                        .addComponent(estadoCivilLabel)
+                        .addGap(12, 12, 12)
+                        .addComponent(estado_civilPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ativoFuncionárioLabel)
+                    .addComponent(ativoCheckBox)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -496,20 +400,18 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(listagemFuncionáriosLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(funcionáriosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(funcionáriosScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(idFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(idFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(idFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cpfFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cpfFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(cpfFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nomeFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nomeFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -521,26 +423,29 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(salárioFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(salárioFuncionárioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(ativoFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(2, 2, 2)
+                        .addComponent(ativoCheckBox))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(sexoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(26, 26, 26)
+                                .addComponent(sexoFuncionárioLabel)))
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(estadoCivilLabel))
+                            .addComponent(estado_civilPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(19, 19, 19)
+                .addComponent(subclassesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(generoFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(ativoFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(masculinoRadioButton)
-                    .addComponent(femininoRadioButton)
-                    .addComponent(ativoCheckBox))
-                .addGap(2, 2, 2)
-                .addComponent(estadoCivilFuncionárioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(solteiroRadioButton)
-                    .addComponent(casadoRadioButton)
-                    .addComponent(divorciadoRadioButton)
-                    .addComponent(viúvoRadioButton))
-                .addGap(18, 18, 18)
-                .addComponent(subclassesTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cadastrarFuncionárioButton)
                     .addComponent(buscarFuncionárioButton)
@@ -565,117 +470,62 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     }//GEN-LAST:event_salárioFuncionárioTextFieldActionPerformed
 
     private void cadastrarFuncionárioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarFuncionárioButtonActionPerformed
-        String cpf = cpfFuncionárioTextField.getText().trim();
-        String nome = nomeFuncionárioTextField.getText().trim();
-        String cargo = cargoFuncionárioTextField.getText().trim();
-        double salario = 0.0;
-
-        try {
-            salario = Double.parseDouble(salárioFuncionárioTextField.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Salário inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Funcionário.EstadoCivil estadoCivil = null;
-        ButtonModel selectedEstadoCivilButton = estadoCivilButtonGroup.getSelection();
-        if (selectedEstadoCivilButton != null) {
-            String selectedEstadoCivilStr = selectedEstadoCivilButton.getActionCommand();
-            try {
-                int selectedMnemonic = Integer.parseInt(selectedEstadoCivilStr);
-                for (Funcionário.EstadoCivil ec : Funcionário.EstadoCivil.values()) {
-                    if (ec.getMnemonic() == selectedMnemonic) {
-                        estadoCivil = ec;
-                        break;
-                    }
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Estado Civil inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
+        Funcionário funcionario = obterFuncionario();
+        String erro = null;
+        if(funcionario != null) {erro = controlador.inserirFuncionário(funcionario);}
+        else {erro = "Algum atributo do funcionario não foi informado";}
+            
+        if(erro == null) {
+            int id = 0;
+            if(Funcionário.ultimoID() > 0){
+                id = Funcionário.ultimoID();
             }
-        }
-
-        Funcionário.Gênero genero = null;
-        ButtonModel selectedGeneroButton = generoButtonGroup.getSelection();
-        if (selectedGeneroButton != null) {
-            char selectedMnemonic = selectedGeneroButton.getActionCommand().charAt(0);
-            for (Funcionário.Gênero g : Funcionário.Gênero.values()) {
-                if (g.getMnemonic() == selectedMnemonic) {
-                    genero = g;
+            funcionario.setId(id);
+            Funcionário visao;
+            switch (subclassesTabbedPane.getSelectedIndex()) {
+                case 0:
+                    visao = (Empregado) funcionario.getVisao();
                     break;
-                }
+                case 1:
+                    visao = (Estagiário) funcionario.getVisao();
+                    break;
+                default:
+                    visao = (Terceirizado) funcionario.getVisao();
+                    break;
             }
-        }
-
-        boolean ativo = ativoCheckBox.isSelected();
-
-        if(controladorFuncionário.verificarCpfExistente(cpf)){
-            JOptionPane.showMessageDialog(null, "CPF já cadastrado!", "Alerta", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        controladorFuncionário.adicionarFuncionário(cpf, nome, cargo, salario, estadoCivil, genero, ativo);
-        this.inicializarListaFuncionários();
-
-        this.limparTextos();
+            listaFuncionarios.addElement(funcionario);
+            funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size() - 1);
+            idFuncionárioTextField.setText("" + id);
+            funcionáriosCadastradosList.updateUI();
+        }else {informarErro(erro);}
     }//GEN-LAST:event_cadastrarFuncionárioButtonActionPerformed
  
     private void atualizarFuncionárioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarFuncionárioButtonActionPerformed
-        String idText = idFuncionárioTextField.getText();
-        String salarioText = salárioFuncionárioTextField.getText();
-        String cpf = cpfFuncionárioTextField.getText();
-        String nome = nomeFuncionárioTextField.getText().replace("-", "");
-        String cargo = cargoFuncionárioTextField.getText();
-
-        if (idText.isEmpty() || salarioText.isEmpty() || cpf.isEmpty() || nome.isEmpty() || cargo.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Por favor, preencha todos os campos.", "Alerta", JOptionPane.WARNING_MESSAGE);
-            return;
+        Funcionário funcionario = obterFuncionario();
+        String erro = null;
+        if(funcionario != null) {
+            erro = controlador.alterarFuncionario(funcionario);
         }
-
-        int id;
-        double salario;
-
-        try {
-            id = Integer.parseInt(idText);
-            salario = Double.parseDouble(salarioText);
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "ID ou Salário inválidos!", "Erro", JOptionPane.ERROR_MESSAGE);
-            return;
+        else {
+            erro = "Algum atributo não foi informado";
         }
+        if(erro == null) {
+            Funcionário visao = (Funcionário) funcionáriosCadastradosList.getSelectedValue();
+            if (visao != null) {
+                visao.setId(funcionario.getId());
+                visao.setNome(funcionario.getNome());
+                visao.setCPF(funcionario.getCPF());
 
-        Funcionário.EstadoCivil estadoCivil = null;
-        ButtonModel selectedEstadoCivilButton = estadoCivilButtonGroup.getSelection();
+                DefaultListModel<Funcionário> modelo = (DefaultListModel<Funcionário>) funcionáriosCadastradosList.getModel();
+                int selectedIndex = funcionáriosCadastradosList.getSelectedIndex();
 
-        if (selectedEstadoCivilButton != null) {
-            String selectedMnemonicStr = selectedEstadoCivilButton.getActionCommand();
-            int selectedMnemonic = Integer.parseInt(selectedMnemonicStr);
-            for (Funcionário.EstadoCivil ec : Funcionário.EstadoCivil.values()) {
-                if (ec.getMnemonic() == selectedMnemonic) {
-                    estadoCivil = ec;
-                    break;
+                if (selectedIndex >= 0) {
+                    modelo.setElementAt(visao, selectedIndex);
                 }
             }
         }
+        else {informarErro(erro);}
 
-        Funcionário.Gênero genero = null;
-        ButtonModel selectedGeneroButton = generoButtonGroup.getSelection();
-
-        if (selectedGeneroButton != null) {
-            char selectedMnemonic = selectedGeneroButton.getActionCommand().charAt(0);
-            for (Funcionário.Gênero g : Funcionário.Gênero.values()) {
-                if (g.getMnemonic() == selectedMnemonic) {
-                    genero = g;
-                    break;
-                }
-            }
-        }
-
-        boolean ativo = ativoCheckBox.isSelected();
-
-        controladorFuncionário.atualizarFuncionario(id, cpf, nome, cargo, salario, estadoCivil, genero, ativo);
-
-        this.inicializarListaFuncionários();
-        this.limparTextos();
     }//GEN-LAST:event_atualizarFuncionárioButtonActionPerformed
 
     private void limparCamposButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparCamposButtonActionPerformed
@@ -683,22 +533,65 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     }//GEN-LAST:event_limparCamposButtonActionPerformed
 
     private void removerFuncionárioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerFuncionárioButtonActionPerformed
-        int id = Integer.parseInt(idFuncionárioTextField.getText());
+        Funcionário visao = (Funcionário) funcionáriosCadastradosList.getSelectedValue();
+        String erro = null;
+        
+        if(visao != null) {
+            erro = controlador.removerFuncionário(visao);
+        }
+        else
+            erro = "Nenhum funcionario selecionado";
 
-        controladorFuncionário.removerFuncionário(id);
-        this.limparTextos();
-        this.inicializarListaFuncionários();
+        if(erro == null) {
+            DefaultListModel<Funcionário> modelo = (DefaultListModel<Funcionário>) funcionáriosCadastradosList.getModel();
+            modelo.removeElement(visao);
+            if(listaFuncionarios.size() > 0) {
+                funcionáriosCadastradosList.setSelectedIndex(0);
+            }else {
+                funcionáriosCadastradosList.setSelectedIndex(-1);
+            }
+            limparTextos();
+        }
+        else {
+            informarErro(erro);
+        }
     }//GEN-LAST:event_removerFuncionárioButtonActionPerformed
 
     private void buscarFuncionárioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarFuncionárioButtonActionPerformed
-        String cpf = cpfFuncionárioTextField.getText();
-        Funcionário funcionário = controladorFuncionário.buscarFuncionárioPorCpf(cpf);
-
-        if (funcionário != null) {
-            this.selecionarFuncionárioList(funcionário.getNomeECPF());
-            this.preencherCampos(funcionário);;
+        Funcionário visao = (Funcionário) funcionáriosCadastradosList.getSelectedValue();
+        String erro = null;
+        Funcionário funcionario = null;
+        if(visao != null) {
+            funcionario = Funcionário.buscarFuncionario(visao.getId());
+            if(funcionario == null){erro = "Funcionario não Cadastrado";}
+        } else { erro = "Nenhum funcionario selecionado selecionado";}
+        
+        if(erro == null) {
+            idFuncionárioTextField.setText(Integer.toString(funcionario.getId()));
+            nomeFuncionárioTextField.setText(funcionario.getNome());
+            cargoFuncionárioTextField.setText(funcionario.getCargo());
+            salárioFuncionárioTextField.setText(Double.toString(funcionario.getSalário()));
+            cpfFuncionárioTextField.setText(funcionario.getCPF());
+            selecionarSexoRadioButton(funcionario.getSexo());
+            selecionarEstadoCivilRadioButton(funcionario.getEstadoCivil().ordinal());
+            ativoCheckBox.setSelected(funcionario.getAtivo());
+        }
+        else {informarErro(erro);}
+        if(funcionario instanceof Empregado) {
+            subclassesTabbedPane.setSelectedIndex(0);
+            Empregado empregado = (Empregado) funcionario;
+            painelEmpregado.setDepartamento(empregado.getDepartamento());
+            painelEmpregado.setAvaliacao(empregado.getAvaliacaoDeDesempenho());
+        } else if(funcionario instanceof Estagiário) {
+            subclassesTabbedPane.setSelectedIndex(1);
+            Estagiário estagiario = (Estagiário) funcionario;
+            painelEstagiario.setCurso(estagiario.getCurso());
+            painelEstagiario.setCargaHoraria(estagiario.getCargaHoraria());
         } else {
-            JOptionPane.showMessageDialog(null, "Não encontrado nenhum funcionário com esse CPF!", "Alerta", JOptionPane.WARNING_MESSAGE);
+            subclassesTabbedPane.setSelectedIndex(2);
+            Terceirizado terceirizado = (Terceirizado) funcionario;
+            painelTerceirizado.setEmpresaContratada(terceirizado.getEmpresaContratada());
+            painelTerceirizado.setDuracaoContrato(terceirizado.getDuracaoContrato());
         }
     }//GEN-LAST:event_buscarFuncionárioButtonActionPerformed
 
@@ -707,55 +600,12 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     }//GEN-LAST:event_cpfFuncionárioTextFieldActionPerformed
 
     private void funcionáriosCadastradosListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_funcionáriosCadastradosListValueChanged
-        if (!evt.getValueIsAdjusting()) {
-            DefaultListModel<String> funcionárioSelecionado = (DefaultListModel<String>) funcionáriosCadastradosList.getModel();
-            int funcionárioSelecionadoIndex = funcionáriosCadastradosList.getSelectedIndex();
-            if (funcionárioSelecionadoIndex != -1) {
-                String[] nomeCPF = funcionárioSelecionado.getElementAt(funcionárioSelecionadoIndex).split(" - ");
-                // Dividindo novamente a string para extrair CPF
-                String[] partes = nomeCPF[0].split(" ");
-                String cpf = nomeCPF[1].trim(); // Pega a parte do CPF
-                Funcionário funcionário = controladorFuncionário.buscarFuncionárioPorCpf(cpf);
-                this.preencherCampos(funcionário);
-            }
-        }
+
     }//GEN-LAST:event_funcionáriosCadastradosListValueChanged
-
-    private void masculinoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_masculinoRadioButtonActionPerformed
-        masculinoRadioButton.setActionCommand("M");
-    }//GEN-LAST:event_masculinoRadioButtonActionPerformed
-
-    private void femininoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_femininoRadioButtonActionPerformed
-        masculinoRadioButton.setActionCommand("F");
-    }//GEN-LAST:event_femininoRadioButtonActionPerformed
 
     private void ativoCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ativoCheckBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ativoCheckBoxActionPerformed
-
-    private void departamentoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_departamentoTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_departamentoTextFieldActionPerformed
-
-    private void umPontoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_umPontoRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_umPontoRadioButtonActionPerformed
-
-    private void tresPontosRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tresPontosRadioButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tresPontosRadioButtonActionPerformed
-
-    private void cargaHorariaTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cargaHorariaTextFieldKeyTyped
-        char caracteres = evt.getKeyChar();
-        
-        if(!Character.isDigit(caracteres)){
-            evt.consume();
-        }
-    }//GEN-LAST:event_cargaHorariaTextFieldKeyTyped
-
-    private void duracaoContratoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_duracaoContratoTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_duracaoContratoTextFieldActionPerformed
 
     private void salárioFuncionárioTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_salárioFuncionárioTextFieldKeyTyped
         char caracteres = evt.getKeyChar();
@@ -769,176 +619,43 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_idFuncionárioTextFieldActionPerformed
 
-    private void solteiroRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_solteiroRadioButtonActionPerformed
-        solteiroRadioButton.setActionCommand("0");
-    }//GEN-LAST:event_solteiroRadioButtonActionPerformed
-
     private void casadoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_casadoRadioButtonActionPerformed
-        casadoRadioButton.setActionCommand("1");
+        // TODO add your handling code here:
     }//GEN-LAST:event_casadoRadioButtonActionPerformed
-
-    private void divorciadoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_divorciadoRadioButtonActionPerformed
-        divorciadoRadioButton.setActionCommand("2");
-    }//GEN-LAST:event_divorciadoRadioButtonActionPerformed
-
-    private void viúvoRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viúvoRadioButtonActionPerformed
-        viúvoRadioButton.setActionCommand("3");
-    }//GEN-LAST:event_viúvoRadioButtonActionPerformed
-    
-    private void selecionarFuncionárioList(String funcionário) {
-        int index = -1;
-        for (int i = 0; i < funcionáriosCadastradosList.getModel().getSize(); i++) {
-            if (funcionáriosCadastradosList.getModel().getElementAt(i).equals(funcionário)) {
-                index = i;
-                break;
-            }
-        }
-
-        // Definir o item desejado como selecionado
-        if (index != -1) {
-            funcionáriosCadastradosList.setSelectedIndex(index);
-        }
-    }
-    
-    private void inicializarListaFuncionários() {
-        DefaultListModel<String> funcionárioListModel = new DefaultListModel<>();
-
-        List<Funcionário> funcionários = controladorFuncionário.listarFuncionários();
-        for (Funcionário funcionário : funcionários) {
-            funcionárioListModel.addElement(funcionário.getNomeECPF());
-        }
-
-        funcionáriosCadastradosList.setModel(funcionárioListModel);
-    }
-    
-    private void preencherCampos(Funcionário funcionário) {
-        idFuncionárioTextField.setText(String.valueOf(funcionário.getId()));
-        cpfFuncionárioTextField.setText(String.valueOf(funcionário.getCPF()));
-        nomeFuncionárioTextField.setText(funcionário.getNome());
-        cargoFuncionárioTextField.setText(funcionário.getCargo());
-        salárioFuncionárioTextField.setText(String.valueOf(funcionário.getSalário()));
-
-        if(funcionário.getGênero() == Funcionário.Gênero.MASCULINO) {
-            masculinoRadioButton.setSelected(true);
-        } else if(funcionário.getGênero() == Funcionário.Gênero.FEMININO) {
-            femininoRadioButton.setSelected(true);
-        }
-
-        switch (funcionário.getEstadoCivil()) {
-            case SOLTEIRO:
-                solteiroRadioButton.setSelected(true);
-                break;
-            case CASADO:
-                casadoRadioButton.setSelected(true);
-                break;
-        }
-        ativoCheckBox.setSelected(funcionário.getAtivo());
-    }
-
-    private void limparTextos(){
-        idFuncionárioTextField.setText("");
-        nomeFuncionárioTextField.setText("");
-        cargoFuncionárioTextField.setText("");
-        salárioFuncionárioTextField.setText("");
-        cpfFuncionárioTextField.setText("");
-
-        generoButtonGroup.clearSelection();
-        estadoCivilButtonGroup.clearSelection();
-        ativoCheckBox.setSelected(false);
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroFuncionários.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroFuncionários.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroFuncionários.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroFuncionários.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JanelaCadastroFuncionários().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox ativoCheckBox;
     private javax.swing.JLabel ativoFuncionárioLabel;
     private javax.swing.JButton atualizarFuncionárioButton;
-    private javax.swing.JLabel avaliaçãoDesempenhoLabel;
     private javax.swing.JButton buscarFuncionárioButton;
     private javax.swing.JButton cadastrarFuncionárioButton;
-    private javax.swing.JLabel cargaHorariaLabel;
-    private javax.swing.JTextField cargaHorariaTextField;
     private javax.swing.JLabel cargoFuncionárioLabel;
     private javax.swing.JTextField cargoFuncionárioTextField;
     private javax.swing.JRadioButton casadoRadioButton;
-    private javax.swing.JRadioButton cincoPontosRadioButton;
     private javax.swing.JLabel cpfFuncionárioLabel;
     private javax.swing.JTextField cpfFuncionárioTextField;
-    private javax.swing.JLabel cursoLabel;
-    private javax.swing.JTextField cursoTextField;
-    private javax.swing.JTextField departamentoTextField;
     private javax.swing.JRadioButton divorciadoRadioButton;
-    private javax.swing.JRadioButton doisPontoRadioButton;
-    private javax.swing.JTextField duracaoContratoTextField;
-    private javax.swing.JLabel duraçãoContratoLabel;
-    private javax.swing.JPanel empregadoPanel;
-    private javax.swing.JLabel empresaContratadaLabel;
-    private javax.swing.JTextField empresaContratadaTextField;
     private javax.swing.ButtonGroup estadoCivilButtonGroup;
-    private javax.swing.JLabel estadoCivilFuncionárioLabel;
-    private javax.swing.JPanel estagiárioPanel;
+    private javax.swing.JLabel estadoCivilLabel;
+    private javax.swing.JPanel estado_civilPanel;
     private javax.swing.JRadioButton femininoRadioButton;
-    private javax.swing.JList<String> funcionáriosCadastradosList;
+    private javax.swing.JList funcionáriosCadastradosList;
     private javax.swing.JScrollPane funcionáriosScrollPane;
-    private javax.swing.ButtonGroup generoButtonGroup;
-    private javax.swing.JLabel generoFuncionárioLabel;
     private javax.swing.JLabel idFuncionárioLabel;
     private javax.swing.JTextField idFuncionárioTextField;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JButton limparCamposButton;
     private javax.swing.JLabel listagemFuncionáriosLabel;
     private javax.swing.JRadioButton masculinoRadioButton;
     private javax.swing.JLabel nomeFuncionárioLabel;
     private javax.swing.JTextField nomeFuncionárioTextField;
-    private javax.swing.ButtonGroup pontuaçãoButtonGroup;
-    private javax.swing.JRadioButton quatroPontoRadioButton;
     private javax.swing.JButton removerFuncionárioButton;
     private javax.swing.JLabel salárioFuncionárioLabel;
     private javax.swing.JTextField salárioFuncionárioTextField;
+    private javax.swing.ButtonGroup sexoButtonGroup;
+    private javax.swing.JLabel sexoFuncionárioLabel;
+    private javax.swing.JPanel sexoPanel;
     private javax.swing.JRadioButton solteiroRadioButton;
     private javax.swing.JTabbedPane subclassesTabbedPane;
-    private javax.swing.JPanel terceirizadoPanel;
-    private javax.swing.JRadioButton tresPontosRadioButton;
-    private javax.swing.JRadioButton umPontoRadioButton;
-    private javax.swing.JRadioButton viúvoRadioButton;
+    private javax.swing.JRadioButton viuvoRadioButton;
     // End of variables declaration//GEN-END:variables
 }

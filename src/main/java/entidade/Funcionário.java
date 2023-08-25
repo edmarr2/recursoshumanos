@@ -37,9 +37,6 @@ public class Funcionário {
         this.sexo = sexo;
         this.ativo = ativo;
     }
-    public Funcionário() {
-        DB.criaConexão();
-    }
     
     public int getId() {
         return id;
@@ -431,7 +428,7 @@ public class Funcionário {
                 this.salário, this.estadoCivil, this.sexo, this.ativo);
     }
     public static Funcionário buscarFuncionario(int id) {
-        String sql = "SELECT (*) FROM funcionarios WHERE id = ?";
+        String sql = "SELECT * FROM funcionarios WHERE id = ?";
         ResultSet resultados = null;
         String cpf = null;
         String nome = null;
@@ -492,7 +489,7 @@ public class Funcionário {
             e.printStackTrace();
         }
         
-        sql = "SELECT empresaContratada, duracaoContrato FROM terceirizados WHERE BemId = ?";
+        sql = "SELECT empresaContratada, duracaoContrato FROM terceirizados WHERE funcionarioId = ?";
         try{
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
             comando.setInt(1, id);

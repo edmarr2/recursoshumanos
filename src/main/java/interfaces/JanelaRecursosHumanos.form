@@ -24,23 +24,43 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="janelaCadastroEmpregadosMenuBar">
+        <Menu class="javax.swing.JMenu" name="janelaCadastroFuncionarioMenuBar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Empregados"/>
+            <Property name="text" type="java.lang.String" value="Funcion&#xe1;rio"/>
             <Property name="actionCommand" type="java.lang.String" value=""/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="janelaCadastroEmpregadosMenuBarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="janelaCadastroFuncionarioMenuBarActionPerformed"/>
           </Events>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="cadastrarEmpregadoMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="cadastrarFuncionarioMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cadastrar Empregado"/>
+                <Property name="text" type="java.lang.String" value="Cadastrar Funcion&#xe1;rio"/>
                 <Property name="actionCommand" type="java.lang.String" value="cadastrarEmpregadoMenuItem"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarEmpregadoMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarFuncionarioMenuItemActionPerformed"/>
               </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="janelaCadastroEmpregoMenuBar">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Emprego"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="cadastrarEmpregoMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cadastrar Emprego"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarEmpregoMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="pesquisarEmpregoMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pesquisar Emprego"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

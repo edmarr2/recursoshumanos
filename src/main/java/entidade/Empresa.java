@@ -8,7 +8,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import persistência.DB;
 
 /**
@@ -26,10 +25,6 @@ public class Empresa {
         this.endereco = endereço;
     }
     
-    public Empresa() {
-        DB.criaConexão();
-    }
-
     public String getCNPJ() {
         return cnpj;
     }
@@ -58,6 +53,11 @@ public class Empresa {
         return this.getNome() + " - " + this.getCNPJ();
     }
     
+    @Override
+    public String toString() {
+        return this.getCNPJ() + " - " + this.getNome();
+    }
+    
     public String toStringFull() {
         return this.nome + "[" + this.cnpj + "] - endereco: " + this.endereco;
     }
@@ -81,7 +81,6 @@ public class Empresa {
     
     public static String alterarEmpresa(Empresa empresa) {
         String sql = "UPDATE empresas SET nome = ?, endereco = ? WHERE cnpj = ?";
-        
         try {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
             comando.setString(1, empresa.getNome());
@@ -120,13 +119,12 @@ public class Empresa {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
             comando.setString(1, cnpj);
             resultados = comando.executeQuery();
-            
+            System.out.println(resultados);
             if(resultados.next()){
-                String cnpjEmpresa = resultados.getString("cnpj");
                 String nomeEmpresa = resultados.getString("nome");
                 String enderecoEmpresa = resultados.getString("endereco");
 
-                empresa =  new Empresa(cnpjEmpresa, nomeEmpresa, enderecoEmpresa);
+                empresa =  new Empresa(cnpj, nomeEmpresa, enderecoEmpresa);
             }
             comando.close();
         }catch(SQLException e) {
@@ -138,9 +136,9 @@ public class Empresa {
     }
     
     public static Empresa[] getVisoes() {
-        ArrayList<Empresa> visoes = new ArrayList<>();
+        ArrayList<Empresa> visoes = new ArrayList();
         ResultSet resultados = null;
-        String sql = "SELECT * FROM empresas";
+        String sql = "SELECT cnpj, nome, endereco FROM empresas";
 
         try {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);

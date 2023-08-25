@@ -5,7 +5,6 @@
 package interfaces;
 import controle.ControladorEmpresa;
 import entidade.Empresa;
-import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
@@ -15,17 +14,69 @@ import javax.swing.JOptionPane;
  */
 public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     ControladorEmpresa controlador;
+    private final Empresa[] empresasCadastradas;
 
-    /**
-     * Creates new form JanelaCadastroEmpresas
-     */
     public JanelaCadastroEmpresas(ControladorEmpresa controlador) {
         this.controlador = controlador;
+        this.empresasCadastradas = Empresa.getVisoes();
         initComponents();
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        this.inicializarComboBoxEmpresa();
+        limparTextos();
+    }   
+    
+    private void preencherCampos(Empresa empresa) {
+        cnpjEmpresaTextField.setText(empresa.getCNPJ());
+        nomeEmpresaTextField.setText(empresa.getNome());
+        enderecoEmpresaTextField.setText(empresa.getEndereco());
     }
 
+    private void limparTextos (){
+        cnpjEmpresaTextField.setText("");
+        nomeEmpresaTextField.setText("");
+        enderecoEmpresaTextField.setText("");
+    }
+    
+    private void selecionarEmpresa() {
+        Empresa visao = (Empresa) empresasCadastradasComboBox.getSelectedItem();
+        String erro = null;
+        Empresa empresa = null;
+
+        if (visao != null) {
+            empresa = Empresa.buscarEmpresa(visao.getCNPJ());
+
+            if (empresa == null) {
+                erro = "Empresa não cadastrada";
+            }
+        } else {
+            erro = "Nenhuma empresa foi selecionada";
+        }
+
+        if (erro == null) {
+            cnpjEmpresaTextField.setText(empresa.getCNPJ());
+            nomeEmpresaTextField.setText(empresa.getNome());
+            enderecoEmpresaTextField.setText(empresa.getEndereco());
+        } else {
+            informarErroEmpresa(erro);
+        }
+    }
+    
+    private Empresa obterEmpresaInformada() {
+        Empresa empresa = null;
+
+        String cnpj = cnpjEmpresaTextField.getText();
+        String nomeEmpresa = nomeEmpresaTextField.getText();
+        String enderecoEmpresa = enderecoEmpresaTextField.getText();
+
+        if (cnpj.isEmpty() || nomeEmpresa.isEmpty() || enderecoEmpresa.isEmpty()) {
+            return null;
+        }
+
+        empresa = new Empresa(cnpj, nomeEmpresa, enderecoEmpresa);
+        return empresa;
+    }
+    
+    private void informarErroEmpresa(String mensagem) {
+        JOptionPane.showMessageDialog(this, mensagem, "Erro", JOptionPane.ERROR_MESSAGE);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,9 +98,9 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
         removerEmpresaButton = new javax.swing.JButton();
         buscarEmpresaButton = new javax.swing.JButton();
         limparCamposEmpresaButton = new javax.swing.JButton();
-        empresasCadastradasComboBox = new javax.swing.JComboBox<>();
+        empresasCadastradasComboBox = new javax.swing.JComboBox();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro Empresas");
 
         empresasCadastradasLabel.setText("Empresas Cadastradas");
@@ -113,7 +164,7 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
             }
         });
 
-        empresasCadastradasComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        empresasCadastradasComboBox.setModel(new DefaultComboBoxModel(empresasCadastradas));
         empresasCadastradasComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 empresasCadastradasComboBoxActionPerformed(evt);
@@ -152,15 +203,14 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(enderecoEmpresaTextField)
                             .addComponent(cnpjEmpresaTextField)))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(nomeEmpresaLabel)
-                            .addGap(22, 22, 22)
-                            .addComponent(nomeEmpresaTextField))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(315, 315, 315)
-                            .addComponent(limparCamposEmpresaButton)
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(nomeEmpresaLabel)
+                        .addGap(22, 22, 22)
+                        .addComponent(nomeEmpresaTextField))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(315, 315, 315)
+                        .addComponent(limparCamposEmpresaButton)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -209,44 +259,82 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     }//GEN-LAST:event_enderecoEmpresaTextFieldActionPerformed
 
     private void cadastrarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpresaButtonActionPerformed
-        String cnpj = cnpjEmpresaTextField.getText();
-        String nome = nomeEmpresaTextField.getText().replace("-", "");
-        String endereco = enderecoEmpresaTextField.getText();
-        if(controlador.verificarCnpjExistente(cnpj)){
-            JOptionPane.showMessageDialog(null, "CNPJ já cadastrado!", "Alerta", JOptionPane.WARNING_MESSAGE);
-            return;
+        Empresa empresa = obterEmpresaInformada();
+        String erro = null;
+        if(empresa != null)
+            erro = controlador.inserirEmpresa(empresa);
+        else
+            erro = "Algum atributo de empresa não foi informado";
+        if(erro == null) {
+            DefaultComboBoxModel<Empresa> comboBoxModel = (DefaultComboBoxModel<Empresa>) empresasCadastradasComboBox.getModel();
+            comboBoxModel.addElement(empresa);
+            empresasCadastradasComboBox.setSelectedItem(empresa);
+            this.limparTextos();
         }
-        controlador.adicionarEmpresa(cnpj, nome, endereco);
-        this.inicializarComboBoxEmpresa();
-        this.limparTextos();
+        else
+            informarErroEmpresa(erro);
     }//GEN-LAST:event_cadastrarEmpresaButtonActionPerformed
 
     private void atualizarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarEmpresaButtonActionPerformed
-        String cnpj = cnpjEmpresaTextField.getText();
-        String nome = nomeEmpresaTextField.getText().replace("-", "");
-        String endereço = enderecoEmpresaTextField.getText();
-        String nomeECNPJ = (String) empresasCadastradasComboBox.getSelectedItem();
-        controlador.atualizarEmpresa(cnpj, nome, endereço);
-        this.inicializarComboBoxEmpresa();
-        this.limparTextos();
+        Empresa empresa = obterEmpresaInformada();
+        String erro = null;
+
+        if (empresa != null) {
+            erro = controlador.alterarEmpresa(empresa);
+        } else {
+            erro = "Algum atributo de empresa não foi informado";
+        }
+
+        if (erro == null) {
+            Empresa visao = (Empresa) empresasCadastradasComboBox.getSelectedItem();
+            if(visao != null) {
+                visao.setCNPJ(empresa.getCNPJ());
+                visao.setNome(empresa.getNome());
+                visao.setEndereco(empresa.getEndereco());
+                empresasCadastradasComboBox.updateUI();
+                empresasCadastradasComboBox.setSelectedItem(visao);
+            }
+        } else {
+            informarErroEmpresa(erro);
+        }
     }//GEN-LAST:event_atualizarEmpresaButtonActionPerformed
 
     private void removerEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerEmpresaButtonActionPerformed
-        String cnpj = cnpjEmpresaTextField.getText();
-        controlador.removerEmpresa(cnpj);
-        this.inicializarComboBoxEmpresa();
-        this.limparTextos();
+        Empresa visao = (Empresa) empresasCadastradasComboBox.getSelectedItem();
+        String erro = null;
+        
+        if(visao != null) {
+            erro = controlador.removerEmpresa(visao.getCNPJ());
+        }
+        else
+            erro = "Nenhuma empresa selecionada";
+
+        if(erro == null) {
+            empresasCadastradasComboBox.removeItem(visao);
+        }
+        else
+            informarErroEmpresa(erro);
     }//GEN-LAST:event_removerEmpresaButtonActionPerformed
 
     private void buscarEmpresaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarEmpresaButtonActionPerformed
-        String cnpj = cnpjEmpresaTextField.getText();
-        Empresa empresa = controlador.buscarEmpresaPorCNPJ(cnpj);
-
-        // Exibir informações do empregado encontrado (por exemplo, preencher campos de texto)
-        if (empresa != null) {
+        String erro = null;
+        Empresa empresa = null;
+        if(cnpjEmpresaTextField.getText() != null) {
+            empresa = Empresa.buscarEmpresa(cnpjEmpresaTextField.getText());
+            if(empresa == null) {
+                erro = "Empresa não Cadastrada";
+            }
+        }
+        else {
+            erro = "Nenhuma empresa selecionada";
+        }
+        
+        if(erro == null) {
+            empresasCadastradasComboBox.setSelectedItem(empresa.getVisao());
             this.preencherCampos(empresa);
-        } else {
-            JOptionPane.showMessageDialog(null, "Não encontrado nenhuma empresa com esse CNPJ!", "Alerta", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            informarErroEmpresa(erro);
         }
     }//GEN-LAST:event_buscarEmpresaButtonActionPerformed
 
@@ -255,84 +343,12 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     }//GEN-LAST:event_limparCamposEmpresaButtonActionPerformed
 
     private void empresasCadastradasComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresasCadastradasComboBoxActionPerformed
-        String empresaSelecionada = (String) empresasCadastradasComboBox.getSelectedItem();
-        this.selecionarEmpresa(empresaSelecionada);
+        this.selecionarEmpresa();
     }//GEN-LAST:event_empresasCadastradasComboBoxActionPerformed
-
+    
     private void empresasCadastradasComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_empresasCadastradasComboBoxPropertyChange
 
     }//GEN-LAST:event_empresasCadastradasComboBoxPropertyChange
-    
-    private void preencherCampos(Empresa empresa) {
-        cnpjEmpresaTextField.setText(String.valueOf(empresa.getCNPJ()));
-        nomeEmpresaTextField.setText(empresa.getNome());
-        enderecoEmpresaTextField.setText(empresa.getEndereco());
-        empresasCadastradasComboBox.setSelectedItem(empresa.getNomeECNPJ());
-    }
-
-    private void limparTextos (){
-        cnpjEmpresaTextField.setText("");
-        nomeEmpresaTextField.setText("");
-        enderecoEmpresaTextField.setText("");
-    }
-    
-    private void inicializarComboBoxEmpresa() {
-        DefaultComboBoxModel<String> comboBoxEmpresasCadastradasModel = new DefaultComboBoxModel<>();
-
-        // Obter as empresas cadastradas
-        List<Empresa> empresas = controlador.listarEmpresas();
-
-        // Preencher o modelo da lista com os nomes das empresas
-        for (Empresa empresa : empresas) {
-            comboBoxEmpresasCadastradasModel.addElement(empresa.getNomeECNPJ());
-        }
-
-        empresasCadastradasComboBox.setModel(comboBoxEmpresasCadastradasModel);
-    }
-    
-    private void selecionarEmpresa(String empresaSelecionada) {
-        String[] partes = empresaSelecionada.split(" - ");
-        String nomeEmpresa = partes[0];
-        String cnpjEmpresa = partes[1];
-
-        cnpjEmpresaTextField.setText(cnpjEmpresa);
-        Empresa empresa = controlador.buscarEmpresaPorCNPJ(cnpjEmpresa);
-        this.preencherCampos(empresa);
-    }
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JanelaCadastroEmpresas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JanelaCadastroEmpresas().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton atualizarEmpresaButton;
@@ -340,7 +356,7 @@ public class JanelaCadastroEmpresas extends javax.swing.JFrame {
     private javax.swing.JButton cadastrarEmpresaButton;
     private javax.swing.JLabel cnpjEmpresaLabel;
     private javax.swing.JTextField cnpjEmpresaTextField;
-    private javax.swing.JComboBox<String> empresasCadastradasComboBox;
+    private javax.swing.JComboBox empresasCadastradasComboBox;
     private javax.swing.JLabel empresasCadastradasLabel;
     private javax.swing.JLabel enderecoEmpresaLabel;
     private javax.swing.JTextField enderecoEmpresaTextField;

@@ -27,7 +27,7 @@ public class ControladorEmpresa {
 
     public String alterarEmpresa(Empresa empresa) {
         Empresa updatedEmpresa = Empresa.buscarEmpresa(empresa.getCNPJ());
-        if(updatedEmpresa == null) {
+        if(updatedEmpresa != null) {
             return Empresa.alterarEmpresa(empresa);
         } else {
             return "CNPJ da empresa não cadastrado";
@@ -36,7 +36,7 @@ public class ControladorEmpresa {
 
     public String removerEmpresa(String cnpj) {
         Empresa removedEmpresa = Empresa.buscarEmpresa(cnpj);
-        if(removedEmpresa == null) {
+        if(removedEmpresa != null) {
             return Empresa.removerEmpresa(cnpj);
         } else {
             return "CNPJ da empresa não cadastrado";
