@@ -4,6 +4,14 @@
  */
 package interfaces;
 
+import entidade.Emprego;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.JTextField;
+
 /**
  *
  * @author edmar
@@ -13,8 +21,56 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
     /**
      * Creates new form JanelaPesquisaEmprego
      */
+    PainelFiltroEmpregado filtrosEmpregadosPainel;
+    PainelFiltroEstagiario filtrosEstagiarioPainel;
+    PainelFiltroTerceirizado filtrosTerceirizadoPainel;
     public JanelaPesquisaEmprego() {
         initComponents();
+        filtrosEmpregadosPainel = new PainelFiltroEmpregado();
+        filtrosEstagiarioPainel = new PainelFiltroEstagiario();
+        filtrosTerceirizadoPainel = new PainelFiltroTerceirizado();
+        subclassesEspecificasFuncionarioTabbedPane.addTab("Filtros de Empregado",filtrosEmpregadosPainel);
+        subclassesEspecificasFuncionarioTabbedPane.addTab("Filtros de Estagiario", filtrosEstagiarioPainel);
+        subclassesEspecificasFuncionarioTabbedPane.addTab("Filtros de Terceirizado", filtrosTerceirizadoPainel);
+        limparFiltros();
+    }
+    public void limparFiltros() {
+        salarioMaximoFuncionarioTextField.setText("");
+        cnpjTextField.setText("");
+        dataAdmissaoTextField.setText("");
+        filtrosEmpregadosPainel.limparFiltros();
+        filtrosEstagiarioPainel.limparFiltros();
+        filtrosTerceirizadoPainel.limparFiltros();
+    }
+    private Timestamp getDataAdmissao(JTextField data) {
+        Timestamp dataAdmissao = null;
+        String dataBuscada = data.getText();
+        if (!dataBuscada.isEmpty()) {
+            String[] data_minima_partes = dataBuscada.split("/");
+            if (data_minima_partes.length == 3) {
+                String dia = data_minima_partes[0];
+                String mes = data_minima_partes[1];
+                String ano = data_minima_partes[2];
+                if ((dia.length() == 2) && (mes.length() == 2) && (ano.length() == 4)) {
+                    dataBuscada = ano + "-" + mes + "-" + dia + " 00:00:00";
+                    dataAdmissao = Timestamp.valueOf(dataBuscada);
+                }
+            }
+        }
+
+        return dataAdmissao;
+    }
+
+    private void mostrarEmpregosSelecionados(ArrayList<Emprego> empregos) {
+        boolean primeiroEmprego = true;
+        for (Emprego emprego : empregos) {
+            if (primeiroEmprego) {
+                resultadosPesquisaTextArea.append(emprego.toStringFull());
+                primeiroEmprego = false;
+            } else {
+                resultadosPesquisaTextArea.append("\n" + emprego.toStringFull());
+            }
+        }
     }
 
     /**
@@ -26,22 +82,272 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        buttonsPanel = new javax.swing.JPanel();
+        pesquisarButton = new javax.swing.JButton();
+        limpar_filtrosButton = new javax.swing.JButton();
+        limpar_pesquisaButton = new javax.swing.JButton();
+        funcionariosPanel = new javax.swing.JPanel();
+        salarioMaximoFuncionarioLabel = new javax.swing.JLabel();
+        salarioMaximoFuncionarioTextField = new javax.swing.JTextField();
+        subClassesFuncionarioPanel = new javax.swing.JPanel();
+        subclassesEspecificasFuncionarioTabbedPane = new javax.swing.JTabbedPane();
+        empresasPanel = new javax.swing.JPanel();
+        cnpjEmpresaLabel = new javax.swing.JLabel();
+        cnpjTextField = new javax.swing.JTextField();
+        empregoPanel = new javax.swing.JPanel();
+        dataAdmissaoLabel = new javax.swing.JLabel();
+        dataAdmissaoTextField = new javax.swing.JTextField();
+        resultadosPesquisaPanel = new javax.swing.JPanel();
+        resultadosPesquisaScrollPane = new javax.swing.JScrollPane();
+        resultadosPesquisaTextArea = new javax.swing.JTextArea();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(303, 224));
+
+        pesquisarButton.setText("Pesquisar");
+        pesquisarButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarButton(evt);
+            }
+        });
+        buttonsPanel.add(pesquisarButton);
+
+        limpar_filtrosButton.setText("Limpar Filtros");
+        limpar_filtrosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparFiltrosButton(evt);
+            }
+        });
+        buttonsPanel.add(limpar_filtrosButton);
+
+        limpar_pesquisaButton.setText("Limpar Pesquisa");
+        limpar_pesquisaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limparPesquisaButton(evt);
+            }
+        });
+        buttonsPanel.add(limpar_pesquisaButton);
+
+        funcionariosPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros de Funcionarios"));
+        funcionariosPanel.setToolTipText("Filtros de Funcionarios");
+
+        salarioMaximoFuncionarioLabel.setText("Salario Máximo de Funcionario");
+
+        salarioMaximoFuncionarioTextField.setColumns(5);
+        salarioMaximoFuncionarioTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salarioMaximoFuncionarioTextFieldActionPerformed(evt);
+            }
+        });
+
+        subClassesFuncionarioPanel.add(subclassesEspecificasFuncionarioTabbedPane);
+
+        javax.swing.GroupLayout funcionariosPanelLayout = new javax.swing.GroupLayout(funcionariosPanel);
+        funcionariosPanel.setLayout(funcionariosPanelLayout);
+        funcionariosPanelLayout.setHorizontalGroup(
+            funcionariosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(funcionariosPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(salarioMaximoFuncionarioLabel)
+                .addGap(1, 1, 1)
+                .addComponent(salarioMaximoFuncionarioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(subClassesFuncionarioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        funcionariosPanelLayout.setVerticalGroup(
+            funcionariosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(funcionariosPanelLayout.createSequentialGroup()
+                .addGroup(funcionariosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(funcionariosPanelLayout.createSequentialGroup()
+                        .addGap(5, 5, 5)
+                        .addGroup(funcionariosPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(salarioMaximoFuncionarioLabel)
+                            .addComponent(salarioMaximoFuncionarioTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(funcionariosPanelLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(subClassesFuncionarioPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(3, 3, 3))
+        );
+
+        empresasPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros de Empresas"));
+        empresasPanel.setToolTipText("Filtros de Empresas");
+
+        cnpjEmpresaLabel.setText("CNPJ");
+
+        cnpjTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cnpjTextFieldActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout empresasPanelLayout = new javax.swing.GroupLayout(empresasPanel);
+        empresasPanel.setLayout(empresasPanelLayout);
+        empresasPanelLayout.setHorizontalGroup(
+            empresasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(empresasPanelLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(cnpjEmpresaLabel)
+                .addGap(5, 5, 5)
+                .addComponent(cnpjTextField)
+                .addContainerGap())
+        );
+        empresasPanelLayout.setVerticalGroup(
+            empresasPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(empresasPanelLayout.createSequentialGroup()
+                .addGap(8, 8, 8)
+                .addComponent(cnpjEmpresaLabel))
+            .addGroup(empresasPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(cnpjTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        empregoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros de Emprego"));
+        empregoPanel.setToolTipText("Filtros de Seguros");
+
+        dataAdmissaoLabel.setText("Data de Admissão");
+        empregoPanel.add(dataAdmissaoLabel);
+        dataAdmissaoLabel.getAccessibleContext().setAccessibleDescription("");
+
+        dataAdmissaoTextField.setColumns(10);
+        empregoPanel.add(dataAdmissaoTextField);
+
+        resultadosPesquisaTextArea.setEditable(false);
+        resultadosPesquisaTextArea.setColumns(100);
+        resultadosPesquisaTextArea.setRows(10);
+        resultadosPesquisaScrollPane.setViewportView(resultadosPesquisaTextArea);
+
+        javax.swing.GroupLayout resultadosPesquisaPanelLayout = new javax.swing.GroupLayout(resultadosPesquisaPanel);
+        resultadosPesquisaPanel.setLayout(resultadosPesquisaPanelLayout);
+        resultadosPesquisaPanelLayout.setHorizontalGroup(
+            resultadosPesquisaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resultadosPesquisaPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(resultadosPesquisaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 784, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        resultadosPesquisaPanelLayout.setVerticalGroup(
+            resultadosPesquisaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(resultadosPesquisaPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(resultadosPesquisaScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 816, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(resultadosPesquisaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(256, 256, 256)
+                            .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(204, 204, 204)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(empresasPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(empregoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(funcionariosPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 347, Short.MAX_VALUE)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(funcionariosPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0)
+                    .addComponent(empresasPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0)
+                    .addComponent(empregoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0)
+                    .addComponent(resultadosPesquisaPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, 0)
+                    .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
+
+        empregoPanel.getAccessibleContext().setAccessibleDescription("Filtros de Emprego");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void pesquisarButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarButton
+        double salarioMaximo = 0.0;
+        if(!salarioMaximoFuncionarioTextField.getText().isEmpty())
+        salarioMaximo = Double.parseDouble(salarioMaximoFuncionarioTextField.getText());
+
+        String cnpj = "";
+        if(!cnpjTextField.getText().isEmpty()) {
+            cnpj = cnpjTextField.getText();
+        }
+
+        int avaliacaoDesempenho = 0;
+        String curso = null;
+        String empresaContratada = null;
+
+        int abaSelecionada = subclassesEspecificasFuncionarioTabbedPane.getSelectedIndex();
+        switch(abaSelecionada) {
+            case 0:
+                avaliacaoDesempenho = filtrosEmpregadosPainel.getAvaliacaoDesempenho();
+                break;
+            case 1:
+                curso = filtrosEstagiarioPainel.getCurso();
+                break;
+            case 2:
+                empresaContratada = filtrosTerceirizadoPainel.getEmpresaContratada();
+                break;
+        }
+
+        Timestamp dataAdmissao = getDataAdmissao(dataAdmissaoTextField);
+        ArrayList<Emprego> empregos = Emprego.pesquisarEmpregos(
+            salarioMaximo, cnpj, avaliacaoDesempenho, curso,
+            empresaContratada, dataAdmissao
+        );
+
+        mostrarEmpregosSelecionados(empregos);
+    }//GEN-LAST:event_pesquisarButton
+
+    private void limparFiltrosButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparFiltrosButton
+        limparFiltros();
+    }//GEN-LAST:event_limparFiltrosButton
+
+    private void limparPesquisaButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limparPesquisaButton
+        resultadosPesquisaTextArea.setText("");
+    }//GEN-LAST:event_limparPesquisaButton
+
+    private void salarioMaximoFuncionarioTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salarioMaximoFuncionarioTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salarioMaximoFuncionarioTextFieldActionPerformed
+
+    private void cnpjTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cnpjTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cnpjTextFieldActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonsPanel;
+    private javax.swing.JLabel cnpjEmpresaLabel;
+    private javax.swing.JTextField cnpjTextField;
+    private javax.swing.JLabel dataAdmissaoLabel;
+    private javax.swing.JTextField dataAdmissaoTextField;
+    private javax.swing.JPanel empregoPanel;
+    private javax.swing.JPanel empresasPanel;
+    private javax.swing.JPanel funcionariosPanel;
+    private javax.swing.JButton limpar_filtrosButton;
+    private javax.swing.JButton limpar_pesquisaButton;
+    private javax.swing.JButton pesquisarButton;
+    private javax.swing.JPanel resultadosPesquisaPanel;
+    private javax.swing.JScrollPane resultadosPesquisaScrollPane;
+    private javax.swing.JTextArea resultadosPesquisaTextArea;
+    private javax.swing.JLabel salarioMaximoFuncionarioLabel;
+    private javax.swing.JTextField salarioMaximoFuncionarioTextField;
+    private javax.swing.JPanel subClassesFuncionarioPanel;
+    private javax.swing.JTabbedPane subclassesEspecificasFuncionarioTabbedPane;
     // End of variables declaration//GEN-END:variables
 }

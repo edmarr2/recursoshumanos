@@ -71,89 +71,154 @@ public class Emprego {
     public Emprego getVisao() {
         return new Emprego(this.id, this.funcionario, this.empresa);
     }
-    
-    public static ArrayList<Emprego> pesquisarEmpregos(EstadoCivil estadoCivil, double salarioMinimo, String cargoDesejado, Timestamp dataMinima) {
-        String sql = "SELECT F.id, F.cpf, F.cargo, F.salario, EM.dataInicio, F.nome, "
-                + "E.cnpj, E.nome "
-                + "FROM funcionarios F, empresas E, emprego EM"
-                + "WHERE EM.funcionarioId = F.id AND EM.empresaId = E.cnpj ";
-
-        if (estadoCivil != null || salarioMinimo > -1 || cargoDesejado != null || dataMinima != null) {
-            sql += "WHERE ";
-
-            boolean hasPreviousCondition = false;
-            if (estadoCivil != null) {
-                if (hasPreviousCondition) {
-                    sql += "AND ";
-                }
-                sql += "F.estadoCivil = ? ";
-                hasPreviousCondition = true;
-            }
-
-            if (salarioMinimo > -1) {
-                if (hasPreviousCondition) {
-                    sql += "AND ";
-                }
-                sql += "F.salario >= ? ";
-                hasPreviousCondition = true;
-            }
-
-            if (cargoDesejado != null) {
-                if (hasPreviousCondition) {
-                    sql += "AND ";
-                }
-                sql += "F.cargo = ? ";
-                hasPreviousCondition = true;
-            }
-
-            if (dataMinima != null) {
-                if (hasPreviousCondition) {
-                    sql += "AND ";
-                }
-                sql += "EM.dataInicio >= ? ";
-            }
+    public static boolean isOkPesquisaEmEmpregado(int idFuncionario, int avaliacaoDeDesempenho) {
+        boolean pesquisa = false;
+        String sql = "SELECT * FROM empregados WHERE funcionarioId = ?";
+        if (avaliacaoDeDesempenho >= 0) {
+            sql += " AND avaliacaoDesempenho >= ?";
         }
 
-        sql += "ORDER BY F.id";
-
         ResultSet resultados = null;
-        ArrayList<Emprego> empregosSelecionados = new ArrayList<>();
-        int index = 0;
-
+        int index = 1;
         try {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
-
-            if (estadoCivil != null) {
-                comando.setInt(++index, estadoCivil.ordinal());
+            comando.setInt(1, idFuncionario);
+            if (avaliacaoDeDesempenho >= 0) {
+                comando.setInt(++index, avaliacaoDeDesempenho);
             }
-
-            if (salarioMinimo > -1) {
-                comando.setDouble(++index, salarioMinimo);
-            }
-
-            if (cargoDesejado != null) {
-                comando.setString(++index, cargoDesejado);
-            }
-
-            if (dataMinima != null) {
-                comando.setTimestamp(++index, dataMinima);
-            }
-
             resultados = comando.executeQuery();
 
             while (resultados.next()) {
-                Emprego emprego_pesquisado = Emprego.buscarEmprego(resultados.getInt("id"));
-                empregosSelecionados.add(emprego_pesquisado);
+                pesquisa = true;
             }
-
             resultados.close();
             comando.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        return pesquisa;
+    }
+    public static boolean isOkPesquisaEmEstagiario(int idFuncionario, String curso) {
+        boolean pesquisa = false;
+        String sql = "SELECT * FROM estagiarios WHERE funcionarioId = ?";
+        if (!curso.isEmpty()) {
+            sql += " AND curso = ?";
+        }
+
+        ResultSet resultados = null;
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, idFuncionario);
+            if (!curso.isEmpty()) {
+                comando.setString(2, curso);
+            }
+            resultados = comando.executeQuery();
+
+            while (resultados.next()) {
+                pesquisa = true;
+            }
+            resultados.close();
+            comando.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return pesquisa;
+    }
+    
+    public static boolean isOkPesquisaEmTerceirizado(int idFuncionario, String empresaContratada) {
+        boolean pesquisa = false;
+        String sql = "SELECT * FROM terceirizados WHERE funcionarioId = ?";
+        if (!empresaContratada.isEmpty()) {
+            sql += " AND empresaContratada = ?";
+        }
+
+        ResultSet resultados = null;
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            comando.setInt(1, idFuncionario);
+            if (!empresaContratada.isEmpty()) {
+                comando.setString(2, empresaContratada);
+            }
+            resultados = comando.executeQuery();
+
+            while (resultados.next()) {
+                pesquisa = true;
+            }
+            resultados.close();
+            comando.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return pesquisa;
+    }
+    
+    public static ArrayList<Emprego> pesquisarEmpregos(
+            double salarioMaximo, String cnpj, int avaliacaoDesempenho, String curso,
+            String empresaContratada, Timestamp dataAdmissao) {
+        String sql = "SELECT F.id, F.cpf, F.nome, F.salario, EM.id, EM.dataInicio"
+                + "E.cnpj, E.nome "
+                + "FROM funcionarios F, empresas E, emprego EM"
+                + "WHERE EM.funcionarioId = F.id AND EM.empresaId = E.cnpj ";
+        if (salarioMaximo > 0){
+            sql += "AND F.salario <= ? ";
+        }
+        if (cnpj != null && !cnpj.isEmpty()){
+            sql += "AND E.cnpj = ? ";
+        }
+        if (dataAdmissao != null) {
+            sql += "AND EM.dataInicio >= ? ";
+        }
+
+        sql += "ORDER BY EM.dataInicio";
+        ResultSet resultados = null;
+        ArrayList<Emprego> empregosSelecionados = new ArrayList<>();
+        int index = 0;
+        int idFuncionario = -1;
+        try {
+            PreparedStatement comando = DB.conexão.prepareStatement(sql);
+            if(salarioMaximo > 0){
+                comando.setDouble(++index, salarioMaximo);
+            }
+            if(cnpj != null){
+                comando.setString(++index, cnpj);
+            }
+            if(dataAdmissao != null) {
+                comando.setTimestamp(++index, dataAdmissao);
+            }
+
+            resultados = comando.executeQuery(); // Executar a consulta e obter os resultados
+
+            while(resultados.next()) {
+                Emprego empregoPesquisado = Emprego.buscarEmprego(resultados.getInt(5));
+                idFuncionario = resultados.getInt(1);
+                if(avaliacaoDesempenho > -1) {
+                    if(isOkPesquisaEmEmpregado(idFuncionario, avaliacaoDesempenho)){
+                        empregosSelecionados.add(empregoPesquisado);
+                    }
+                }
+                else if(!curso.isEmpty()) {
+                    if(isOkPesquisaEmEstagiario(idFuncionario, curso))
+                        empregosSelecionados.add(empregoPesquisado);
+                }
+                else if(!empresaContratada.isEmpty()) {
+                    if(isOkPesquisaEmTerceirizado(idFuncionario, empresaContratada))
+                        empregosSelecionados.add(empregoPesquisado);
+                }
+                else {
+                    empregosSelecionados.add(empregoPesquisado);
+                }
+            }
+
+            resultados.close();
+            comando.close();
+        }catch(SQLException e) { e.printStackTrace(); }
+
         return empregosSelecionados;
     }
+
     
     public static int ultimoId() {
         String sql = "SELECT MAX(id) FROM emprego";
@@ -341,5 +406,10 @@ public class Emprego {
                 ", data demissão=" + formatarData(dataFim) +
                 '}';
     }
-    
+    public String toStringFull() {
+        String str = funcionario.toStringFull() + " --- " + empresa.toStringFull() + "\n  ";
+        str += formatarData(dataInicio);
+
+        return str;
+    }
 }

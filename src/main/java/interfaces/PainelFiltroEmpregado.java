@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package interfaces;
 
@@ -8,10 +8,10 @@ package interfaces;
  *
  * @author edmar
  */
-public class PainelFiltroEmpregado extends javax.swing.JFrame {
+public class PainelFiltroEmpregado extends javax.swing.JPanel {
 
     /**
-     * Creates new form PainelFiltroEmpregado
+     * Creates new form PainelFiltroEmpregados
      */
     public PainelFiltroEmpregado() {
         initComponents();
@@ -40,8 +40,6 @@ public class PainelFiltroEmpregado extends javax.swing.JFrame {
         avaliacaoDesempenhoLabel = new javax.swing.JLabel();
         avaliacaoDesempenhoTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         avaliacaoDesempenhoLabel.setText("Avaliação de Desempenho Máxima");
 
         avaliacaoDesempenhoTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -55,8 +53,8 @@ public class PainelFiltroEmpregado extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
@@ -81,9 +79,11 @@ public class PainelFiltroEmpregado extends javax.swing.JFrame {
                         .addComponent(avaliacaoDesempenhoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void avaliacaoDesempenhoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avaliacaoDesempenhoTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_avaliacaoDesempenhoTextFieldActionPerformed
 
     private void avaliacaoDesempenhoTextField(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_avaliacaoDesempenhoTextField
         char caracter = evt.getKeyChar();
@@ -92,9 +92,6 @@ public class PainelFiltroEmpregado extends javax.swing.JFrame {
         evt.consume();
     }//GEN-LAST:event_avaliacaoDesempenhoTextField
 
-    private void avaliacaoDesempenhoTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_avaliacaoDesempenhoTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_avaliacaoDesempenhoTextFieldActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel avaliacaoDesempenhoLabel;

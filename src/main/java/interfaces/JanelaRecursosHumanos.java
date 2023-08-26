@@ -99,6 +99,11 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
         janelaCadastroEmpregoMenuBar.add(cadastrarEmpregoMenuItem);
 
         pesquisarEmpregoMenuItem.setText("Pesquisar Emprego");
+        pesquisarEmpregoMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarEmprego(evt);
+            }
+        });
         janelaCadastroEmpregoMenuBar.add(pesquisarEmpregoMenuItem);
 
         jMenuBar1.add(janelaCadastroEmpregoMenuBar);
@@ -143,11 +148,12 @@ public class JanelaRecursosHumanos extends javax.swing.JFrame {
     private void cadastrarEmpregoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarEmpregoMenuItemActionPerformed
         new ControladorEmprego();
     }//GEN-LAST:event_cadastrarEmpregoMenuItemActionPerformed
+
+    private void pesquisarEmprego(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarEmprego
+        JanelaPesquisaEmprego janelaPesquisa = new JanelaPesquisaEmprego();
+        janelaPesquisa.setVisible(true);
+    }//GEN-LAST:event_pesquisarEmprego
     
-    private void informarServiçoIndisponível(){
-        JOptionPane.showMessageDialog (this, "Serviço Indisponivel", "Informação",
-                JOptionPane.INFORMATION_MESSAGE);
-    }
     /**
      * @param args the command line arguments
      */

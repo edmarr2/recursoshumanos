@@ -170,7 +170,6 @@ public class Funcionário {
         }
         
         int id = Funcionário.ultimoID();
-
         if(funcionario instanceof Empregado) {
             Empregado empregado = (Empregado) funcionario;
             sql = "INSERT INTO empregados (departamento, avaliacaoDeDesempenho, funcionarioId) VALUES " +
@@ -187,9 +186,7 @@ public class Funcionário {
                 e.printStackTrace();
                 return "Erro na inserção do Empregado";
             }
-        }
-        
-        else if(funcionario instanceof Estagiário) {
+        } else if(funcionario instanceof Estagiário) {
             Estagiário estagiario = (Estagiário) funcionario;
             sql = "INSERT INTO estagiarios (curso, cargaHoraria, funcionarioId) " +
                     "VALUES (?,?,?)";
@@ -205,9 +202,7 @@ public class Funcionário {
                 e.printStackTrace();
                 return "Erro na inserção de Estagiário";
             }
-        }
-        
-        else if(funcionario instanceof Terceirizado) {
+        } else {
             Terceirizado terceirizado = (Terceirizado) funcionario;
             sql = "INSERT INTO terceirizados (empresaContratada, duracaoContrato, funcionarioId) " +
                     "VALUES (?,?,?)";

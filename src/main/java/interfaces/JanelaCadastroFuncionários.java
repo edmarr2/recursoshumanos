@@ -25,24 +25,25 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     public JanelaCadastroFuncionários(ControladorFuncionário controlador) {
         this.controlador = controlador;
         initComponents();
-        inicializarListaFuncionários();
         painelEmpregado = new PainelEmpregado();
         painelEstagiario = new PainelEstagiário();
         painelTerceirizado = new PainelTerceirizado();
         subclassesTabbedPane.addTab("Empregado", painelEmpregado);
         subclassesTabbedPane.addTab("Estagiário", painelEstagiario);
         subclassesTabbedPane.addTab("Terceirizado", painelTerceirizado);
+        inicializarListaFuncionarios();
         limparTextos();
     }
-    private void inicializarListaFuncionários() {
-        listaFuncionarios = new DefaultListModel<>();
-        Funcionário[] visoes = Funcionário.getVisoes();
-        for (Funcionário visao : visoes) {
-            listaFuncionarios.addElement(visao);
+    
+    private void inicializarListaFuncionarios() {
+        listaFuncionarios = (DefaultListModel) funcionáriosCadastradosList.getModel();
+        Funcionário[] funcionarios = Funcionário.getVisoes();
+        for (Funcionário funcionario : funcionarios) {
+            listaFuncionarios.addElement(funcionario);
         }
-
-        funcionáriosCadastradosList.setModel(listaFuncionarios);
     }
+
+    
     private Funcionário obterFuncionario() {
         Funcionário funcionario = null;
         
@@ -71,28 +72,27 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
             estadoCivil = EstadoCivil.values()[estadoCivilButtonGroup.getSelection().getMnemonic()];
         } else {return null;}
         ativo = ativoCheckBox.isSelected();
-        int indice_aba_selecionada = subclassesTabbedPane.getSelectedIndex();
-        switch(indice_aba_selecionada) {
-            case 0:
+        int abaSelecionada = subclassesTabbedPane.getSelectedIndex();
+        switch (abaSelecionada) {
+            case 0 -> {
                 String departamento = painelEmpregado.getDepartamento();
                 int avaliacao = painelEmpregado.getAvaliacao();
                 funcionario = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
-                departamento, avaliacao);
-                break;
-            case 1:
+                        departamento, avaliacao);
+            }
+            case 1 -> {
                 String curso = painelEstagiario.getCurso();
                 int cargaHoraria = painelEstagiario.getCargaHoraria();
                 funcionario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
-                curso, cargaHoraria);
-                break;
-            case 2:
+                        curso, cargaHoraria);
+            }
+            case 2 -> {
                 String empresaContratada = painelTerceirizado.getEmpresaContratada();
                 String duracaoContrato = painelTerceirizado.getDuracaoContrato();
                 funcionario = new Terceirizado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
-                empresaContratada, duracaoContrato);
-                break;
+                        empresaContratada, duracaoContrato);
+            }
         }
-        
         return funcionario;
     }
     private void limparTextos(){
@@ -182,7 +182,7 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         divorciadoRadioButton = new javax.swing.JRadioButton();
         viuvoRadioButton = new javax.swing.JRadioButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro Funcionários");
 
         nomeFuncionárioLabel.setText("Nome:");
@@ -476,27 +476,20 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         else {erro = "Algum atributo do funcionario não foi informado";}
             
         if(erro == null) {
-            int id = 0;
-            if(Funcionário.ultimoID() > 0){
-                id = Funcionário.ultimoID();
-            }
+            int id = Funcionário.ultimoID();
             funcionario.setId(id);
-            Funcionário visao;
-            switch (subclassesTabbedPane.getSelectedIndex()) {
-                case 0:
-                    visao = (Empregado) funcionario.getVisao();
-                    break;
-                case 1:
-                    visao = (Estagiário) funcionario.getVisao();
-                    break;
-                default:
-                    visao = (Terceirizado) funcionario.getVisao();
-                    break;
+            Funcionário visao = null;
+            if(subclassesTabbedPane.getSelectedIndex() == 0) {
+                visao = (Empregado) funcionario.getVisao();
+            } else if(subclassesTabbedPane.getSelectedIndex() == 1) {
+                visao = (Estagiário) funcionario.getVisao();
+            }else {
+                visao = (Terceirizado) funcionario.getVisao();
             }
-            listaFuncionarios.addElement(funcionario);
-            funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size() - 1);
+
+            listaFuncionarios.addElement(visao);
+            funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size());
             idFuncionárioTextField.setText("" + id);
-            funcionáriosCadastradosList.updateUI();
         }else {informarErro(erro);}
     }//GEN-LAST:event_cadastrarFuncionárioButtonActionPerformed
  

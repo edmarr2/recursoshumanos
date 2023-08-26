@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
 package interfaces;
 
@@ -8,15 +8,15 @@ package interfaces;
  *
  * @author edmar
  */
-public class PainelFiltroTerceirizado extends javax.swing.JFrame {
+public class PainelFiltroTerceirizado extends javax.swing.JPanel {
 
     /**
-     * Creates new form PainelFiltroTerceirizado
+     * Creates new form PainelFiltroTerceirizados
      */
     public PainelFiltroTerceirizado() {
         initComponents();
     }
-    public String getCurso() {
+    public String getEmpresaContratada() {
         return empresaContratadaTextField.getText();
     }
     public void limparFiltros() {
@@ -34,8 +34,6 @@ public class PainelFiltroTerceirizado extends javax.swing.JFrame {
         empresaContratadaLabel = new javax.swing.JLabel();
         empresaContratadaTextField = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         empresaContratadaLabel.setText("Empresa Contratada");
 
         empresaContratadaTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -44,8 +42,8 @@ public class PainelFiltroTerceirizado extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
@@ -70,13 +68,12 @@ public class PainelFiltroTerceirizado extends javax.swing.JFrame {
                         .addComponent(empresaContratadaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void empresaContratadaTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_empresaContratadaTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_empresaContratadaTextFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel empresaContratadaLabel;
