@@ -178,7 +178,6 @@ public class Emprego {
         }
 
         sql += "ORDER BY EM.dataInicio";
-        System.out.println(sql);
 
         ResultSet resultados = null;
         ArrayList<Emprego> empregosSelecionados = new ArrayList();
@@ -202,7 +201,6 @@ public class Emprego {
             }
 
             resultados = comando.executeQuery();
-            System.out.println(resultados);
             while (resultados.next()) {
                 Emprego empregoPesquisado = Emprego.buscarEmprego(resultados.getInt(1));
 
@@ -230,7 +228,6 @@ public class Emprego {
             resultados.close();
             comando.close();
         } catch(SQLException e) { e.printStackTrace(); }
-        System.out.println(empregosSelecionados);
         return empregosSelecionados;
     }
 
