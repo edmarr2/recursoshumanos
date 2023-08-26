@@ -114,10 +114,8 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
             dataInicio = transformarDataStringParaTimestamp(dataInicioStr);
         }
 
+        Timestamp dataDemissao = null;
         String dataDemissaoStr = dataDemissaoTextField.getText();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, 200);
-        Timestamp dataDemissao = new Timestamp(calendar.getTimeInMillis());
         if (!dataDemissaoStr.isEmpty()) {
             dataDemissao = transformarDataStringParaTimestamp(dataDemissaoStr);
         }
@@ -313,8 +311,8 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
                 int id = Emprego.ultimoId();
                 emprego.setId(id);
                 atualizarListaEmpregos();
-                empregosCadastradosList.setSelectedIndex(listaEmpregos.size());
                 limparCampos();
+                empregosCadastradosList.setSelectedIndex(listaEmpregos.size() - 1);
             } else {
                 informarErro(mensagemErro);
             }

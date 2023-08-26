@@ -62,15 +62,16 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
     }
 
     private void mostrarEmpregosSelecionados(ArrayList<Emprego> empregos) {
-        boolean primeiroEmprego = true;
+        StringBuilder resultados = new StringBuilder();
+
         for (Emprego emprego : empregos) {
-            if (primeiroEmprego) {
-                resultadosPesquisaTextArea.append(emprego.toStringFull());
-                primeiroEmprego = false;
-            } else {
-                resultadosPesquisaTextArea.append("\n" + emprego.toStringFull());
+            if (resultados.length() > 0) {
+                resultados.append("\n");
             }
+            resultados.append(emprego.toStringFull());
         }
+
+        resultadosPesquisaTextArea.setText(resultados.toString());
     }
 
     /**
@@ -280,20 +281,21 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
 
     private void pesquisarButton(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarButton
         double salarioMaximo = 0.0;
-        if(!salarioMaximoFuncionarioTextField.getText().isEmpty())
-        salarioMaximo = Double.parseDouble(salarioMaximoFuncionarioTextField.getText());
+        if (!salarioMaximoFuncionarioTextField.getText().isEmpty()) {
+            salarioMaximo = Double.parseDouble(salarioMaximoFuncionarioTextField.getText());
+        }
 
         String cnpj = "";
-        if(!cnpjTextField.getText().isEmpty()) {
+        if (!cnpjTextField.getText().isEmpty()) {
             cnpj = cnpjTextField.getText();
         }
 
-        int avaliacaoDesempenho = 0;
-        String curso = null;
-        String empresaContratada = null;
+        int avaliacaoDesempenho = -1;
+        String curso = "";
+        String empresaContratada = "";
 
         int abaSelecionada = subclassesEspecificasFuncionarioTabbedPane.getSelectedIndex();
-        switch(abaSelecionada) {
+        switch (abaSelecionada) {
             case 0:
                 avaliacaoDesempenho = filtrosEmpregadosPainel.getAvaliacaoDesempenho();
                 break;

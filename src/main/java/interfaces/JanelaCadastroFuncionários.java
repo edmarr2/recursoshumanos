@@ -491,6 +491,7 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
             listaFuncionarios.addElement(visao);
             funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size() - 1);
             idFuncionárioTextField.setText("" + id);
+            limparTextos();
         } else {
             informarErro(erro);
         }

@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import persistência.DB;
@@ -29,7 +30,12 @@ public class Emprego {
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
     }
-    
+    public Emprego(int id, Funcionário funcionario, Empresa empresa, Timestamp dataInicio) {
+        this.id = id;
+        this.funcionario = funcionario;
+        this.empresa = empresa;
+        this.dataInicio = dataInicio;
+    }
     public Emprego(int id, Funcionário funcionario, Empresa empresa) {
         this.id = id;
         this.funcionario = funcionario;
@@ -69,7 +75,7 @@ public class Emprego {
     public Emprego getVisao() {
         return new Emprego(this.id, this.funcionario, this.empresa);
     }
-    public static boolean isOkPesquisaEmEmpregado(int idFuncionario, int avaliacaoDeDesempenho) {
+    public static boolean verificaEmpregadoValido(int idFuncionario, int avaliacaoDeDesempenho) {
         boolean pesquisa = false;
         String sql = "SELECT * FROM empregados WHERE funcionarioId = ?";
         if (avaliacaoDeDesempenho >= 0) {
@@ -97,7 +103,7 @@ public class Emprego {
 
         return pesquisa;
     }
-    public static boolean isOkPesquisaEmEstagiario(int idFuncionario, String curso) {
+    public static boolean verificaEstagiarioValido(int idFuncionario, String curso) {
         boolean pesquisa = false;
         String sql = "SELECT * FROM estagiarios WHERE funcionarioId = ?";
         if (!curso.isEmpty()) {
@@ -125,7 +131,7 @@ public class Emprego {
         return pesquisa;
     }
     
-    public static boolean isOkPesquisaEmTerceirizado(int idFuncionario, String empresaContratada) {
+    public static boolean verificaTerceirizacaoValida(int idFuncionario, String empresaContratada) {
         boolean pesquisa = false;
         String sql = "SELECT * FROM terceirizados WHERE funcionarioId = ?";
         if (!empresaContratada.isEmpty()) {
@@ -156,10 +162,11 @@ public class Emprego {
     public static ArrayList<Emprego> pesquisarEmpregos(
             double salarioMaximo, String cnpj, int avaliacaoDesempenho, String curso,
             String empresaContratada, Timestamp dataAdmissao) {
-        String sql = "SELECT F.id, F.cpf, F.nome, F.salario, EM.id, EM.dataInicio"
+        String sql = "SELECT EM.id, F.id, F.cpf, F.nome, F.salario, EM.dataInicio, "
                 + "E.cnpj, E.nome "
-                + "FROM funcionarios F, empresas E, emprego EM"
+                + "FROM funcionarios F, empresas E, emprego EM "
                 + "WHERE EM.funcionarioId = F.id AND EM.empresaId = E.cnpj ";
+
         if (salarioMaximo > 0){
             sql += "AND F.salario <= ? ";
         }
@@ -171,49 +178,59 @@ public class Emprego {
         }
 
         sql += "ORDER BY EM.dataInicio";
+        System.out.println(sql);
+
         ResultSet resultados = null;
-        ArrayList<Emprego> empregosSelecionados = new ArrayList<>();
-        int index = 0;
+        ArrayList<Emprego> empregosSelecionados = new ArrayList();
+        int index = 1;
         int idFuncionario = -1;
+
         try {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
             if(salarioMaximo > 0){
-                comando.setDouble(++index, salarioMaximo);
+                comando.setDouble(index, salarioMaximo);
+                index++;
             }
-            if(cnpj != null){
-                comando.setString(++index, cnpj);
+            if(cnpj != null && !cnpj.isEmpty()){
+                comando.setString(index, cnpj);
+                index++;
+
             }
             if(dataAdmissao != null) {
-                comando.setTimestamp(++index, dataAdmissao);
+                comando.setTimestamp(index, dataAdmissao);
+                index++;
             }
 
-            resultados = comando.executeQuery(); // Executar a consulta e obter os resultados
+            resultados = comando.executeQuery();
+            System.out.println(resultados);
+            while (resultados.next()) {
+                Emprego empregoPesquisado = Emprego.buscarEmprego(resultados.getInt(1));
 
-            while(resultados.next()) {
-                Emprego empregoPesquisado = Emprego.buscarEmprego(resultados.getInt(5));
-                idFuncionario = resultados.getInt(1);
+                idFuncionario = resultados.getInt(2);
+
                 if(avaliacaoDesempenho > -1) {
-                    if(isOkPesquisaEmEmpregado(idFuncionario, avaliacaoDesempenho)){
+                    if(verificaEmpregadoValido(idFuncionario, avaliacaoDesempenho)){
                         empregosSelecionados.add(empregoPesquisado);
                     }
                 }
                 else if(!curso.isEmpty()) {
-                    if(isOkPesquisaEmEstagiario(idFuncionario, curso))
+                    if(verificaEstagiarioValido(idFuncionario, curso))
                         empregosSelecionados.add(empregoPesquisado);
                 }
                 else if(!empresaContratada.isEmpty()) {
-                    if(isOkPesquisaEmTerceirizado(idFuncionario, empresaContratada))
+                    if(verificaTerceirizacaoValida(idFuncionario, empresaContratada))
                         empregosSelecionados.add(empregoPesquisado);
                 }
                 else {
                     empregosSelecionados.add(empregoPesquisado);
                 }
+
             }
 
             resultados.close();
             comando.close();
-        }catch(SQLException e) { e.printStackTrace(); }
-
+        } catch(SQLException e) { e.printStackTrace(); }
+        System.out.println(empregosSelecionados);
         return empregosSelecionados;
     }
 
@@ -250,11 +267,17 @@ public class Emprego {
                 int funcionarioId = resultados.getInt("funcionarioId");
                 String empresaId = resultados.getString("empresaId");
                 Timestamp dataInicioTimestamp = resultados.getTimestamp("dataInicio");
-                Timestamp dataFimTimestamp = resultados.getTimestamp("dataFim");
+                Timestamp dataFimTimestamp = null;
+                if (resultados.getTimestamp("dataFim") != null){
+                    dataFimTimestamp = resultados.getTimestamp("dataFim");
+                }
                 Funcionário funcionario = Funcionário.buscarFuncionario(funcionarioId);
                 Empresa empresa = Empresa.buscarEmpresa(empresaId);
-
-                emprego = new Emprego(id, funcionario, empresa, dataInicioTimestamp, dataFimTimestamp);
+                if (dataFimTimestamp == null) {
+                    emprego = new Emprego(id, funcionario, empresa, dataInicioTimestamp);
+                }else{
+                    emprego = new Emprego(id, funcionario, empresa, dataInicioTimestamp, dataFimTimestamp);
+                }
             }
 
             resultados.close();
@@ -266,6 +289,7 @@ public class Emprego {
 
         return emprego;
     }
+    
     public static String inserirEmprego(Emprego emprego) {
         String sql = "INSERT INTO Emprego (funcionarioId, empresaId, dataInicio, dataFim) "
                 + "VALUES (?, ?, ?, ?)";
@@ -275,9 +299,15 @@ public class Emprego {
             comando.setInt(1, emprego.getFuncionario().getId());
             comando.setString(2, emprego.getEmpresa().getCNPJ());
             java.sql.Date dataInicio = new java.sql.Date(emprego.getDataInicio().getTime());
-            java.sql.Date dataFim = new java.sql.Date(emprego.getDataFim().getTime());
             comando.setDate(3, dataInicio);
-            comando.setDate(4, dataFim);
+
+            if (emprego.getDataFim() != null) {
+                java.sql.Date dataFim = new java.sql.Date(emprego.getDataFim().getTime());
+                comando.setDate(4, dataFim);
+            } else {
+                comando.setNull(4, Types.DATE);
+            }
+
             comando.executeUpdate();
             comando.close();
             return null;
@@ -296,9 +326,15 @@ public class Emprego {
             comando.setInt(1, emprego.getFuncionario().getId());
             comando.setString(2, emprego.getEmpresa().getCNPJ());
             java.sql.Date dataInicio = new java.sql.Date(emprego.getDataInicio().getTime());
-            java.sql.Date dataFim = new java.sql.Date(emprego.getDataFim().getTime());
             comando.setDate(3, dataInicio);
-            comando.setDate(4, dataFim);
+
+            if (emprego.getDataFim() != null) {
+                java.sql.Date dataFim = new java.sql.Date(emprego.getDataFim().getTime());
+                comando.setDate(4, dataFim);
+            } else {
+                comando.setNull(4, Types.DATE);
+            }
+
             comando.setInt(5, emprego.getId());
             comando.executeUpdate();
             comando.close();
@@ -309,6 +345,7 @@ public class Emprego {
 
         return "Erro na Alteração do Emprego no BD";
     }
+    
     public static String removerEmprego(int id) {
         String sql = "DELETE FROM emprego WHERE id = ?";
 
@@ -336,7 +373,11 @@ public class Emprego {
                 int funcionarioId = resultados.getInt("funcionarioId");
                 String empresaId = resultados.getString("empresaId");
                 Timestamp dataInicio = new Timestamp(resultados.getDate("dataInicio").getTime());
-                Timestamp dataFim = new Timestamp(resultados.getDate("dataFim").getTime());
+
+                Timestamp dataFim = null;
+                if (resultados.getDate("dataFim") != null) {
+                    dataFim = new Timestamp(resultados.getDate("dataFim").getTime());
+                }
 
                 Funcionário funcionario = Funcionário.buscarFuncionario(funcionarioId);
                 Empresa empresa = Empresa.buscarEmpresa(empresaId);
@@ -396,12 +437,14 @@ public class Emprego {
     }
     @Override
     public String toString() {
+        String dataDemissaoStr = (dataFim != null) ? ", data demissão=" + formatarData(dataFim) : "";
+
         return "Emprego{" +
                 "id=" + id +
                 ", funcionario=" + funcionario +
                 ", empresa=" + empresa +
                 ", data admissão=" + formatarData(dataInicio) +
-                ", data demissão=" + formatarData(dataFim) +
+                dataDemissaoStr +
                 '}';
     }
     public String toStringFull() {
