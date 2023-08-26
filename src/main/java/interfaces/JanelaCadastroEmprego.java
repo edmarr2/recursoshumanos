@@ -149,9 +149,10 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
         removerButton = new javax.swing.JButton();
         limparButton = new javax.swing.JButton();
         dataDemissaoTextField = new javax.swing.JTextField();
-        data_hora_cadastroLabel = new javax.swing.JLabel();
+        dataDemissaoLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Cadastro Emprego");
 
         empregosCadastradosList.setModel(new DefaultListModel());
         empregosCadastradosScrollPane.setViewportView(empregosCadastradosList);
@@ -217,7 +218,7 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
         });
         buttonPanel.add(limparButton);
 
-        data_hora_cadastroLabel.setText("Data demissão");
+        dataDemissaoLabel.setText("Data demissão");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -253,7 +254,7 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addComponent(data_hora_cadastroLabel)
+                .addComponent(dataDemissaoLabel)
                 .addGap(12, 12, 12)
                 .addComponent(dataDemissaoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -294,7 +295,7 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(3, 3, 3)
-                        .addComponent(data_hora_cadastroLabel))
+                        .addComponent(dataDemissaoLabel))
                     .addComponent(dataDemissaoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(50, 50, 50)
                 .addComponent(buttonPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -382,10 +383,10 @@ public class JanelaCadastroEmprego extends javax.swing.JFrame {
     private javax.swing.JButton buscarButton;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JButton cadastrarButton;
+    private javax.swing.JLabel dataDemissaoLabel;
     private javax.swing.JTextField dataDemissaoTextField;
     private javax.swing.JLabel dataInicioCadastroLabel;
     private javax.swing.JTextField dataInicioTextField;
-    private javax.swing.JLabel data_hora_cadastroLabel;
     private javax.swing.JLabel empregosCadastradosLabel;
     private javax.swing.JList empregosCadastradosList;
     private javax.swing.JScrollPane empregosCadastradosScrollPane;

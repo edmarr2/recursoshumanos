@@ -6,10 +6,13 @@ package interfaces;
 
 import entidade.Emprego;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JTextField;
 
 /**
@@ -43,21 +46,18 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
         filtrosTerceirizadoPainel.limparFiltros();
     }
     private Timestamp getDataAdmissao(JTextField data) {
+        String dataAdmissaoStr = data.getText();
         Timestamp dataAdmissao = null;
-        String dataBuscada = data.getText();
-        if (!dataBuscada.isEmpty()) {
-            String[] data_minima_partes = dataBuscada.split("/");
-            if (data_minima_partes.length == 3) {
-                String dia = data_minima_partes[0];
-                String mes = data_minima_partes[1];
-                String ano = data_minima_partes[2];
-                if ((dia.length() == 2) && (mes.length() == 2) && (ano.length() == 4)) {
-                    dataBuscada = ano + "-" + mes + "-" + dia + " 00:00:00";
-                    dataAdmissao = Timestamp.valueOf(dataBuscada);
-                }
+
+        if (!dataAdmissaoStr.isEmpty()) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date parsedDate = dateFormat.parse(dataAdmissaoStr);
+                dataAdmissao = new Timestamp(parsedDate.getTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         }
-
         return dataAdmissao;
     }
 
@@ -85,8 +85,8 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
 
         buttonsPanel = new javax.swing.JPanel();
         pesquisarButton = new javax.swing.JButton();
-        limpar_filtrosButton = new javax.swing.JButton();
-        limpar_pesquisaButton = new javax.swing.JButton();
+        limparFiltrosButton = new javax.swing.JButton();
+        limparPesquisaButton = new javax.swing.JButton();
         funcionariosPanel = new javax.swing.JPanel();
         salarioMaximoFuncionarioLabel = new javax.swing.JLabel();
         salarioMaximoFuncionarioTextField = new javax.swing.JTextField();
@@ -103,6 +103,7 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
         resultadosPesquisaTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Pesquisa Emprego");
         setMinimumSize(new java.awt.Dimension(303, 224));
 
         pesquisarButton.setText("Pesquisar");
@@ -113,21 +114,21 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
         });
         buttonsPanel.add(pesquisarButton);
 
-        limpar_filtrosButton.setText("Limpar Filtros");
-        limpar_filtrosButton.addActionListener(new java.awt.event.ActionListener() {
+        limparFiltrosButton.setText("Limpar Filtros");
+        limparFiltrosButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limparFiltrosButton(evt);
             }
         });
-        buttonsPanel.add(limpar_filtrosButton);
+        buttonsPanel.add(limparFiltrosButton);
 
-        limpar_pesquisaButton.setText("Limpar Pesquisa");
-        limpar_pesquisaButton.addActionListener(new java.awt.event.ActionListener() {
+        limparPesquisaButton.setText("Limpar Pesquisa");
+        limparPesquisaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limparPesquisaButton(evt);
             }
         });
-        buttonsPanel.add(limpar_pesquisaButton);
+        buttonsPanel.add(limparPesquisaButton);
 
         funcionariosPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros de Funcionarios"));
         funcionariosPanel.setToolTipText("Filtros de Funcionarios");
@@ -204,7 +205,7 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
         );
 
         empregoPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtros de Emprego"));
-        empregoPanel.setToolTipText("Filtros de Seguros");
+        empregoPanel.setToolTipText("Filtros de Empregos");
 
         dataAdmissaoLabel.setText("Data de Admissão");
         empregoPanel.add(dataAdmissaoLabel);
@@ -308,6 +309,8 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
         }
 
         Timestamp dataAdmissao = getDataAdmissao(dataAdmissaoTextField);
+        System.out.println(dataAdmissao);
+
         ArrayList<Emprego> empregos = Emprego.pesquisarEmpregos(
             salarioMaximo, cnpj, avaliacaoDesempenho, curso,
             empresaContratada, dataAdmissao
@@ -341,8 +344,8 @@ public class JanelaPesquisaEmprego extends javax.swing.JFrame {
     private javax.swing.JPanel empregoPanel;
     private javax.swing.JPanel empresasPanel;
     private javax.swing.JPanel funcionariosPanel;
-    private javax.swing.JButton limpar_filtrosButton;
-    private javax.swing.JButton limpar_pesquisaButton;
+    private javax.swing.JButton limparFiltrosButton;
+    private javax.swing.JButton limparPesquisaButton;
     private javax.swing.JButton pesquisarButton;
     private javax.swing.JPanel resultadosPesquisaPanel;
     private javax.swing.JScrollPane resultadosPesquisaScrollPane;

@@ -79,16 +79,15 @@ public class Emprego {
         boolean pesquisa = false;
         String sql = "SELECT * FROM empregados WHERE funcionarioId = ?";
         if (avaliacaoDeDesempenho >= 0) {
-            sql += " AND avaliacaoDesempenho >= ?";
+            sql += " AND avaliacaoDeDesempenho >= ?";
         }
 
         ResultSet resultados = null;
-        int index = 1;
         try {
             PreparedStatement comando = DB.conexão.prepareStatement(sql);
             comando.setInt(1, idFuncionario);
             if (avaliacaoDeDesempenho >= 0) {
-                comando.setInt(++index, avaliacaoDeDesempenho);
+                comando.setInt(2, avaliacaoDeDesempenho);
             }
             resultados = comando.executeQuery();
 
@@ -174,7 +173,7 @@ public class Emprego {
             sql += "AND E.cnpj = ? ";
         }
         if (dataAdmissao != null) {
-            sql += "AND EM.dataInicio >= ? ";
+            sql += "AND EM.dataInicio = ? ";
         }
 
         sql += "ORDER BY EM.dataInicio";
