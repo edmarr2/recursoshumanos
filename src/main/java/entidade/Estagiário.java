@@ -80,8 +80,8 @@ public class Estagiário extends Funcionário {
     }
 
     @Override
-    public Empregado getVisao() {
-        return new Empregado(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
+    public Estagiário getVisao() {
+        return new Estagiário(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
                 super.getSalário(), super.getEstadoCivil(), super.getSexo(), super.getAtivo());
     }
     

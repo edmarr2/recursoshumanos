@@ -25,13 +25,13 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
     public JanelaCadastroFuncionários(ControladorFuncionário controlador) {
         this.controlador = controlador;
         initComponents();
+        inicializarListaFuncionarios();
         painelEmpregado = new PainelEmpregado();
         painelEstagiario = new PainelEstagiário();
         painelTerceirizado = new PainelTerceirizado();
         subclassesTabbedPane.addTab("Empregado", painelEmpregado);
         subclassesTabbedPane.addTab("Estagiário", painelEstagiario);
         subclassesTabbedPane.addTab("Terceirizado", painelTerceirizado);
-        inicializarListaFuncionarios();
         limparTextos();
     }
     
@@ -74,24 +74,24 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         ativo = ativoCheckBox.isSelected();
         int abaSelecionada = subclassesTabbedPane.getSelectedIndex();
         switch (abaSelecionada) {
-            case 0 -> {
+            case 0:
                 String departamento = painelEmpregado.getDepartamento();
                 int avaliacao = painelEmpregado.getAvaliacao();
                 funcionario = new Empregado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
                         departamento, avaliacao);
-            }
-            case 1 -> {
+                break;
+            case 1:
                 String curso = painelEstagiario.getCurso();
                 int cargaHoraria = painelEstagiario.getCargaHoraria();
                 funcionario = new Estagiário(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
                         curso, cargaHoraria);
-            }
-            case 2 -> {
+                break;
+            case 2:
                 String empresaContratada = painelTerceirizado.getEmpresaContratada();
                 String duracaoContrato = painelTerceirizado.getDuracaoContrato();
                 funcionario = new Terceirizado(id, cpf, nome, cargo, salario, estadoCivil, sexo, ativo,
                         empresaContratada, duracaoContrato);
-            }
+                break;
         }
         return funcionario;
     }
@@ -475,22 +475,25 @@ public class JanelaCadastroFuncionários extends javax.swing.JFrame {
         if(funcionario != null) {erro = controlador.inserirFuncionário(funcionario);}
         else {erro = "Algum atributo do funcionario não foi informado";}
             
-        if(erro == null) {
+        if (erro == null) {
             int id = Funcionário.ultimoID();
             funcionario.setId(id);
-            Funcionário visao = null;
-            if(subclassesTabbedPane.getSelectedIndex() == 0) {
+            Funcionário visao;
+
+            if (subclassesTabbedPane.getSelectedIndex() == 0) {
                 visao = (Empregado) funcionario.getVisao();
-            } else if(subclassesTabbedPane.getSelectedIndex() == 1) {
+            } else if (subclassesTabbedPane.getSelectedIndex() == 1) {
                 visao = (Estagiário) funcionario.getVisao();
-            }else {
+            } else {
                 visao = (Terceirizado) funcionario.getVisao();
             }
 
             listaFuncionarios.addElement(visao);
-            funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size());
+            funcionáriosCadastradosList.setSelectedIndex(listaFuncionarios.size() - 1);
             idFuncionárioTextField.setText("" + id);
-        }else {informarErro(erro);}
+        } else {
+            informarErro(erro);
+        }
     }//GEN-LAST:event_cadastrarFuncionárioButtonActionPerformed
  
     private void atualizarFuncionárioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_atualizarFuncionárioButtonActionPerformed

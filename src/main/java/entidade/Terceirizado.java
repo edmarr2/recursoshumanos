@@ -78,8 +78,8 @@ public class Terceirizado extends Funcionário {
     }
 
     @Override
-    public Empregado getVisao() {
-        return new Empregado(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
+    public Terceirizado getVisao() {
+        return new Terceirizado(super.getId(), super.getCPF(), super.getNome(), super.getCargo(),
                 super.getSalário(), super.getEstadoCivil(), super.getSexo(), super.getAtivo());
     }
     
